@@ -10,8 +10,7 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
     heroHeading: "Honouring Sacred Traditions",
     heroSubtext:
       "Legally register your Vivah, Anand Karaj or Dharmic union with dignity, care, and complete legal compliance — all from the comfort of your home.",
-    bannerBg:
-      "linear-gradient(135deg, #0f4c4c 0%, #0d6b6b 45%, #0a5555 100%)",
+     bannerImage: "/banners/dharmic.jpg",
     accentTeal: "#0d9488",
     lightTeal: "#f0fdfa",
     darkTeal: "#0f4c4c",
@@ -56,11 +55,10 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
     label: "Islam",
     shortLabel: "Islam",
     subtitle: "Nikah Registration",
-    heroHeading: "Protecting Your Nikah, Legally",
+    heroHeading: "Nikah Registered. Stress-Free.",
     heroSubtext:
       "Ensure your Nikah is recognised under Indian law with a seamless, guided registration process — preserving both religious sanctity and legal security.",
-    bannerBg:
-      "linear-gradient(135deg, #0f4c4c 0%, #0d6b6b 45%, #134e4a 100%)",
+    bannerImage: "/media/MuslimBanner.png",
     accentTeal: "#0d9488",
     lightTeal: "#f0fdfa",
     darkTeal: "#0f4c4c",
@@ -111,8 +109,7 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
     heroHeading: "Your Vows, Fully Recognised",
     heroSubtext:
       "From church ceremony to official certificate — we handle the legal registration of your Christian marriage with professionalism and care.",
-    bannerBg:
-      "linear-gradient(135deg, #0f4c4c 0%, #0e7490 45%, #0f4c4c 100%)",
+    bannerImage: "/media/ChristianBanner.png",
     accentTeal: "#0e7490",
     lightTeal: "#ecfeff",
     darkTeal: "#164e63",
@@ -155,11 +152,10 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
     label: "Other / Civil Marriage",
     shortLabel: "Other / Civil",
     subtitle: "Special Marriage Act Registration",
-    heroHeading: "Love Beyond Boundaries",
+    heroHeading: "Love is Universal. Registration too.",
     heroSubtext:
       "For interfaith, inter-caste, or civil marriages — we provide a straightforward, judgement-free path to legal recognition under the Special Marriage Act.",
-    bannerBg:
-      "linear-gradient(135deg, #0f4c4c 0%, #115e59 45%, #0f4c4c 100%)",
+    bannerImage: "/media/otherBanner.jpeg",
     accentTeal: "#14b8a6",
     lightTeal: "#f0fdfa",
     darkTeal: "#134e4a",

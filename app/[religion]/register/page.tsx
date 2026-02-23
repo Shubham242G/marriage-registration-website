@@ -123,7 +123,10 @@ export default function RegisterPage({ params }: PageProps) {
 
       <div style={{ minHeight: "calc(100vh - 68px)", display: "grid", gridTemplateColumns: "1fr 1fr" }}>
         {/* Left */}
-        <div style={{ background: theme.bannerBg, padding: "4rem 3rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+        <div style={{ backgroundImage: `url(${theme.bannerImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",padding: "4rem 3rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
             <div style={{ fontSize: "0.72rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#ccfbf1", marginBottom: "1.25rem" }}>{theme.subtitle}</div>
             <h1 style={{ fontSize: "clamp(2rem, 3vw, 2.8rem)", fontWeight: 700, color: "#fff", fontFamily: "'Playfair Display', Georgia, serif", lineHeight: 1.25, marginBottom: "1.25rem" }}>

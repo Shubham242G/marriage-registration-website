@@ -85,7 +85,10 @@ export default function LoginPage({ params }: PageProps) {
       <div style={{ minHeight: "calc(100vh - 68px)", display: "grid", gridTemplateColumns: "1fr 1fr" }}>
 
         {/* Left panel */}
-        <div style={{ background: theme.bannerBg, padding: "4rem 3rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+        <div style={{ backgroundImage: `url(${theme.bannerImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat", padding: "4rem 3rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
             <div style={{ fontSize: "0.72rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#ccfbf1", marginBottom: "1.25rem" }}>
               Welcome Back

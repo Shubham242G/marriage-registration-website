@@ -186,7 +186,10 @@ export default function BlogPage({ params }: PageProps) {
       {/* Page Header */}
       <section
         style={{
-          background: theme.bannerBg,
+          backgroundImage: `url(${theme.bannerImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
           padding: "4rem 2rem 3.5rem",
           textAlign: "center",
         }}
@@ -325,7 +328,10 @@ export default function BlogPage({ params }: PageProps) {
             {/* Image placeholder */}
             <div
               style={{
-                background: theme.bannerBg,
+                backgroundImage: `url(${theme.bannerImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
                 minHeight: 280,
                 display: "flex",
                 alignItems: "center",
@@ -411,7 +417,10 @@ export default function BlogPage({ params }: PageProps) {
               <div
                 style={{
                   height: 160,
-                  background: theme.bannerBg,
+                  backgroundImage: `url(${theme.bannerImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",

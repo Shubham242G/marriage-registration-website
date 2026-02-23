@@ -1,9 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Navbar from "../components/Navbar";
 import { ReligionTheme } from "../types/Religion";
+import React from "react";
 
 interface Props {
   theme: ReligionTheme;
@@ -19,36 +20,61 @@ const fadeUp = {
 };
 
 export default function ReligionHomePage({ theme }: Props) {
-  const whyUs = [
+
+  const isHindu =
+    theme.key === "hinduism-sikhism-buddhism-jainism";
+
+  const hinduSlides = [
     {
-      icon: "⚖️",
-      title: "Legal Expertise",
-      body: "Our in-house legal team has processed thousands of registrations across all Indian states. We know the law — and we know how it's applied on the ground.",
+      image: "/media/Hindu1.gif",
+      heading: "Register Your Union.",
     },
     {
-      icon: "📋",
+      image: "/media/Hindu2.jpeg",
+      heading: "Anand Karaj. Legally Registered.",
+    },
+    {
+      image: "/media/Hindu3.jpeg",
+      heading: "Legally Yours.",
+    },
+    {
+      image: "/media/Hindu4.png",
+      heading: "One marriage, one form",
+    },
+  ];
+
+ 
+
+  
+
+
+  const whyUs = [
+    
+    {
       title: "End-to-End Guidance",
       body: "From document preparation to final certificate delivery, we handle every step. You never have to visit a government office or decipher bureaucratic language.",
     },
     {
-      icon: "🔒",
+
       title: "Complete Privacy",
       body: "All your documents and personal information are encrypted and handled with the highest standards of confidentiality.",
     },
     {
-      icon: "🕐",
+
       title: "Faster Processing",
       body: "Our experience means fewer errors, fewer rejections, and faster turnaround. Most certificates are delivered within 7–15 working days.",
     },
     {
-      icon: "🤝",
       title: "Dedicated Support",
       body: "A dedicated case manager is assigned to your registration — a real person you can reach by phone or email with any question.",
     },
     {
-      icon: "🌐",
       title: "All-Religion Coverage",
       body: "We are fluent in the legal nuances of Hindu, Muslim, Christian, Sikh, Buddhist, Jain, and civil marriages. No case is too complex.",
+    },
+    {
+          title: "Legal Recognition",
+          body: "Establishes your marriage as legally valid under Indian law and prevents future legal disputes.",
     },
   ];
 
@@ -59,171 +85,163 @@ export default function ReligionHomePage({ theme }: Props) {
     { num: "04", title: "Certificate Delivery", body: "Your official marriage certificate is delivered digitally and by post." },
   ];
 
-  return (
-    <div style={{ fontFamily: "'Lato', sans-serif", background: "#fff", minHeight: "100vh" }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;600;700&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-      `}</style>
 
+
+const [currentSlide, setCurrentSlide] = React.useState(0);
+
+React.useEffect(() => {
+  if (theme.key !== "hinduism-sikhism-buddhism-jainism") return;
+
+  const interval = setInterval(() => {
+    setCurrentSlide((prev) => (prev + 1) % hinduSlides.length);
+  }, 4000);
+
+  return () => clearInterval(interval);
+}, [theme.key]);
+
+  return (
+    <div
+      style={{
+        fontFamily: "'Lato', sans-serif",
+        background: "#fff",
+        minHeight: "100vh",
+      }}
+    >
       <Navbar religionKey={theme.key} />
 
-      {/* ── HERO BANNER ── */}
+      {/* ───────────────── HERO SECTION ───────────────── */}
+
       <section
         style={{
-          background: theme.bannerBg,
-          padding: "5rem 2rem 4.5rem",
           position: "relative",
+          minHeight: "95vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           overflow: "hidden",
         }}
       >
-        {/* Subtle pattern overlay */}
+        {/* IMAGE LAYER */}
+        {isHindu && hinduSlides.length > 0 ? (
+  <AnimatePresence mode="wait">
+    <motion.div
+      key={currentSlide}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      style={{
+        position: "absolute",
+        inset: 0,
+        backgroundImage: `url(${hinduSlides[currentSlide]?.image})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center bottom",
+      }}
+    />
+  </AnimatePresence>
+) : (
+  <div
+    style={{
+      position: "absolute",
+      inset: 0,
+      backgroundImage: `url(${theme.bannerImage})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center bottom",
+    }}
+  />
+)}
+
+        
+
+        {/* HERO CONTENT */}
         <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "radial-gradient(circle at 20% 50%, rgba(255,255,255,0.04) 0%, transparent 60%), radial-gradient(circle at 80% 20%, rgba(255,255,255,0.03) 0%, transparent 50%)",
-          }}
-        />
-        <div style={{ maxWidth: 860, margin: "0 auto", position: "relative", zIndex: 1, textAlign: "center" }}>
-          <motion.div  initial="hidden" animate="visible" custom={0}>
-            <div
-              style={{
-                display: "inline-block",
-                padding: "5px 20px",
-                borderRadius: 999,
-                border: "1px solid rgba(255,255,255,0.2)",
-                background: "rgba(255,255,255,0.08)",
-                color: "#ccfbf1",
-                fontSize: "0.72rem",
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                marginBottom: "1.5rem",
-                fontFamily: "'Lato', sans-serif",
-              }}
-            >
-              {theme.subtitle}
-            </div>
-          </motion.div>
+  style={{
+    position: "relative",
+    zIndex: 2,
+    maxWidth: 650,
+    padding: "0 2rem",
+    marginLeft: "58%",        // pushes it slightly from left edge
+    textAlign: "left",       // 👈 left aligned
+  }}
+>
+  <AnimatePresence mode="wait">
+    <motion.h1
+      key={
+        isHindu && hinduSlides[currentSlide]
+          ? hinduSlides[currentSlide].heading
+          : theme.heroHeading
+      }
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.8 }}
+      style={{
+        fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", // 👈 reduced size
+        fontWeight: 700,
+        color: "#fff",
+        lineHeight: 1.3,
+        marginBottom: "1.2rem",
+        fontFamily: "'Playfair Display', Georgia, serif",
+      }}
+    >
+      {isHindu && hinduSlides[currentSlide]
+        ? hinduSlides[currentSlide].heading
+        : theme.heroHeading}
+    </motion.h1>
+  </AnimatePresence>
 
-          <motion.h1
-            
-            initial="hidden"
-            animate="visible"
-            custom={1}
-            style={{
-              fontSize: "clamp(2.2rem, 5vw, 3.6rem)",
-              fontWeight: 700,
-              color: "#fff",
-              lineHeight: 1.2,
-              marginBottom: "1.25rem",
-              letterSpacing: "-0.02em",
-              fontFamily: "'Playfair Display', Georgia, serif",
-            }}
-          >
-            {theme.heroHeading}
-          </motion.h1>
-
-          <motion.p
-            
-            initial="hidden"
-            animate="visible"
-            custom={2}
-            style={{
-              fontSize: "1.1rem",
-              color: "rgba(255,255,255,0.78)",
-              lineHeight: 1.8,
-              maxWidth: 620,
-              margin: "0 auto 2.5rem",
-              fontWeight: 300,
-            }}
-          >
-            {theme.heroSubtext}
-          </motion.p>
-
-          <motion.div
-           
-            initial="hidden"
-            animate="visible"
-            custom={3}
-            style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}
-          >
-            <Link href={`/${theme.key}/register`} style={{ textDecoration: "none" }}>
-              <motion.div
-                whileHover={{ scale: 1.03, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                style={{
-                  padding: "14px 32px",
-                  borderRadius: 10,
-                  background: "#fff",
-                  color: theme.darkTeal,
-                  fontWeight: 700,
-                  fontSize: "0.95rem",
-                  cursor: "pointer",
-                  letterSpacing: "0.03em",
-                  boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
-                  fontFamily: "'Lato', sans-serif",
-                }}
-              >
-                Start Registration →
-              </motion.div>
-            </Link>
-            <Link href={`/${theme.key}/contact`} style={{ textDecoration: "none" }}>
-              <div
-                style={{
-                  padding: "14px 32px",
-                  borderRadius: 10,
-                  border: "1.5px solid rgba(255,255,255,0.35)",
-                  background: "rgba(255,255,255,0.08)",
-                  color: "#fff",
-                  fontWeight: 500,
-                  fontSize: "0.95rem",
-                  cursor: "pointer",
-                  letterSpacing: "0.03em",
-                  fontFamily: "'Lato', sans-serif",
-                }}
-              >
-                Talk to an Expert
-              </div>
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── LEGAL ACTS STRIP ── */}
+  <div
+    style={{
+      display: "flex",
+      gap: "1rem",
+      flexWrap: "wrap",
+      justifyContent: "flex-start",  // 👈 align buttons left
+    }}
+  >
+    <Link
+      href={`/${theme.key}/register`}
+      style={{ textDecoration: "none" }}
+    >
       <div
         style={{
-          background: theme.lightTeal,
-          borderBottom: `1px solid ${theme.borderColor}`,
-          padding: "1rem 2rem",
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "0.75rem 2rem",
-          justifyContent: "center",
-          alignItems: "center",
+          padding: "12px 28px",
+          borderRadius: 8,
+          background: "#fff",
+          color: theme.darkTeal,
+          fontWeight: 700,
+          fontSize: "0.9rem",
+          cursor: "pointer",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
         }}
       >
-        <span style={{ fontSize: "0.72rem", color: "#6b9e9e", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-          Covered under:
-        </span>
-        {theme.legalActs.map((act) => (
-          <span
-            key={act}
-            style={{
-              fontSize: "0.78rem",
-              color: theme.darkTeal,
-              fontWeight: 600,
-              padding: "3px 12px",
-              borderRadius: 999,
-              background: "#fff",
-              border: `1px solid ${theme.borderColor}`,
-            }}
-          >
-            {act}
-          </span>
-        ))}
+        Start Registration →
       </div>
+    </Link>
+
+    <Link
+      href={`/${theme.key}/contact`}
+      style={{ textDecoration: "none" }}
+    >
+      <div
+        style={{
+          padding: "12px 28px",
+          borderRadius: 8,
+          border: "1.5px solid rgba(255,255,255,0.4)",
+          background: "rgba(255,255,255,0.08)",
+          color: "#fff",
+          fontWeight: 500,
+          fontSize: "0.9rem",
+          cursor: "pointer",
+        }}
+      >
+        Talk to an Expert
+      </div>
+    </Link>
+  </div>
+</div>
+      </section>
+
+     
 
       {/* ── ABOUT / DESCRIPTION ── */}
       <section style={{ padding: "5rem 2rem", maxWidth: 1100, margin: "0 auto" }}>
@@ -261,7 +279,7 @@ export default function ReligionHomePage({ theme }: Props) {
               {theme.description}
             </p>
             <p style={{ color: "#4b7b7b", lineHeight: 1.9, fontSize: "0.98rem" }}>
-              VivahSetu was built because we witnessed firsthand how many couples — especially those from
+              Register my marriage was built because we witnessed firsthand how many couples — especially those from
               communities unfamiliar with government procedures — struggled to navigate the registration process.
               Documents were rejected over minor technicalities. Appointments were missed. Years passed without
               a certificate. We exist to ensure that never happens to another couple.
@@ -325,76 +343,221 @@ export default function ReligionHomePage({ theme }: Props) {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ── */}
-      <section style={{ background: theme.lightTeal, padding: "5rem 2rem" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            style={{ textAlign: "center", marginBottom: "3.5rem" }}
-          >
-            <span style={{ fontSize: "0.72rem", letterSpacing: "0.18em", textTransform: "uppercase", color: theme.accentTeal, fontWeight: 600 }}>
-              The Process
-            </span>
-            <h2
-              style={{
-                fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
-                fontWeight: 700,
-                color: "#0f4c4c",
-                marginTop: "0.75rem",
-                fontFamily: "'Playfair Display', Georgia, serif",
-              }}
-            >
-              Four Steps to Your Certificate
-            </h2>
-          </motion.div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.5rem" }}>
-            {steps.map((step, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                style={{
-                  padding: "2rem",
-                  borderRadius: 14,
-                  background: "#fff",
-                  border: `1px solid ${theme.borderColor}`,
-                  position: "relative",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "2.5rem",
-                    fontWeight: 800,
-                    color: theme.borderColor,
-                    lineHeight: 1,
-                    marginBottom: "0.75rem",
-                    fontFamily: "'Playfair Display', Georgia, serif",
-                  }}
-                >
-                  {step.num}
-                </div>
-                <div
-                  style={{
-                    fontWeight: 700,
-                    color: "#0f4c4c",
-                    marginBottom: "0.5rem",
-                    fontSize: "1rem",
-                    fontFamily: "'Playfair Display', Georgia, serif",
-                  }}
-                >
-                  {step.title}
-                </div>
-                <div style={{ color: "#4b7b7b", fontSize: "0.87rem", lineHeight: 1.7 }}>{step.body}</div>
-              </motion.div>
-            ))}
+      {/* Why Marriage Registration is Important */}
+<section
+  style={{
+    background: "#ffffff",
+    padding: "6rem 2rem",
+  }}
+>
+  <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+    <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
+      <h2
+        style={{
+          fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
+          fontWeight: 700,
+          color: "#0f4c4c",
+          fontFamily: "'Playfair Display', Georgia, serif",
+          marginBottom: "1rem",
+        }}
+      >
+        Why Marriage Registration is Important
+      </h2>
+
+      <p
+        style={{
+          maxWidth: 640,
+          margin: "0 auto",
+          color: "#4b7b7b",
+          fontSize: "1rem",
+          lineHeight: 1.7,
+        }}
+      >
+        A legally registered marriage protects your rights, secures your
+        future, and ensures government recognition of your union.
+      </p>
+    </div>
+
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+        gap: "1.5rem",
+      }}
+    >
+      {[
+        {
+          title: "Protection of Rights",
+          text: "Ensures inheritance rights, maintenance claims, and financial security for both spouses.",
+        },
+        {
+          title: "Visa & Immigration",
+          text: "Mandatory for spouse visas, passport updates, and international relocation.",
+        },
+        {
+          title: "Financial & Insurance Benefits",
+          text: "Required for bank nominations, insurance claims, pensions, and joint investments.",
+        },
+        {
+          title: "Child Documentation",
+          text: "Simplifies birth certificates, school admissions, and official records for children.",
+        },
+      ].map((item, index) => (
+        <div
+          key={index}
+          style={{
+            padding: "2rem",
+            borderRadius: 14,
+            background: "#f8fefe",
+            border: "1px solid #d1f3f1",
+            transition: "all 0.3s ease",
+          }}
+        >
+          <h3
+            style={{
+              fontSize: "1.1rem",
+              fontWeight: 700,
+              color: "#0d9488",
+              marginBottom: "0.6rem",
+              fontFamily: "'Playfair Display', Georgia, serif",
+            }}
+          >
+            {item.title}
+          </h3>
+
+          <p
+            style={{
+              color: "#4b7b7b",
+              fontSize: "0.92rem",
+              lineHeight: 1.7,
+            }}
+          >
+            {item.text}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+      {/* ── HOW IT WORKS ── */}
+
+<section style={{ background: theme.lightTeal, padding: "6rem 2rem" }}>
+  <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative" }}>
+    <div style={{textAlign: "center", marginBottom: "4rem" }}>
+      <span
+        style={{
+          fontSize: "0.72rem",
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          color: theme.accentTeal,
+          fontWeight: 600,
+        }}
+      >
+        The Process
+      </span>
+
+      <h2
+        style={{
+          fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
+          fontWeight: 700,
+          color: "#0f4c4c",
+          marginTop: "0.75rem",
+          fontFamily: "'Playfair Display', Georgia, serif",
+        }}
+      >
+        Four Steps to Your Certificate
+      </h2>
+    </div>
+
+    {/* Vertical Line */}
+    <div
+      style={{
+        position: "absolute",
+        left: "50%",
+        top: "140px",
+        bottom: 0,
+        width: "3px",
+        background: theme.accentTeal,
+        transform: "translateX(-50%)",
+      }}
+    />
+
+    {steps.map((step, index) => (
+      <div
+        key={index}
+        style={{
+          display: "flex",
+          justifyContent:
+            index % 2 === 0 ? "flex-start" : "flex-end",
+          marginBottom: "4rem",
+          position: "relative",
+        }}
+      >
+        <div
+          style={{
+            width: "45%",
+            padding:
+              index % 2 === 0
+                ? "0 2rem 0 0"
+                : "0 0 0 2rem",
+            textAlign:
+              index % 2 === 0 ? "right" : "left",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "1.4rem",
+              fontWeight: 800,
+              color: theme.accentTeal,
+              marginBottom: "0.4rem",
+              fontFamily: "'Playfair Display', Georgia, serif",
+            }}
+          >
+            {step.num}
+          </div>
+
+          <div
+            style={{
+              fontWeight: 700,
+              color: "#0f4c4c",
+              marginBottom: "0.5rem",
+              fontSize: "1rem",
+              fontFamily: "'Playfair Display', Georgia, serif",
+            }}
+          >
+            {step.title}
+          </div>
+
+          <div
+            style={{
+              color: "#4b7b7b",
+              fontSize: "0.9rem",
+              lineHeight: 1.7,
+            }}
+          >
+            {step.body}
           </div>
         </div>
-      </section>
+
+        {/* Circle Marker */}
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "16px",
+            height: "16px",
+            background: theme.accentTeal,
+            borderRadius: "50%",
+            border: `4px solid ${theme.lightTeal}`,
+          }}
+        />
+      </div>
+    ))}
+  </div>
+</section>
 
       {/* ── WHY TRUST US ── */}
       <section style={{ padding: "5rem 2rem" }}>
@@ -406,7 +569,7 @@ export default function ReligionHomePage({ theme }: Props) {
             style={{ textAlign: "center", marginBottom: "3.5rem" }}
           >
             <span style={{ fontSize: "0.72rem", letterSpacing: "0.18em", textTransform: "uppercase", color: theme.accentTeal, fontWeight: 600 }}>
-              Why VivahSetu
+              Why Register my marriage
             </span>
             <h2
               style={{
@@ -425,7 +588,7 @@ export default function ReligionHomePage({ theme }: Props) {
             </p>
           </motion.div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.25rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem" }}>
             {whyUs.map((item, i) => (
               <motion.div
                 key={i}
@@ -445,7 +608,16 @@ export default function ReligionHomePage({ theme }: Props) {
                   transition: "all 0.25s ease",
                 }}
               >
-                <span style={{ fontSize: "1.6rem", flexShrink: 0 }}>{item.icon}</span>
+                <img
+  src={`/media/icons/icon${i + 1}.png`}
+  alt={item.title}
+  style={{
+    width: "36px",
+    height: "36px",
+    objectFit: "contain",
+    flexShrink: 0,
+  }}
+/>
                 <div>
                   <div style={{ fontWeight: 700, color: "#0f4c4c", marginBottom: "0.4rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
                     {item.title}
@@ -475,19 +647,11 @@ export default function ReligionHomePage({ theme }: Props) {
                 fontFamily: "'Playfair Display', Georgia, serif",
               }}
             >
-              Why Legal Registration Matters in India
+              Register today. Protect forever.
+
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.9, fontSize: "1rem", marginBottom: "1.5rem" }}>
-              Despite India performing over 10 million marriages annually, a significant percentage remain unregistered.
-              An unregistered marriage can create serious problems: difficulty obtaining a spouse visa, inability to
-              claim inheritance, challenges in changing surname on government documents, and complications in
-              legal proceedings. The Supreme Court of India has repeatedly emphasised that marriage registration
-              must be made compulsory.
-            </p>
-            <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.9, fontSize: "1rem", marginBottom: "2.5rem" }}>
-              VivahSetu exists to make compliance the default — not the exception. We believe every married couple
-              in India, regardless of religion, language, or geography, deserves a registered marriage certificate
-              delivered without confusion, delay, or unnecessary expense.
+            <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.9, fontSize: "1.5rem", marginBottom: "1.5rem" }}>
+              Takes less than 10 minutes. Valid for a lifetime.
             </p>
             <Link href={`/${theme.key}/register`} style={{ textDecoration: "none" }}>
               <motion.div
@@ -525,7 +689,7 @@ export default function ReligionHomePage({ theme }: Props) {
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "2rem", justifyContent: "space-between", alignItems: "center" }}>
           <div>
             <div style={{ color: "#fff", fontWeight: 700, fontSize: "1rem", marginBottom: "0.3rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
-              VivahSetu
+              Register my marriage
             </div>
             <div>India's trusted marriage registration platform</div>
           </div>
@@ -535,7 +699,7 @@ export default function ReligionHomePage({ theme }: Props) {
             <Link href={`/${theme.key}/register`} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Register</Link>
             <Link href="/" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Change Religion</Link>
           </div>
-          <div>© 2024 VivahSetu · All Rights Reserved</div>
+          <div>© 2024 Register my marriage · All Rights Reserved</div>
         </div>
       </footer>
     </div>

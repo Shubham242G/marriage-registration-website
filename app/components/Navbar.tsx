@@ -30,16 +30,22 @@ export default function Navbar({ religionKey }: NavbarProps) {
   };
 
   return (
-    <nav style={{
-      position: "sticky", top: 0, zIndex: 100,
-      background: "rgba(255,255,255,0.97)",
-      borderBottom: "1px solid #e0f2f1",
-      backdropFilter: "blur(16px)",
-      fontFamily: "'Lato', sans-serif",
-      boxShadow: "0 1px 24px rgba(13,148,136,0.07)",
-    }}>
+    <nav
+  style={{
+    position: "sticky",
+    top: 0,
+    zIndex: 100,
+    background: "#074949", 
+
+    borderBottom: "none",
+    backdropFilter: "blur(16px)",
+    fontFamily: "'Lato', sans-serif",
+    boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
+  }}
+>
       <div style={{
         maxWidth: 1200, margin: "0 auto", padding: "0 2rem",
+        
         display: "grid",
         gridTemplateColumns: "1fr auto 1fr",
         alignItems: "center",
@@ -56,7 +62,7 @@ export default function Navbar({ religionKey }: NavbarProps) {
             <Link key={link.label} href={link.href} style={{
               textDecoration: "none", padding: "8px 16px", borderRadius: 8,
               fontSize: "0.88rem", fontWeight: 500,
-              color: isActive(link.href) ? "#0d9488" : "#374151",
+              color: isActive(link.href) ? "#0d9488" : "white",
               background: isActive(link.href) ? "#f0fdfa" : "transparent",
               transition: "all 0.2s", whiteSpace: "nowrap",
             }}>
@@ -66,34 +72,43 @@ export default function Navbar({ religionKey }: NavbarProps) {
         </div>
 
         {/* CENTER: Logo */}
-        <Link href={base || "/"} style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10, justifyContent: "center" }}>
-          <div style={{ position: "relative", width: 36, height: 36, flexShrink: 0, borderRadius: "50%", overflow: "hidden", background: "linear-gradient(135deg, #0d9488, #0f4c4c)" }}>
-            <Image src="/media/logo.png" alt="Register My Marriage" fill style={{ objectFit: "contain" }} />
-          </div>
-          <div>
-            <span style={{
-              fontSize: "0.98rem", fontWeight: 700, color: "#0f4c4c",
-              letterSpacing: "-0.01em",
-              fontFamily: "'Playfair Display', Georgia, serif",
-              whiteSpace: "nowrap",
-            }}>
-              Register My Marriage
-            </span>
-            <span style={{
-              display: "block", fontSize: "0.55rem", color: "#0d9488",
-              letterSpacing: "0.12em", textTransform: "uppercase", lineHeight: 1,
-            }}>
-              Official Marriage Registration
-            </span>
-          </div>
-        </Link>
+<Link
+  href={base || "/"}
+  style={{
+    textDecoration: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  }}
+>
+  <div
+    style={{
+      position: "relative",
+      width: 150,
+      height: 64, // must stay under 68
+      overflow: "visible", // allow visual scaling
+      flexShrink: 0,
+    }}
+  >
+    <Image
+      src="/media/logo.png"
+      alt="Register My Marriage"
+      fill
+      style={{
+        objectFit: "contain",
+        transform: "scale(5)",   // 🔥 makes it look ~300px
+        transformOrigin: "center",
+      }}
+    />
+  </div>
+</Link>
 
         {/* RIGHT: Register + Login/Account */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", justifyContent: "flex-end" }} className="desktop-right">
           <Link href={`${base}/register`} style={{ textDecoration: "none" }}>
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={{
               padding: "9px 18px", borderRadius: 8,
-              background: "linear-gradient(135deg, #0d9488, #0f4c4c)",
+              background: "linear-gradient(135deg, #061615, #021414)",
               color: "#fff", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap",
             }}>
               Register

@@ -242,7 +242,10 @@ export default function AccountPage({ params }: PageProps) {
       <Navbar religionKey={theme.key} />
 
       {/* Header */}
-      <div style={{ background: theme.bannerBg, padding: "2.5rem 2rem" }}>
+      <div style={{ backgroundImage: `url(${theme.bannerImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat", padding: "2.5rem 2rem" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
           <div>
             <div style={{ fontSize: "0.72rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "#ccfbf1", marginBottom: "0.4rem" }}>My Account</div>
@@ -378,7 +381,7 @@ export default function AccountPage({ params }: PageProps) {
                     <DetailRow label="Marital Status" value={document.brideOtherInfoMaritalStatus} />
                   </div>
 
-                  {/* Witnesses */}
+                  {/* Witnesses
                   <div>
                     <div style={{ fontSize: "0.72rem", fontWeight: 700, color: theme.accentTeal, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "0.75rem" }}>Witnesses</div>
                     <DetailRow label="Witness 1 Name" value={document.additionalDocumentWitness1Name} />
@@ -387,7 +390,7 @@ export default function AccountPage({ params }: PageProps) {
                     <DetailRow label="Witness 2 Phone" value={document.witness2PhoneNumber} />
                     <DetailRow label="Witness 3 Name" value={document.additionalDocumentWitness3Name} />
                     <DetailRow label="Witness 3 Phone" value={document.witness3PhoneNumber} />
-                  </div>
+                  </div> */}
                 </div>
               ) : (
                 /* ── FORM MODE ── */
@@ -500,7 +503,7 @@ export default function AccountPage({ params }: PageProps) {
                     </div>
 
                     {/* ── Section 4: Witnesses ── */}
-                    <div>
+                    {/* <div>
                       <SectionHeading title="Witnesses" sub="Minimum 2 witnesses required" />
                       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                         {[1, 2, 3].map((n) => (
@@ -520,7 +523,7 @@ export default function AccountPage({ params }: PageProps) {
                           </div>
                         ))}
                       </div>
-                    </div>
+                    </div> */}
 
                     {/* ── Section 5: Documents ── */}
                     <div>

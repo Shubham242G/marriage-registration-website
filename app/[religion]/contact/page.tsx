@@ -148,7 +148,10 @@ const theme = RELIGION_THEMES[religion as ReligionKey];   const [form, setForm] 
       <Navbar religionKey={theme.key} />
 
       {/* Header */}
-      <section style={{ background: theme.bannerBg, padding: "4rem 2rem 3.5rem", textAlign: "center" }}>
+      <section style={{ backgroundImage: `url(${theme.bannerImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat", padding: "4rem 2rem 3.5rem", textAlign: "center" }}>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
           <span style={{ fontSize: "0.72rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#ccfbf1", display: "block", marginBottom: "0.75rem" }}>
             Get In Touch

@@ -13,13 +13,18 @@ export interface ReligionTheme {
   subtitle: string;
   heroHeading: string;
   heroSubtext: string;
-  bannerBg: string;         // CSS gradient string
-  accentTeal: string;       // primary teal shade
-  lightTeal: string;        // bg tint
-  darkTeal: string;         // text / deep bg
+
+  bannerImage: string; // ✅ new
+
+  accentTeal: string;
+  lightTeal: string;
+  darkTeal: string;
   borderColor: string;
-  icon: JSX.Element;
-  description: string;      // paragraph for home page intro
-  legalActs: string[];      // relevant marriage acts
-  howWeHelp: { title: string; body: string }[];
+  icon: React.ReactNode;
+  description: string;
+  legalActs: string[];
+  howWeHelp: {
+    title: string;
+    body: string;
+  }[];
 }
