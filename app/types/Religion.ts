@@ -4,7 +4,9 @@ export type ReligionKey =
   | "hinduism-sikhism-buddhism-jainism"
   | "islam"
   | "christianity"
+  | "court-marriage"
   | "other";
+  
 
 export interface ReligionTheme {
   key: ReligionKey;
