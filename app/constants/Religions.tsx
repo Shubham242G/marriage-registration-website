@@ -10,7 +10,7 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
     heroHeading: "Honouring Sacred Traditions",
     heroSubtext:
       "Legally register your Vivah, Anand Karaj or Dharmic union with dignity, care, and complete legal compliance — all from the comfort of your home.",
-     bannerImage: "/banners/dharmic.jpg",
+    bannerImage: "/banners/dharmic.jpg",
     accentTeal: "#0d9488",
     lightTeal: "#f0fdfa",
     darkTeal: "#0f4c4c",
@@ -193,6 +193,70 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
       },
     ],
   },
+
+  "court-marriage": {
+    key: "court-marriage",
+    label: "Court Marriage",
+    shortLabel: "Court Marriage",
+    subtitle: "Special Marriage Act · Secular · All Couples",
+    heroHeading: "Your Love. Legally Yours.",
+    heroSubtext:
+      "India's most straightforward path to a legally recognised marriage — secular, simple, and valid everywhere. No religion required. No ceremony required.",
+    bannerImage: "/media/courtMarriageBanner.png",
+    accentTeal: "#0d9488",
+    lightTeal: "#f0fdfa",
+    darkTeal: "#0f4c4c",
+    borderColor: "#99f6e4",
+    icon: (
+      <svg viewBox="0 0 48 48" width="40" height="40" fill="none">
+        {/* Scales of justice */}
+        <line x1="24" y1="8" x2="24" y2="40" stroke="#5eead4" strokeWidth="2" strokeLinecap="round" />
+        <line x1="14" y1="12" x2="34" y2="12" stroke="#5eead4" strokeWidth="2" strokeLinecap="round" />
+        {/* Left pan */}
+        <line x1="14" y1="12" x2="10" y2="24" stroke="#5eead4" strokeWidth="1.5" />
+        <path d="M7 24 Q10 28 13 24" stroke="#5eead4" strokeWidth="1.5" fill="none" />
+        {/* Right pan */}
+        <line x1="34" y1="12" x2="38" y2="24" stroke="#5eead4" strokeWidth="1.5" />
+        <path d="M35 24 Q38 28 41 24" stroke="#5eead4" strokeWidth="1.5" fill="none" />
+        {/* Base */}
+        <line x1="18" y1="40" x2="30" y2="40" stroke="#5eead4" strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    ),
+    description:
+      "Court marriage under the Special Marriage Act, 1954 is India's most powerful and inclusive legal institution for couples who wish to marry on their own terms. It asks for no religious affiliation, imposes no caste restrictions, and recognises no community barriers. Whether you are an interfaith couple, an inter-caste couple, an NRI marrying an Indian citizen, or simply two people who prefer a clean civil union over an elaborate ceremony — court marriage is designed exactly for you. It is not a compromise. It is a choice — modern, equal, and absolutely final.",
+    legalActs: [
+      "Special Marriage Act, 1954",
+      "Foreign Marriage Act, 1969",
+      "Hindu Marriage Act, 1955 (where applicable)",
+      "Registration of Births, Deaths and Marriages Act",
+    ],
+    howWeHelp: [
+      {
+        title: "30-Day Notice Filing",
+        body: "We prepare and submit the mandatory 30-day public notice to the Marriage Officer on your behalf — correctly formatted and on time — so your registration timeline is never delayed.",
+      },
+      {
+        title: "Complete Document Preparation",
+        body: "From Aadhaar and birth certificates to address proofs and witness affidavits, we ensure every document is in order before submission — eliminating the most common cause of rejection.",
+      },
+      {
+        title: "Objection Handling Support",
+        body: "During the 30-day notice period, objections can be raised. Our legal team is prepared to advise and assist you if any objection is filed, protecting your right to marry.",
+      },
+      {
+        title: "NRI & Interfaith Expertise",
+        body: "We have deep experience with NRI marriages, interfaith unions, and inter-caste couples — including the additional documentation and procedural nuances each case requires.",
+      },
+    ],
+  },
 };
 
 export const ALL_RELIGIONS = Object.values(RELIGION_THEMES);
+
+// Separate export for just the 4 religious categories (excluding court marriage)
+export const RELIGIOUS_CATEGORIES = ALL_RELIGIONS.filter(
+  (r) => r.key !== "court-marriage"
+);
+
+// Court marriage theme exported separately for easy access
+export const COURT_MARRIAGE = RELIGION_THEMES["court-marriage"];
