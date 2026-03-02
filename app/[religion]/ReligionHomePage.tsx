@@ -77,6 +77,21 @@ export default function ReligionHomePage({ theme }: Props) {
     { num: "04", title: "Certificate Delivery", body: "Your official marriage certificate is delivered digitally and by post." },
   ];
 
+  const courtMarriageSteps = [
+    { num: "01", title: "Submit Details", body: "Create your account and upload all required documents through our secure portal." },
+    { num: "02", title: "Document Verification", body: "Our legal team verifies every document and flags any issues before submission." },
+    { num: "03", title: "Notice Filing", body: "We file your application with the correct registrar for your state and religion." },
+    { num: "04", title: "Court Marriage", body: "We assist you in the process of the court marriage." },
+    { num: "05", title: "Certificate Issued", body: "Your official marriage certificate is delivered digitally and by post." },
+
+  ];
+
+  const isCourtMarriage = theme.key === "court-marriage";
+
+const displayedSteps = isCourtMarriage
+  ? courtMarriageSteps
+  : steps;
+
   const [currentSlide, setCurrentSlide] = React.useState(0);
 
   React.useEffect(() => {
@@ -270,10 +285,7 @@ export default function ReligionHomePage({ theme }: Props) {
               {theme.description}
             </p>
             <p style={{ color: "#4b7b7b", lineHeight: 1.9, fontSize: "0.98rem" }}>
-              Register my marriage was built because we witnessed firsthand how many couples — especially those from
-              communities unfamiliar with government procedures — struggled to navigate the registration process.
-              Documents were rejected over minor technicalities. Appointments were missed. Years passed without
-              a certificate. We exist to ensure that never happens to another couple.
+             We help couples complete registration smoothly with proper documentation, timely filings, and complete legal support.
             </p>
           </motion.div>
 
@@ -347,18 +359,17 @@ export default function ReligionHomePage({ theme }: Props) {
                 marginBottom: "1rem",
               }}
             >
-              Why Marriage Registration is Important
-            </h2>
-            <p style={{ maxWidth: 640, margin: "0 auto", color: "#4b7b7b", fontSize: "1rem", lineHeight: 1.7 }}>
+              Five Steps To Your Union            </h2>
+            {/* <p style={{ maxWidth: 640, margin: "0 auto", color: "#4b7b7b", fontSize: "1rem", lineHeight: 1.7 }}>
               A legally registered marriage protects your rights, secures your future, and ensures government recognition of your union.
-            </p>
+            </p> */}
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem" }}>
             {[
-              { title: "Protection of Rights",          text: "Ensures inheritance rights, maintenance claims, and financial security for both spouses." },
-              { title: "Visa & Immigration",             text: "Mandatory for spouse visas, passport updates, and international relocation." },
-              { title: "Financial & Insurance Benefits", text: "Required for bank nominations, insurance claims, pensions, and joint investments." },
-              { title: "Child Documentation",            text: "Simplifies birth certificates, school admissions, and official records for children." },
+              { title: "Valid Proof",          text: " Gives official legal status to your marriage." },
+              { title: "Interfaith Freedom",             text: "Required for visas, property, and financial matters." },
+              { title: "Rights & Security", text: " Allows marriage across religions legally." },
+              { title: "Legal Recognition",            text: "Protects inheritance and spousal rights." },
             ].map((item, index) => (
               <div key={index} style={{ padding: "2rem", borderRadius: 14, background: "#f8fefe", border: "1px solid #d1f3f1", transition: "all 0.3s ease" }}>
                 <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0d9488", marginBottom: "0.6rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
@@ -386,7 +397,7 @@ export default function ReligionHomePage({ theme }: Props) {
           {/* Vertical Line */}
           <div style={{ position: "absolute", left: "50%", top: "140px", bottom: 0, width: "3px", background: theme.accentTeal, transform: "translateX(-50%)" }} />
 
-          {steps.map((step, index) => (
+          {displayedSteps.map((step, index) => (
             <div key={index} style={{ display: "flex", justifyContent: index % 2 === 0 ? "flex-start" : "flex-end", marginBottom: "4rem", position: "relative" }}>
               <div style={{ width: "45%", padding: index % 2 === 0 ? "0 2rem 0 0" : "0 0 0 2rem", textAlign: index % 2 === 0 ? "right" : "left" }}>
                 <div style={{ fontSize: "1.4rem", fontWeight: 800, color: theme.accentTeal, marginBottom: "0.4rem", fontFamily: "'Playfair Display', Georgia, serif" }}>

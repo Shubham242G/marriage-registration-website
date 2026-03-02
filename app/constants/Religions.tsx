@@ -223,7 +223,7 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
       </svg>
     ),
     description:
-      "Court marriage under the Special Marriage Act, 1954 is India's most powerful and inclusive legal institution for couples who wish to marry on their own terms. It asks for no religious affiliation, imposes no caste restrictions, and recognises no community barriers. Whether you are an interfaith couple, an inter-caste couple, an NRI marrying an Indian citizen, or simply two people who prefer a clean civil union over an elaborate ceremony — court marriage is designed exactly for you. It is not a compromise. It is a choice — modern, equal, and absolutely final.",
+      "Court marriage under the Special Marriage Act allows couples to marry legally without religious or caste restrictions. Whether interfaith, inter-caste, or NRI marriages — we make the process simple, legal, and hassle-free.",
     legalActs: [
       "Special Marriage Act, 1954",
       "Foreign Marriage Act, 1969",
@@ -236,16 +236,16 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
         body: "We prepare and submit the mandatory 30-day public notice to the Marriage Officer on your behalf — correctly formatted and on time — so your registration timeline is never delayed.",
       },
       {
-        title: "Complete Document Preparation",
-        body: "From Aadhaar and birth certificates to address proofs and witness affidavits, we ensure every document is in order before submission — eliminating the most common cause of rejection.",
+        title: "Document Preparation",
+        body: "Complete support for all required documents and verification.",
       },
       {
-        title: "Objection Handling Support",
-        body: "During the 30-day notice period, objections can be raised. Our legal team is prepared to advise and assist you if any objection is filed, protecting your right to marry.",
+        title: "Objection Support",
+        body: "Legal guidance if any objection is raised.",
       },
       {
         title: "NRI & Interfaith Expertise",
-        body: "We have deep experience with NRI marriages, interfaith unions, and inter-caste couples — including the additional documentation and procedural nuances each case requires.",
+        body: "Special support for NRI, interfaith, and inter-caste marriages.",
       },
     ],
   },
