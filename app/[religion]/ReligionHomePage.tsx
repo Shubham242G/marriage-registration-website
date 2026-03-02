@@ -359,7 +359,7 @@ const displayedSteps = isCourtMarriage
                 marginBottom: "1rem",
               }}
             >
-              Five Steps To Your Union            </h2>
+              How court marriage helps?            </h2>
             {/* <p style={{ maxWidth: 640, margin: "0 auto", color: "#4b7b7b", fontSize: "1rem", lineHeight: 1.7 }}>
               A legally registered marriage protects your rights, secures your future, and ensures government recognition of your union.
             </p> */}
@@ -390,7 +390,7 @@ const displayedSteps = isCourtMarriage
               The Process
             </span>
             <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "#0f4c4c", marginTop: "0.75rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
-              Four Steps to Your Certificate
+              {displayedSteps.length} Steps To Your Union
             </h2>
           </div>
 
