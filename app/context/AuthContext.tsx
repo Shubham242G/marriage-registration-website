@@ -1,6 +1,8 @@
+// app/context/AuthContext.tsx
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { useRouter } from "next/navigation";
 
 interface AuthUser {
   _id: string;
@@ -16,6 +18,7 @@ interface AuthContextType {
   login: (user: AuthUser, token: string) => void;
   logout: () => void;
   isLoggedIn: boolean;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -24,6 +27,7 @@ const AuthContext = createContext<AuthContextType>({
   login: () => {},
   logout: () => {},
   isLoggedIn: false,
+  isLoading: true,
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -31,6 +35,7 @@ export const useAuth = () => useContext(AuthContext);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Rehydrate from localStorage on mount
   useEffect(() => {
@@ -43,6 +48,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     } catch {
       // corrupted storage — ignore
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -61,7 +68,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isLoggedIn: !!user }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      token, 
+      login, 
+      logout, 
+      isLoggedIn: !!user && !!token,
+      isLoading 
+    }}>
       {children}
     </AuthContext.Provider>
   );

@@ -31,28 +31,27 @@ export default function Navbar({ religionKey }: NavbarProps) {
 
   return (
     <nav
-  style={{
-    position: "sticky",
-    top: 0,
-    zIndex: 100,
-    background: "#074949", 
-
-    borderBottom: "none",
-    backdropFilter: "blur(16px)",
-    fontFamily: "'Lato', sans-serif",
-    boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
-  }}
->
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 100,
+        background: "#074949",
+        borderBottom: "none",
+        backdropFilter: "blur(16px)",
+        fontFamily: "'Lato', sans-serif",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
+      }}
+    >
       <div style={{
-        maxWidth: 1200, margin: "0 auto", padding: "0 2rem",
-        
+        maxWidth: 1200,
+        margin: "0 auto",
+        padding: "0 2rem",
         display: "grid",
         gridTemplateColumns: "1fr auto 1fr",
         alignItems: "center",
         height: 68,
         gap: "1rem",
       }}>
-
         {/* LEFT: Blogs + Contact */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.25rem" }} className="desktop-left">
           {[
@@ -60,56 +59,71 @@ export default function Navbar({ religionKey }: NavbarProps) {
             { label: "Contact", href: `${base}/contact` },
           ].map((link) => (
             <Link key={link.label} href={link.href} style={{
-              textDecoration: "none", padding: "8px 16px", borderRadius: 8,
-              fontSize: "0.88rem", fontWeight: 500,
+              textDecoration: "none",
+              padding: "8px 16px",
+              borderRadius: 8,
+              fontSize: "0.88rem",
+              fontWeight: 500,
               color: isActive(link.href) ? "#0d9488" : "white",
               background: isActive(link.href) ? "#f0fdfa" : "transparent",
-              transition: "all 0.2s", whiteSpace: "nowrap",
+              transition: "all 0.2s",
+              whiteSpace: "nowrap",
             }}>
               {link.label}
             </Link>
           ))}
         </div>
 
-        {/* CENTER: Logo */}
-<Link
-  href={base || "/"}
-  style={{
-    textDecoration: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }}
->
-  <div
-    style={{
-      position: "relative",
-      width: 150,
-      height: 64, // must stay under 68
-      overflow: "visible", // allow visual scaling
-      flexShrink: 0,
-    }}
-  >
-    <Image
-      src="/media/logo.png"
-      alt="Register My Marriage"
-      fill
-      style={{
-        objectFit: "contain",
-        transform: "scale(5)",   // 🔥 makes it look ~300px
-        transformOrigin: "center",
-      }}
-    />
-  </div>
-</Link>
+        {/* CENTER: Logo - FIXED */}
+        <Link
+          href={base || "/"}
+          style={{
+            textDecoration: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+            zIndex: 1,
+          }}
+          onClick={(e) => {
+            // Prevent navigation if clicking on the logo area accidentally
+            e.stopPropagation();
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+              width: 150,
+              height: 50, // Changed from 64 to 50
+              flexShrink: 0,
+            }}
+          >
+            <Image
+              src="/media/logo.png"
+              alt="Register My Marriage"
+              fill
+              priority
+              loading="eager"
+              style={{
+                objectFit: "contain",
+                // REMOVED the transform: scale(5) - this was causing issues!
+              }}
+            />
+          </div>
+        </Link>
 
         {/* RIGHT: Register + Login/Account */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", justifyContent: "flex-end" }} className="desktop-right">
           <Link href={`${base}/register`} style={{ textDecoration: "none" }}>
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={{
-              padding: "9px 18px", borderRadius: 8,
+              padding: "9px 18px",
+              borderRadius: 8,
               background: "linear-gradient(135deg, #061615, #021414)",
-              color: "#fff", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap",
+              color: "#fff",
+              fontSize: "0.85rem",
+              fontWeight: 600,
+              cursor: "pointer",
+              whiteSpace: "nowrap",
             }}>
               Register
             </motion.div>
@@ -118,16 +132,28 @@ export default function Navbar({ religionKey }: NavbarProps) {
           {isLoggedIn ? (
             <div style={{ position: "relative" }}>
               <button onClick={() => setDropdownOpen((p) => !p)} style={{
-                display: "flex", alignItems: "center", gap: 8,
-                padding: "7px 12px", borderRadius: 8,
-                border: "1.5px solid #e0f2f1", background: "#f0fdfa",
-                cursor: "pointer", fontFamily: "'Lato', sans-serif",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "7px 12px",
+                borderRadius: 8,
+                border: "1.5px solid #e0f2f1",
+                background: "#f0fdfa",
+                cursor: "pointer",
+                fontFamily: "'Lato', sans-serif",
               }}>
                 <div style={{
-                  width: 26, height: 26, borderRadius: "50%",
+                  width: 26,
+                  height: 26,
+                  borderRadius: "50%",
                   background: "linear-gradient(135deg, #0d9488, #0f4c4c)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  color: "#fff", fontSize: "0.72rem", fontWeight: 700, flexShrink: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#fff",
+                  fontSize: "0.72rem",
+                  fontWeight: 700,
+                  flexShrink: 0,
                 }}>
                   {user?.name?.[0]?.toUpperCase() || "U"}
                 </div>
@@ -140,9 +166,16 @@ export default function Navbar({ religionKey }: NavbarProps) {
               <AnimatePresence>
                 {dropdownOpen && (
                   <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} style={{
-                    position: "absolute", top: "calc(100% + 8px)", right: 0,
-                    background: "#fff", border: "1px solid #e0f2f1", borderRadius: 10,
-                    boxShadow: "0 8px 32px rgba(13,148,136,0.12)", minWidth: 190, zIndex: 200, overflow: "hidden",
+                    position: "absolute",
+                    top: "calc(100% + 8px)",
+                    right: 0,
+                    background: "#fff",
+                    border: "1px solid #e0f2f1",
+                    borderRadius: 10,
+                    boxShadow: "0 8px 32px rgba(13,148,136,0.12)",
+                    minWidth: 190,
+                    zIndex: 200,
+                    overflow: "hidden",
                   }}>
                     <div style={{ padding: "0.75rem 1rem", borderBottom: "1px solid #e0f2f1" }}>
                       <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f4c4c" }}>{user?.name}</div>
@@ -153,10 +186,18 @@ export default function Navbar({ religionKey }: NavbarProps) {
                       👤 My Account
                     </Link>
                     <button onClick={handleLogout} style={{
-                      display: "block", width: "100%", textAlign: "left",
-                      padding: "0.75rem 1rem", background: "none", border: "none",
-                      borderTop: "1px solid #e0f2f1", fontSize: "0.85rem", color: "#dc2626",
-                      cursor: "pointer", fontFamily: "'Lato', sans-serif", fontWeight: 500,
+                      display: "block",
+                      width: "100%",
+                      textAlign: "left",
+                      padding: "0.75rem 1rem",
+                      background: "none",
+                      border: "none",
+                      borderTop: "1px solid #e0f2f1",
+                      fontSize: "0.85rem",
+                      color: "#dc2626",
+                      cursor: "pointer",
+                      fontFamily: "'Lato', sans-serif",
+                      fontWeight: 500,
                     }}>
                       🚪 Sign Out
                     </button>
@@ -167,10 +208,15 @@ export default function Navbar({ religionKey }: NavbarProps) {
           ) : (
             <Link href={`${base}/login`} style={{ textDecoration: "none" }}>
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={{
-                padding: "9px 18px", borderRadius: 8,
-                border: "1.5px solid #0d9488", color: "#0d9488",
-                fontSize: "0.85rem", fontWeight: 600, cursor: "pointer",
-                background: "#fff", whiteSpace: "nowrap",
+                padding: "9px 18px",
+                borderRadius: 8,
+                border: "1.5px solid #0d9488",
+                color: "#0d9488",
+                fontSize: "0.85rem",
+                fontWeight: 600,
+                cursor: "pointer",
+                background: "#fff",
+                whiteSpace: "nowrap",
               }}>
                 Login
               </motion.div>

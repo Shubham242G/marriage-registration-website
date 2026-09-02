@@ -1,3 +1,4 @@
+// app/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -16,23 +17,8 @@ export default function HomePage() {
 
   return (
     <>
-      <style jsx global>{`
-        @font-face {
-          font-family: 'Quasira';
-          src: url('/fonts/quasira.otf') format('opentype');
-          font-weight: 400 900;
-          font-style: normal;
-          font-display: swap;
-        }
-        .quasira-heading {
-          font-family: 'Quasira', sans-serif !important;
-          font-weight: 700 !important;
-        }
-        .body-text {
-          font-family: 'Inter', sans-serif !important;
-        }
-      `}</style>
-
+      {/* REMOVED the problematic @font-face that was causing 404 errors */}
+      
       <main
         style={{
           minHeight: "100vh",
@@ -77,7 +63,6 @@ export default function HomePage() {
               style={{ textAlign: "center", maxWidth: 520 }}
             >
               <div
-                className="body-text"
                 style={{
                   display: "inline-block",
                   padding: "4px 14px",
@@ -90,13 +75,13 @@ export default function HomePage() {
                   textTransform: "uppercase",
                   fontWeight: 500,
                   marginBottom: "0.8rem",
+                  fontFamily: "'Inter', sans-serif",
                 }}
               >
                 India's Trusted Marriage Registration Service
               </div>
 
               <h1
-                className="quasira-heading"
                 style={{
                   fontSize: "clamp(1.5rem, 3.5vw, 2.2rem)",
                   color: "#ffffff",
@@ -104,19 +89,20 @@ export default function HomePage() {
                   letterSpacing: "-0.02em",
                   marginBottom: "0.5rem",
                   textShadow: "0 2px 6px rgba(0,0,0,0.35)",
+                  fontFamily: "'Playfair Display', Georgia, serif", // Replaced Quasira with Playfair
                 }}
               >
                 Select Your Religion
               </h1>
 
               <p
-                className="body-text"
                 style={{
                   fontSize: "0.85rem",
                   color: "rgba(255,255,255,0.9)",
                   lineHeight: 1.5,
                   maxWidth: 480,
                   margin: "0 auto",
+                  fontFamily: "'Inter', sans-serif",
                 }}
               >
                 We provide religion-specific guidance and legal support for your marriage registration.
@@ -137,7 +123,6 @@ export default function HomePage() {
               {RELIGIOUS_CATEGORIES.map((religion, i) => (
                 <motion.button
                   key={religion.key}
-                  className="body-text"
                   initial={{ opacity: 0, y: 25 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + i * 0.07 }}
@@ -159,6 +144,7 @@ export default function HomePage() {
                     transition: "all 0.25s ease",
                     boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
                     backdropFilter: "blur(10px)",
+                    fontFamily: "'Inter', sans-serif",
                   }}
                 >
                   <div
@@ -187,22 +173,22 @@ export default function HomePage() {
 
                   <div style={{ textAlign: "center" }}>
                     <div
-                      className="quasira-heading"
                       style={{
                         fontSize: "0.9rem",
                         color: hovered === religion.key ? "#0d9488" : "#074949",
                         marginBottom: 2,
+                        fontFamily: "'Playfair Display', Georgia, serif", // Replaced Quasira with Playfair
                       }}
                     >
                       {religion.label}
                     </div>
                     <div
-                      className="body-text"
                       style={{
                         fontSize: "0.65rem",
                         color: "rgba(107,158,158,0.9)",
                         letterSpacing: "0.05em",
                         textTransform: "uppercase",
+                        fontFamily: "'Inter', sans-serif",
                       }}
                     >
                       {religion.subtitle}
@@ -227,7 +213,6 @@ export default function HomePage() {
             >
               <div style={{ flex: 1, height: "1px", background: "rgba(153,246,228,0.25)" }} />
               <span
-                className="body-text"
                 style={{
                   fontSize: "0.7rem",
                   color: "rgba(255,255,255,0.5)",
@@ -237,6 +222,7 @@ export default function HomePage() {
                   borderRadius: 999,
                   border: "1px solid rgba(153,246,228,0.2)",
                   whiteSpace: "nowrap",
+                  fontFamily: "'Inter', sans-serif",
                 }}
               >
                 Or, skip the ceremony entirely
@@ -252,7 +238,6 @@ export default function HomePage() {
               style={{ width: "100%", maxWidth: 850 }}
             >
               <motion.button
-                className="body-text"
                 whileHover={{ y: -3, boxShadow: "0 20px 48px rgba(13,148,136,0.3)" }}
                 whileTap={{ scale: 0.99 }}
                 onHoverStart={() => setCourtHovered(true)}
@@ -275,6 +260,7 @@ export default function HomePage() {
                   transition: "all 0.25s ease",
                   boxShadow: "0 8px 28px rgba(0,0,0,0.25)",
                   textAlign: "left",
+                  fontFamily: "'Inter', sans-serif",
                 }}
               >
                 {/* Icon */}
@@ -308,17 +294,16 @@ export default function HomePage() {
                 <div>
                   <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.3rem", flexWrap: "wrap" }}>
                     <span
-                      className="quasira-heading"
                       style={{
                         fontSize: "1.05rem",
                         color: courtHovered ? "#0d9488" : "#ffffff",
                         transition: "color 0.25s",
+                        fontFamily: "'Playfair Display', Georgia, serif", // Replaced Quasira with Playfair
                       }}
                     >
                       Court Marriage
                     </span>
                     <span
-                      className="body-text"
                       style={{
                         fontSize: "0.6rem",
                         letterSpacing: "0.12em",
@@ -329,13 +314,13 @@ export default function HomePage() {
                         color: courtHovered ? "#fff" : "#5eead4",
                         fontWeight: 600,
                         transition: "all 0.25s",
+                        fontFamily: "'Inter', sans-serif",
                       }}
                     >
                       Special Marriage Act, 1954
                     </span>
                   </div>
                   <p
-                    className="body-text"
                     style={{
                       fontSize: "0.78rem",
                       color: courtHovered ? "#4b7b7b" : "rgba(255,255,255,0.65)",
@@ -343,6 +328,7 @@ export default function HomePage() {
                       margin: 0,
                       transition: "color 0.25s",
                       maxWidth: 520,
+                      fontFamily: "'Inter', sans-serif",
                     }}
                   >
                     For interfaith, inter-caste, NRI, or couples who prefer a clean civil union — no religion required, no ceremony required.
@@ -354,7 +340,6 @@ export default function HomePage() {
                     {["Interfaith", "Inter-caste", "NRI Marriage", "No Ceremony Needed"].map((tag) => (
                       <span
                         key={tag}
-                        className="body-text"
                         style={{
                           fontSize: "0.58rem",
                           padding: "2px 8px",
@@ -363,6 +348,7 @@ export default function HomePage() {
                           color: courtHovered ? "#0d9488" : "rgba(153,246,228,0.7)",
                           transition: "all 0.25s",
                           letterSpacing: "0.05em",
+                          fontFamily: "'Inter', sans-serif",
                         }}
                       >
                         {tag}
@@ -407,10 +393,19 @@ export default function HomePage() {
                 ["100% Digital", "Process"],
               ].map(([num, label]) => (
                 <div key={label} style={{ textAlign: "center" }}>
-                  <div className="quasira-heading" style={{ fontSize: "0.9rem", color: "#0d9488" }}>
+                  <div style={{
+                    fontSize: "0.9rem",
+                    color: "#0d9488",
+                    fontFamily: "'Playfair Display', Georgia, serif", // Replaced Quasira with Playfair
+                  }}>
                     {num}
                   </div>
-                  <div className="body-text" style={{ fontSize: "0.6rem", color: "rgba(255,255,255,0.9)", textTransform: "uppercase" }}>
+                  <div style={{
+                    fontSize: "0.6rem",
+                    color: "rgba(255,255,255,0.9)",
+                    textTransform: "uppercase",
+                    fontFamily: "'Inter', sans-serif",
+                  }}>
                     {label}
                   </div>
                 </div>
@@ -420,7 +415,6 @@ export default function HomePage() {
 
           {/* FOOTER */}
           <footer
-            className="body-text"
             style={{
               textAlign: "center",
               padding: "0.6rem",
@@ -428,6 +422,7 @@ export default function HomePage() {
               color: "rgba(255,255,255,0.9)",
               fontSize: "0.6rem",
               borderTop: "1px solid rgba(224,242,241,0.2)",
+              fontFamily: "'Inter', sans-serif",
             }}
           >
             © 2026 Register My Marriage · All Rights Reserved · Recognised under Indian Marriage Laws
