@@ -87,8 +87,8 @@ export default function RegisterPage() {
         login(loginData.user, loginData.token);
       }
 
-      // Step 3: Redirect to home or dashboard
-      router.push("/");
+      // Step 3: Redirect to account page immediately after registration
+      router.push("/account");
     } catch (err: any) {
       setApiError(err?.message || "Something went wrong.");
     } finally {

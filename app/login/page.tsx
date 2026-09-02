@@ -44,7 +44,8 @@ export default function LoginPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data?.message || "Login failed");
       login(data.user, data.token);
-      router.push("/");
+      // Redirect to account page immediately after login
+      router.push("/account");
     } catch (err: any) {
       setApiError(err?.message || "Invalid credentials. Please try again.");
     } finally {
