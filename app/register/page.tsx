@@ -62,7 +62,6 @@ export default function RegisterPage() {
     setApiError("");
     try {
       const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
-      // Step 1: Register
       const res = await fetch(`${BASE_URL}/users/register/email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -76,7 +75,6 @@ export default function RegisterPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data?.message || "Registration failed");
 
-      // Step 2: Auto-login
       const loginRes = await fetch(`${BASE_URL}/users/login/User`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -87,7 +85,6 @@ export default function RegisterPage() {
         login(loginData.user, loginData.token);
       }
 
-      // Step 3: Redirect to account page immediately after registration
       router.push("/account");
     } catch (err: any) {
       setApiError(err?.message || "Something went wrong.");

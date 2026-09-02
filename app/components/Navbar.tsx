@@ -6,7 +6,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ReligionKey } from "../types/Religion";
-import { RELIGION_THEMES } from "../constants/Religions";
 import { useAuth } from "../context/AuthContext";
 
 interface NavbarProps {
@@ -26,7 +25,7 @@ export default function Navbar({ religionKey }: NavbarProps) {
   const handleLogout = () => {
     logout();
     setDropdownOpen(false);
-    router.push(base || "/");
+    router.push("/");
   };
 
   return (
@@ -52,10 +51,10 @@ export default function Navbar({ religionKey }: NavbarProps) {
         height: 68,
         gap: "1rem",
       }}>
-        {/* LEFT: Blogs + Contact - ALWAYS go to /blogs and /contact */}
+        {/* LEFT: Blogs + Contact */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.25rem" }} className="desktop-left">
           {[
-            { label: "Blogs", href: "/blog" },
+            { label: "Blogs", href: "/blogs" },
             { label: "Contact", href: "/contact" },
           ].map((link) => (
             <Link key={link.label} href={link.href} style={{
@@ -112,7 +111,6 @@ export default function Navbar({ religionKey }: NavbarProps) {
 
         {/* RIGHT: Register + Login/Account */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", justifyContent: "flex-end" }} className="desktop-right">
-          {/* Register - ALWAYS goes to /register regardless of religion */}
           <Link href="/register" style={{ textDecoration: "none" }}>
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={{
               padding: "9px 18px",
@@ -205,7 +203,6 @@ export default function Navbar({ religionKey }: NavbarProps) {
               </AnimatePresence>
             </div>
           ) : (
-            /* Login - ALWAYS goes to /login regardless of religion */
             <Link href="/login" style={{ textDecoration: "none" }}>
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={{
                 padding: "9px 18px",
@@ -242,9 +239,8 @@ export default function Navbar({ religionKey }: NavbarProps) {
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
             style={{ overflow: "hidden", borderTop: "1px solid #e0f2f1", background: "#fff" }}>
             <div style={{ padding: "1rem 2rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              {/* Mobile Blogs + Contact - ALWAYS go to /blog and /contact */}
               {[
-                { label: "Blogs", href: "/blog" },
+                { label: "Blogs", href: "/blogs" },
                 { label: "Contact", href: "/contact" }
               ].map((link) => (
                 <Link key={link.label} href={link.href} onClick={() => setMenuOpen(false)}
@@ -253,14 +249,12 @@ export default function Navbar({ religionKey }: NavbarProps) {
                 </Link>
               ))}
               
-              {/* Mobile Register - ALWAYS goes to /register */}
               <Link href="/register" onClick={() => setMenuOpen(false)}
                 style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: "#fff", background: "linear-gradient(135deg, #0d9488, #0f4c4c)", fontWeight: 600, textAlign: "center" }}>
                 Register
               </Link>
               {isLoggedIn ? (
                 <>
-                  {/* Mobile Account - ALWAYS goes to /account */}
                   <Link href="/account" onClick={() => setMenuOpen(false)}
                     style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: "#0f4c4c", background: "#f0fdfa", fontWeight: 500 }}>
                     👤 My Account
@@ -271,7 +265,6 @@ export default function Navbar({ religionKey }: NavbarProps) {
                   </button>
                 </>
               ) : (
-                /* Mobile Login - ALWAYS goes to /login */
                 <Link href="/login" onClick={() => setMenuOpen(false)}
                   style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: "#0d9488", background: "#f0fdfa", fontWeight: 600, textAlign: "center", border: "1.5px solid #0d9488" }}>
                   Login

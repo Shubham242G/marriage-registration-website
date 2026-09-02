@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,14 @@ export default function LoginPage() {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [submitting, setSubmitting] = useState(false);
   const [apiError, setApiError] = useState("");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('session') === 'expired') {
+      setApiError('Your session has expired. Please log in again.');
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
 
   const set = (field: "email" | "password") => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((p) => ({ ...p, [field]: e.target.value }));
@@ -44,7 +52,6 @@ export default function LoginPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data?.message || "Login failed");
       login(data.user, data.token);
-      // Redirect to account page immediately after login
       router.push("/account");
     } catch (err: any) {
       setApiError(err?.message || "Invalid credentials. Please try again.");
