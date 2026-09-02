@@ -212,7 +212,7 @@ const displayedSteps = isCourtMarriage
               justifyContent: "flex-start",
             }}
           >
-            <Link href={`/${theme.key}/register`} style={{ textDecoration: "none" }}>
+            <Link href={`/register`} style={{ textDecoration: "none" }}>
               <div
                 style={{
                   padding: "12px 28px",
@@ -229,7 +229,7 @@ const displayedSteps = isCourtMarriage
               </div>
             </Link>
 
-            <Link href={`/${theme.key}/contact`} style={{ textDecoration: "none" }}>
+            <Link href={`/contact`} style={{ textDecoration: "none" }}>
               <div
                 style={{
                   padding: "12px 28px",
