@@ -20,107 +20,70 @@ const fadeUp = {
 };
 
 export default function ReligionHomePage({ theme }: Props) {
+  const isCourtMarriage = theme.key === "court-marriage";
 
-  const isHindu =
-    theme.key === "hinduism-sikhism-buddhism-jainism";
-
-  const hinduSlides = [
-    {
-      image: "/media/Hindu1.gif",
-      heading: "Register Your Union.",
-    },
-    {
-      image: "/media/Hindu2.jpeg",
-      heading: "Anand Karaj. Legally Registered.",
-    },
-    {
-      image: "/media/Hindu3.jpeg",
-      heading: "Legally Yours.",
-    },
-    {
-      image: "/media/Hindu4.png",
-      heading: "One marriage, one form",
-    },
+  // Fallback values for optional fields
+  const benefits = theme.benefits || [
+    { title: "Valid Proof", text: "Gives official legal status to your marriage." },
+    { title: "Prevents bigamy & fraud", text: "Prevents bigamy and fraud by creating an official marriage record." },
+    { title: "Rights & Security", text: "Needed to access many welfare schemes, subsidies, and family pension benefits." },
+    { title: "Legal Recognition", text: "Protects inheritance and spousal rights." }
   ];
 
-  const whyUs = [
-    {
-      title: "End-to-End Guidance",
-      body: "From document preparation to final certificate delivery, we handle every step. You never have to visit a government office or decipher bureaucratic language.",
-    },
-    {
-      title: "Complete Privacy",
-      body: "All your documents and personal information are encrypted and handled with the highest standards of confidentiality.",
-    },
-    {
-      title: "Faster Processing",
-      body: "Our experience means fewer errors, fewer rejections, and faster turnaround. Most certificates are delivered within 7–15 working days.",
-    },
-    {
-      title: "Dedicated Support",
-      body: "A dedicated case manager is assigned to your registration — a real person you can reach by phone or email with any question.",
-    },
-    {
-      title: "All-Religion Coverage",
-      body: "We are fluent in the legal nuances of Hindu, Muslim, Christian, Sikh, Buddhist, Jain, and civil marriages. No case is too complex.",
-    },
-    {
-      title: "Legal Recognition",
-      body: "Establishes your marriage as legally valid under Indian law and prevents future legal disputes.",
-    },
-  ];
-
-  const steps = [
+  const displayedSteps = theme.steps || [
     { num: "01", title: "Register & Upload", body: "Create your account and upload all required documents through our secure portal." },
     { num: "02", title: "Expert Review", body: "Our legal team verifies every document and flags any issues before submission." },
     { num: "03", title: "Government Filing", body: "We file your application with the correct registrar for your state and religion." },
-    { num: "04", title: "Certificate Delivery", body: "Your official marriage certificate is delivered digitally and by post." },
+    { num: "04", title: "Certificate Delivery", body: "Your official marriage certificate is delivered digitally and by post." }
   ];
 
-  const courtMarriageSteps = [
-    { num: "01", title: "Submit Details", body: "Create your account and upload all required documents through our secure portal." },
-    { num: "02", title: "Document Verification", body: "Our legal team verifies every document and flags any issues before submission." },
-    { num: "03", title: "Notice Filing", body: "We file your application with the correct registrar for your state and religion." },
-    { num: "04", title: "Court Marriage", body: "We assist you in the process of the court marriage." },
-    { num: "05", title: "Certificate Issued", body: "Your official marriage certificate is delivered digitally and by post." },
-
+  const trustReasons = theme.trustReasons || [
+    {
+      title: "End-to-End Guidance",
+      body: "From document preparation to final certificate delivery, we handle every step. You never have to visit a government office or decipher bureaucratic language."
+    },
+    {
+      title: "Complete Privacy",
+      body: "All your documents and personal information are encrypted and handled with the highest standards of confidentiality."
+    },
+    {
+      title: "Faster Processing",
+      body: "Our experience means fewer errors, fewer rejections, and faster turnaround. Most certificates are delivered within 7–15 working days."
+    },
+    {
+      title: "Dedicated Support",
+      body: "A dedicated case manager is assigned to your registration — a real person you can reach by phone or email with any question."
+    },
+    {
+      title: "All-Religion Coverage",
+      body: "We are fluent in the legal nuances of Hindu, Muslim, Christian, Sikh, Buddhist, Jain, and civil marriages. No case is too complex."
+    },
+    {
+      title: "Legal Recognition",
+      body: "Establishes your marriage as legally valid under Indian law and prevents future legal disputes."
+    }
   ];
 
-  const isCourtMarriage = theme.key === "court-marriage";
+  const ctaHeading = theme.ctaHeading || "Register today. Protect forever.";
+  const ctaSubtext = theme.ctaSubtext || "Takes less than 10 minutes. Valid for a lifetime.";
+  const footerBrand = theme.footerBrand || "Register my marriage";
+  const footerTagline = theme.footerTagline || "India's trusted marriage registration platform";
 
-const displayedSteps = isCourtMarriage
-  ? courtMarriageSteps
-  : steps;
-
-  const [currentSlide, setCurrentSlide] = React.useState(0);
-
-  React.useEffect(() => {
-    if (theme.key !== "hinduism-sikhism-buddhism-jainism") return;
-
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % hinduSlides.length);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [theme.key]);
+  // Figma design colors
+  const figmaColors = {
+    bg: "#E4E0D5",
+    darkText: "#4A0E19",
+    lightBg: "#F0FDFA",
+    cardBg: "#F8FEFE",
+    white: "#FFFFFF",
+    darkBg: "#380913",
+  };
 
   return (
-    <div
-      // style={{
-      //   fontFamily: "'Lato', sans-serif",
-      //   /*
-      //    * FIX: was "#fff". Any sub-pixel gap between sticky navbar and the
-      //    * section below bleeds this colour. Matching it to the navbar (#074949)
-      //    * makes the gap invisible on every browser, zoom level, and screen DPR.
-      //    */
-      //   background: "#074949",
-      //   minHeight: "100vh",
-      // }}
-    >
+    <div style={{ background: figmaColors.bg, minHeight: "100vh" }}>
       <Navbar religionKey={theme.key} />
 
       {/* ───────────────── HERO SECTION ───────────────── */}
-
       <section
         style={{
           position: "relative",
@@ -129,43 +92,19 @@ const displayedSteps = isCourtMarriage
           alignItems: "center",
           justifyContent: "center",
           overflow: "hidden",
-          /*
-           * FIX: marginTop -1px closes the sub-pixel seam that some browsers
-           * render between a position:sticky element and the block below it.
-           * Works alongside the background fix above as a belt-and-braces solution.
-           */
           marginTop: "-1px",
         }}
       >
-        {/* IMAGE LAYER */}
-        {isHindu && hinduSlides.length > 0 ? (
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1 }}
-              style={{
-                position: "absolute",
-                inset: 0,
-                backgroundImage: `url(${hinduSlides[currentSlide]?.image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center bottom",
-              }}
-            />
-          </AnimatePresence>
-        ) : (
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage: `url(${theme.bannerImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center bottom",
-            }}
-          />
-        )}
+        {/* IMAGE LAYER - Single static image for all religions */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: `url(${theme.bannerImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center bottom",
+          }}
+        />
 
         {/* HERO CONTENT */}
         <div
@@ -178,31 +117,22 @@ const displayedSteps = isCourtMarriage
             textAlign: "left",
           }}
         >
-          <AnimatePresence mode="wait">
-            <motion.h1
-              key={
-                isHindu && hinduSlides[currentSlide]
-                  ? hinduSlides[currentSlide].heading
-                  : theme.heroHeading
-              }
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.8 }}
-              style={{
-                fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)",
-                fontWeight: 700,
-                color: "#fff",
-                lineHeight: 1.3,
-                marginBottom: "1.2rem",
-                fontFamily: "'Playfair Display', Georgia, serif",
-              }}
-            >
-              {isHindu && hinduSlides[currentSlide]
-                ? hinduSlides[currentSlide].heading
-                : theme.heroHeading}
-            </motion.h1>
-          </AnimatePresence>
+          <motion.h1
+            key={theme.heroHeading}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            style={{
+              fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)",
+              fontWeight: 700,
+              color: "#fff",
+              lineHeight: 1.3,
+              marginBottom: "1.2rem",
+              fontFamily: "'Playfair Display', Georgia, serif",
+            }}
+          >
+            {theme.heroHeading}
+          </motion.h1>
 
           <div
             style={{
@@ -217,8 +147,8 @@ const displayedSteps = isCourtMarriage
                 style={{
                   padding: "12px 28px",
                   borderRadius: 8,
-                  background: "#fff",
-                  color: theme.darkTeal,
+                  background: figmaColors.white,
+                  color: figmaColors.darkText,
                   fontWeight: 700,
                   fontSize: "0.9rem",
                   cursor: "pointer",
@@ -263,8 +193,9 @@ const displayedSteps = isCourtMarriage
                 fontSize: "0.72rem",
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
-                color: theme.accentTeal,
-                fontWeight: 600,
+                color: figmaColors.darkText,
+                fontWeight: 700,
+                opacity: 0.7,
               }}
             >
               Who We Are
@@ -273,7 +204,7 @@ const displayedSteps = isCourtMarriage
               style={{
                 fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
                 fontWeight: 700,
-                color: "#0f4c4c",
+                color: figmaColors.darkText,
                 lineHeight: 1.25,
                 margin: "0.75rem 0 1.5rem",
                 fontFamily: "'Playfair Display', Georgia, serif",
@@ -281,11 +212,11 @@ const displayedSteps = isCourtMarriage
             >
               Simplifying Marriage Registration for Every Indian Family
             </h2>
-            <p style={{ color: "#4b7b7b", lineHeight: 1.9, fontSize: "0.98rem", marginBottom: "1.25rem" }}>
+            <p style={{ color: figmaColors.darkText, lineHeight: 1.9, fontSize: "0.98rem", marginBottom: "1.25rem", opacity: 0.85 }}>
               {theme.description}
             </p>
-            <p style={{ color: "#4b7b7b", lineHeight: 1.9, fontSize: "0.98rem" }}>
-             We help couples complete registration smoothly with proper documentation, timely filings, and complete legal support.
+            <p style={{ color: figmaColors.darkText, lineHeight: 1.9, fontSize: "0.98rem", opacity: 0.85 }}>
+              We help couples complete registration smoothly with proper documentation, timely filings, and complete legal support.
             </p>
           </motion.div>
 
@@ -300,10 +231,10 @@ const displayedSteps = isCourtMarriage
               <div
                 key={i}
                 style={{
-                  padding: "1.25rem 1.5rem",
+                  padding: "1.5rem 1.5rem",
                   borderRadius: 12,
-                  border: `1px solid ${theme.borderColor}`,
-                  background: theme.lightTeal,
+                  border: `1px solid ${figmaColors.darkText}`,
+                  background: figmaColors.lightBg,
                   display: "flex",
                   gap: "1rem",
                   alignItems: "flex-start",
@@ -314,7 +245,7 @@ const displayedSteps = isCourtMarriage
                     width: 32,
                     height: 32,
                     borderRadius: "50%",
-                    background: theme.accentTeal,
+                    background: figmaColors.darkText,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -330,7 +261,7 @@ const displayedSteps = isCourtMarriage
                   <div
                     style={{
                       fontWeight: 700,
-                      color: "#0f4c4c",
+                      color: figmaColors.darkText,
                       marginBottom: "0.3rem",
                       fontSize: "0.92rem",
                       fontFamily: "'Playfair Display', Georgia, serif",
@@ -338,7 +269,9 @@ const displayedSteps = isCourtMarriage
                   >
                     {item.title}
                   </div>
-                  <div style={{ color: "#4b7b7b", fontSize: "0.85rem", lineHeight: 1.7 }}>{item.body}</div>
+                  <div style={{ color: figmaColors.darkText, fontSize: "0.85rem", lineHeight: 1.7, opacity: 0.8 }}>
+                    {item.body}
+                  </div>
                 </div>
               </div>
             ))}
@@ -346,106 +279,240 @@ const displayedSteps = isCourtMarriage
         </div>
       </section>
 
-      {/* Why Marriage Registration is Important */}
-      <section style={{ background: "#ffffff", padding: "6rem 2rem" }}>
+      {/* Why Marriage Registration is Important - FIGMA STYLE */}
+      <section style={{ background: figmaColors.bg, padding: "4rem 2rem" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
             <h2
               style={{
                 fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
                 fontWeight: 700,
-                color: "#0f4c4c",
+                color: figmaColors.darkText,
                 fontFamily: "'Playfair Display', Georgia, serif",
                 marginBottom: "1rem",
               }}
             >
-              How court marriage helps?            </h2>
-            {/* <p style={{ maxWidth: 640, margin: "0 auto", color: "#4b7b7b", fontSize: "1rem", lineHeight: 1.7 }}>
-              A legally registered marriage protects your rights, secures your future, and ensures government recognition of your union.
-            </p> */}
+              How {isCourtMarriage ? 'court' : 'marriage'} registration helps?
+            </h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem" }}>
-            {[
-              { title: "Valid Proof",          text: " Gives official legal status to your marriage." },
-              { title: "Interfaith Freedom",             text: "Required for visas, property, and financial matters." },
-              { title: "Rights & Security", text: " Allows marriage across religions legally." },
-              { title: "Legal Recognition",            text: "Protects inheritance and spousal rights." },
-            ].map((item, index) => (
-              <div key={index} style={{ padding: "2rem", borderRadius: 14, background: "#f8fefe", border: "1px solid #d1f3f1", transition: "all 0.3s ease" }}>
-                <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0d9488", marginBottom: "0.6rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1.5rem" }}>
+            {benefits.map((item, index) => (
+              <div 
+                key={index} 
+                style={{ 
+                  padding: "2rem 1.5rem", 
+                  borderRadius: 14, 
+                  background: figmaColors.cardBg, 
+                  border: `1px solid ${figmaColors.darkText}`,
+                  transition: "all 0.3s ease",
+                  minHeight: "184px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center"
+                }}
+              >
+                <h3 
+                  style={{ 
+                    fontSize: "1.1rem", 
+                    fontWeight: 700, 
+                    color: figmaColors.darkText, 
+                    marginBottom: "0.6rem", 
+                    fontFamily: "'Playfair Display', Georgia, serif" 
+                  }}
+                >
                   {item.title}
                 </h3>
-                <p style={{ color: "#4b7b7b", fontSize: "0.92rem", lineHeight: 1.7 }}>{item.text}</p>
+                <p style={{ color: figmaColors.darkText, fontSize: "0.92rem", lineHeight: 1.7, opacity: 0.8 }}>
+                  {item.text}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ── */}
-      <section style={{ background: theme.lightTeal, padding: "6rem 2rem" }}>
+      {/* ── HOW IT WORKS - FIGMA STYLE ── */}
+      <section style={{ background: figmaColors.bg, padding: "4rem 2rem" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative" }}>
           <div style={{ textAlign: "center", marginBottom: "4rem" }}>
-            <span style={{ fontSize: "0.72rem", letterSpacing: "0.18em", textTransform: "uppercase", color: theme.accentTeal, fontWeight: 600 }}>
+            <span 
+              style={{ 
+                fontSize: "0.72rem", 
+                letterSpacing: "0.18em", 
+                textTransform: "uppercase", 
+                color: figmaColors.darkText, 
+                fontWeight: 700,
+                opacity: 0.7 
+              }}
+            >
               The Process
             </span>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "#0f4c4c", marginTop: "0.75rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
+            <h2 
+              style={{ 
+                fontSize: "clamp(1.8rem, 3vw, 2.4rem)", 
+                fontWeight: 700, 
+                color: figmaColors.darkText, 
+                marginTop: "0.75rem", 
+                fontFamily: "'Playfair Display', Georgia, serif" 
+              }}
+            >
               {displayedSteps.length} Steps To Your Union
             </h2>
           </div>
 
           {/* Vertical Line */}
-          <div style={{ position: "absolute", left: "50%", top: "140px", bottom: 0, width: "3px", background: theme.accentTeal, transform: "translateX(-50%)" }} />
+          <div style={{ 
+            position: "absolute", 
+            left: "50%", 
+            top: "100px", 
+            bottom: 0, 
+            width: "3px", 
+            background: figmaColors.darkText, 
+            transform: "translateX(-50%)" 
+          }} />
 
           {displayedSteps.map((step, index) => (
-            <div key={index} style={{ display: "flex", justifyContent: index % 2 === 0 ? "flex-start" : "flex-end", marginBottom: "4rem", position: "relative" }}>
-              <div style={{ width: "45%", padding: index % 2 === 0 ? "0 2rem 0 0" : "0 0 0 2rem", textAlign: index % 2 === 0 ? "right" : "left" }}>
-                <div style={{ fontSize: "1.4rem", fontWeight: 800, color: theme.accentTeal, marginBottom: "0.4rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
+            <div 
+              key={index} 
+              style={{ 
+                display: "flex", 
+                justifyContent: index % 2 === 0 ? "flex-start" : "flex-end", 
+                marginBottom: "4rem", 
+                position: "relative" 
+              }}
+            >
+              <div 
+                style={{ 
+                  width: "45%", 
+                  padding: index % 2 === 0 ? "0 2rem 0 0" : "0 0 0 2rem", 
+                  textAlign: index % 2 === 0 ? "right" : "left" 
+                }}
+              >
+                <div 
+                  style={{ 
+                    fontSize: "1.4rem", 
+                    fontWeight: 800, 
+                    color: figmaColors.darkText, 
+                    marginBottom: "0.4rem", 
+                    fontFamily: "'Playfair Display', Georgia, serif",
+                    opacity: 0.5
+                  }}
+                >
                   {step.num}
                 </div>
-                <div style={{ fontWeight: 700, color: "#0f4c4c", marginBottom: "0.5rem", fontSize: "1rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
+                <div 
+                  style={{ 
+                    fontWeight: 700, 
+                    color: figmaColors.darkText, 
+                    marginBottom: "0.5rem", 
+                    fontSize: "1rem", 
+                    fontFamily: "'Playfair Display', Georgia, serif" 
+                  }}
+                >
                   {step.title}
                 </div>
-                <div style={{ color: "#4b7b7b", fontSize: "0.9rem", lineHeight: 1.7 }}>{step.body}</div>
+                <div style={{ color: figmaColors.darkText, fontSize: "0.9rem", lineHeight: 1.7, opacity: 0.8 }}>
+                  {step.body}
+                </div>
               </div>
               {/* Circle Marker */}
-              <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", width: "16px", height: "16px", background: theme.accentTeal, borderRadius: "50%", border: `4px solid ${theme.lightTeal}` }} />
+              <div style={{ 
+                position: "absolute", 
+                left: "50%", 
+                transform: "translateX(-50%)", 
+                width: "16px", 
+                height: "16px", 
+                background: figmaColors.darkText, 
+                borderRadius: "50%", 
+                border: `4px solid ${figmaColors.bg}` 
+              }} />
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── WHY TRUST US ── */}
-      <section style={{ padding: "5rem 2rem" }}>
+      {/* ── WHY TRUST US - FIGMA STYLE (WITH NUMBERS INSTEAD OF ICONS) ── */}
+      <section style={{ background: figmaColors.bg, padding: "4rem 2rem" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ textAlign: "center", marginBottom: "3.5rem" }}>
-            <span style={{ fontSize: "0.72rem", letterSpacing: "0.18em", textTransform: "uppercase", color: theme.accentTeal, fontWeight: 600 }}>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            style={{ textAlign: "center", marginBottom: "3.5rem" }}
+          >
+            <span 
+              style={{ 
+                fontSize: "0.72rem", 
+                letterSpacing: "0.18em", 
+                textTransform: "uppercase", 
+                color: figmaColors.darkText, 
+                fontWeight: 700,
+                opacity: 0.7 
+              }}
+            >
               Why Register my marriage
             </span>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "#0f4c4c", marginTop: "0.75rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
+            <h2 
+              style={{ 
+                fontSize: "clamp(1.8rem, 3vw, 2.4rem)", 
+                fontWeight: 700, 
+                color: figmaColors.darkText, 
+                marginTop: "0.75rem", 
+                fontFamily: "'Playfair Display', Georgia, serif" 
+              }}
+            >
               Built Around Your Trust
             </h2>
-            <p style={{ color: "#4b7b7b", maxWidth: 560, margin: "1rem auto 0", lineHeight: 1.8, fontSize: "0.97rem" }}>
-              Thousands of couples have trusted us to handle one of the most important documents of their lives.
-              Here is why they choose us over the traditional route.
+            <p style={{ color: figmaColors.darkText, maxWidth: 560, margin: "1rem auto 0", lineHeight: 1.8, fontSize: "0.97rem", opacity: 0.8 }}>
+              Thousands of couples have trusted us to handle one of the most important documents of their lives. Here is why they choose us over the traditional route.
             </p>
           </motion.div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem" }}>
-            {whyUs.map((item, i) => (
+            {trustReasons.map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                whileHover={{ y: -4, boxShadow: "0 12px 32px rgba(13,148,136,0.1)" }}
-                style={{ padding: "1.75rem", borderRadius: 14, border: "1px solid #e0f2f1", background: "#fff", display: "flex", gap: "1rem", alignItems: "flex-start", transition: "all 0.25s ease" }}
+                whileHover={{ y: -4, boxShadow: `0 12px 32px ${figmaColors.darkText}1A` }}
+                style={{ 
+                  padding: "1.75rem", 
+                  borderRadius: 14, 
+                  border: `1px solid ${figmaColors.darkText}`, 
+                  background: figmaColors.white, 
+                  display: "flex", 
+                  gap: "1rem", 
+                  alignItems: "flex-start", 
+                  transition: "all 0.25s ease" 
+                }}
               >
-                <img src={`/media/icons/icon${i + 1}.png`} alt={item.title} style={{ width: "36px", height: "36px", objectFit: "contain", flexShrink: 0 }} />
+                {/* Number instead of icon */}
+                <div
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: "50%",
+                    background: figmaColors.darkText,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                    color: figmaColors.white,
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                  }}
+                >
+                  {i + 1}
+                </div>
                 <div>
-                  <div style={{ fontWeight: 700, color: "#0f4c4c", marginBottom: "0.4rem", fontFamily: "'Playfair Display', Georgia, serif" }}>{item.title}</div>
-                  <div style={{ color: "#4b7b7b", fontSize: "0.87rem", lineHeight: 1.7 }}>{item.body}</div>
+                  <div style={{ fontWeight: 700, color: figmaColors.darkText, marginBottom: "0.4rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
+                    {item.title}
+                  </div>
+                  <div style={{ color: figmaColors.darkText, fontSize: "0.87rem", lineHeight: 1.7, opacity: 0.8 }}>
+                    {item.body}
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -453,18 +520,38 @@ const displayedSteps = isCourtMarriage
         </div>
       </section>
 
-      {/* ── CTA ── */}
-      <section style={{ background: "#0f4c4c", padding: "5rem 2rem" }}>
+      {/* ── CTA - FIGMA STYLE ── */}
+      <section style={{ background: figmaColors.darkBg, padding: "4rem 2rem" }}>
         <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.4rem)", fontWeight: 700, color: "#fff", marginBottom: "1.5rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
-              Register today. Protect forever.
+            <h2 style={{ 
+              fontSize: "clamp(1.8rem, 3vw, 2.4rem)", 
+              fontWeight: 700, 
+              color: "#fff", 
+              marginBottom: "1.5rem", 
+              fontFamily: "'Playfair Display', Georgia, serif" 
+            }}>
+              {ctaHeading}
             </h2>
             <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.9, fontSize: "1.5rem", marginBottom: "1.5rem" }}>
-              Takes less than 10 minutes. Valid for a lifetime.
+              {ctaSubtext}
             </p>
             <Link href={`/${theme.key}/register`} style={{ textDecoration: "none" }}>
-              <motion.div whileHover={{ scale: 1.03, y: -2 }} style={{ display: "inline-block", padding: "14px 36px", borderRadius: 10, background: "#fff", color: "#0f4c4c", fontWeight: 700, fontSize: "0.95rem", cursor: "pointer", letterSpacing: "0.03em", fontFamily: "'Lato', sans-serif" }}>
+              <motion.div 
+                whileHover={{ scale: 1.03, y: -2 }} 
+                style={{ 
+                  display: "inline-block", 
+                  padding: "14px 36px", 
+                  borderRadius: 10, 
+                  background: "#fff", 
+                  color: figmaColors.darkText, 
+                  fontWeight: 700, 
+                  fontSize: "0.95rem", 
+                  cursor: "pointer", 
+                  letterSpacing: "0.03em", 
+                  fontFamily: "'Lato', sans-serif" 
+                }}
+              >
                 Register Your Marriage Today →
               </motion.div>
             </Link>
@@ -472,22 +559,22 @@ const displayedSteps = isCourtMarriage
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer style={{ background: "#0a3a3a", padding: "3rem 2rem", color: "rgba(255,255,255,0.5)", fontSize: "0.78rem", letterSpacing: "0.04em" }}>
+      {/* ── FOOTER - FIGMA STYLE ── */}
+      <footer style={{ background: figmaColors.darkBg, padding: "3rem 2rem", color: "rgba(255,255,255,0.5)", fontSize: "0.78rem", letterSpacing: "0.04em" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "2rem", justifyContent: "space-between", alignItems: "center" }}>
           <div>
             <div style={{ color: "#fff", fontWeight: 700, fontSize: "1rem", marginBottom: "0.3rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
-              Register my marriage
+              {footerBrand}
             </div>
-            <div>India's trusted marriage registration platform</div>
+            <div style={{ opacity: 0.5 }}>{footerTagline}</div>
           </div>
           <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
-            <Link href={`/${theme.key}/blog`}     style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Blogs</Link>
-            <Link href={`/${theme.key}/contact`}  style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Contact</Link>
-            <Link href={`/${theme.key}/register`} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Register</Link>
-            <Link href="/"                         style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Change Religion</Link>
+            <Link href={`/blog`} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Blogs</Link>
+            <Link href={`/contact`} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Contact</Link>
+            <Link href={`/register`} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Register</Link>
+            <Link href="/" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Change Religion</Link>
           </div>
-          <div>© 2024 Register my marriage · All Rights Reserved</div>
+          <div style={{ opacity: 0.5 }}>© 2024 Register my marriage · All Rights Reserved</div>
         </div>
       </footer>
     </div>

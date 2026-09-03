@@ -1,7 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { ChangeEvent, CSSProperties, ReactNode } from "react";
+import type {
+  ChangeEvent,
+  CSSProperties,
+  ReactNode,
+} from "react";
 import { motion } from "framer-motion";
 import { useParams, useRouter } from "next/navigation";
 
@@ -19,6 +23,29 @@ import {
 type FormState = Record<string, any>;
 type DocumentData = Record<string, any>;
 type ImageField = string;
+
+/* =========================================================
+   THEME — SAME VISUAL LANGUAGE AS HOME / CONTACT
+========================================================= */
+
+const colors = {
+  bg: "#E4E0D5",
+  darkText: "#4A0E19",
+  lightBg: "#F0FDFA",
+  cardBg: "#F8FEFE",
+  white: "#FFFFFF",
+  darkBg: "#380913",
+  muted: "#765C62",
+  border: "#D9C8C5",
+  softBorder: "#E7DCD8",
+  inputBg: "#FCFAF6",
+  successBg: "#F0FDF4",
+  successBorder: "#BBF7D0",
+  successText: "#15803D",
+  errorBg: "#FEF2F2",
+  errorBorder: "#FECACA",
+  errorText: "#B91C1C",
+};
 
 const EMPTY_FORM: FormState = {
   mobileNumber: "",
@@ -119,30 +146,19 @@ function cleanPayload(form: FormState): FormState {
   return payload;
 }
 
-/**
- * The backend returns:
- *
- * {
- *   message: "...",
- *   data: [...]
- * }
- *
- * Depending on the service implementation, getMyDocument()
- * may already unwrap this response. This helper supports both.
- */
-function normalizeDocumentResponse(response: any): DocumentData | null {
+function normalizeDocumentResponse(
+  response: any
+): DocumentData | null {
   if (!response) {
     return null;
   }
 
-  // Backend response:
-  // { message, data: [...] }
   if (Array.isArray(response?.data)) {
-    return response.data.length > 0 ? response.data[0] : null;
+    return response.data.length > 0
+      ? response.data[0]
+      : null;
   }
 
-  // If service returns:
-  // { data: document }
   if (
     response?.data &&
     typeof response.data === "object" &&
@@ -153,18 +169,20 @@ function normalizeDocumentResponse(response: any): DocumentData | null {
     }
   }
 
-  // If service already returns an array.
   if (Array.isArray(response)) {
     return response.length > 0 ? response[0] : null;
   }
 
-  // If service already returns the document.
   if (response?._id || response?.userId) {
     return response;
   }
 
   return null;
 }
+
+/* =========================================================
+   REUSABLE UI COMPONENTS
+========================================================= */
 
 function Label({
   children,
@@ -177,15 +195,24 @@ function Label({
     <label
       style={{
         display: "block",
-        fontSize: 14,
-        fontWeight: 600,
+        fontSize: 13,
+        fontWeight: 700,
         marginBottom: 8,
-        color: "#333",
+        color: colors.darkText,
+        letterSpacing: "0.01em",
       }}
     >
       {children}
+
       {required && (
-        <span style={{ color: "#dc2626", marginLeft: 4 }}>*</span>
+        <span
+          style={{
+            color: colors.darkText,
+            marginLeft: 4,
+          }}
+        >
+          *
+        </span>
       )}
     </label>
   );
@@ -201,23 +228,45 @@ function Section({
   return (
     <section
       style={{
-        marginBottom: 32,
-        padding: 24,
+        marginBottom: 26,
+        padding: "28px",
         borderRadius: 16,
-        background: "#fff",
-        boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
+        background: colors.cardBg,
+        border: `1px solid ${colors.border}`,
+        boxShadow:
+          "0 5px 22px rgba(74, 14, 25, 0.06)",
       }}
     >
-      <h2
+      <div
         style={{
-          fontSize: 20,
-          fontWeight: 700,
-          marginBottom: 22,
-          color: "#222",
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+          marginBottom: 24,
         }}
       >
-        {title}
-      </h2>
+        <div
+          style={{
+            width: 4,
+            height: 28,
+            borderRadius: 999,
+            background: colors.darkText,
+          }}
+        />
+
+        <h2
+          style={{
+            fontSize: 21,
+            fontWeight: 700,
+            margin: 0,
+            color: colors.darkText,
+            fontFamily:
+              "'Playfair Display', Georgia, serif",
+          }}
+        >
+          {title}
+        </h2>
+      </div>
 
       {children}
     </section>
@@ -233,6 +282,7 @@ function Grid({
 }) {
   return (
     <div
+      className="form-grid"
       style={{
         display: "grid",
         gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
@@ -270,12 +320,28 @@ function TextInput({
         onChange={(e) => onChange(e.target.value)}
         style={{
           width: "100%",
-          padding: "12px 14px",
-          border: "1px solid #d1d5db",
+          padding: "13px 14px",
+          border: `1px solid ${colors.border}`,
           borderRadius: 10,
           outline: "none",
           fontSize: 14,
+          color: colors.darkText,
+          background: colors.inputBg,
           boxSizing: "border-box",
+          fontFamily: "'Lato', sans-serif",
+          transition:
+            "border-color 0.2s ease, box-shadow 0.2s ease",
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.borderColor =
+            colors.darkText;
+          e.currentTarget.style.boxShadow =
+            "0 0 0 3px rgba(74,14,25,0.08)";
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.borderColor =
+            colors.border;
+          e.currentTarget.style.boxShadow = "none";
         }}
       />
     </div>
@@ -304,19 +370,35 @@ function SelectInput({
         onChange={(e) => onChange(e.target.value)}
         style={{
           width: "100%",
-          padding: "12px 14px",
-          border: "1px solid #d1d5db",
+          padding: "13px 14px",
+          border: `1px solid ${colors.border}`,
           borderRadius: 10,
           outline: "none",
           fontSize: 14,
-          background: "#fff",
+          background: colors.inputBg,
+          color: colors.darkText,
           boxSizing: "border-box",
+          fontFamily: "'Lato', sans-serif",
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.borderColor =
+            colors.darkText;
+          e.currentTarget.style.boxShadow =
+            "0 0 0 3px rgba(74,14,25,0.08)";
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.borderColor =
+            colors.border;
+          e.currentTarget.style.boxShadow = "none";
         }}
       >
         <option value="">Select</option>
 
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option
+            key={option.value}
+            value={option.value}
+          >
             {option.label}
           </option>
         ))}
@@ -343,7 +425,6 @@ function FileInput({
   ) => {
     const file = event.target.files?.[0];
 
-    // Allows selecting the same file again.
     event.target.value = "";
 
     if (!file) return;
@@ -368,10 +449,10 @@ function FileInput({
 
       <div
         style={{
-          border: "1px dashed #cbd5e1",
+          border: `1px dashed ${colors.border}`,
           borderRadius: 12,
           padding: 14,
-          background: "#f8fafc",
+          background: "#FBF9F4",
         }}
       >
         <input
@@ -381,7 +462,8 @@ function FileInput({
           disabled={uploading}
           style={{
             width: "100%",
-            fontSize: 14,
+            fontSize: 13,
+            color: colors.darkText,
           }}
         />
 
@@ -389,8 +471,8 @@ function FileInput({
           <p
             style={{
               margin: "8px 0 0",
-              fontSize: 13,
-              color: "#666",
+              fontSize: 12,
+              color: colors.muted,
             }}
           >
             Processing file...
@@ -401,8 +483,9 @@ function FileInput({
           <p
             style={{
               margin: "8px 0 0",
-              fontSize: 13,
-              color: "#16a34a",
+              fontSize: 12,
+              color: colors.successText,
+              fontWeight: 600,
             }}
           >
             ✓ File selected
@@ -413,45 +496,42 @@ function FileInput({
   );
 }
 
+/* =========================================================
+   PAGE
+========================================================= */
+
 export default function AccountPage() {
   const router = useRouter();
   const params = useParams();
 
-  /**
-   * RELIGION IS OPTIONAL.
-   *
-   * If the route is:
-   * /hindu/account
-   *
-   * religion = "hindu"
-   *
-   * If the route is:
-   * /account
-   *
-   * religion = ""
-   *
-   * The page still works in both cases.
-   */
-  const religion = (params?.religion as string) || "";
+  const religion =
+    (params?.religion as string) || "";
 
-  /**
-   * If religion is not selected, use Hindu only as the
-   * fallback visual theme. It does NOT mean the user's
-   * religion is being saved as Hindu.
-   */
   const theme =
-    RELIGION_THEMES[religion as ReligionKey] ||
-    RELIGION_THEMES["hinduism-sikhism-buddhism-jainism"];
+    RELIGION_THEMES[
+      religion as ReligionKey
+    ] ||
+    RELIGION_THEMES[
+      "hinduism-sikhism-buddhism-jainism"
+    ];
 
   const { token, isLoggedIn } = useAuth();
 
-  const [form, setForm] = useState<FormState>({ ...EMPTY_FORM });
-  const [document, setDocument] = useState<DocumentData | null>(null);
+  const [form, setForm] = useState<FormState>({
+    ...EMPTY_FORM,
+  });
 
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+  const [document, setDocument] =
+    useState<DocumentData | null>(null);
 
-  const loadedTokenRef = useRef<string | null>(null);
+  const [loading, setLoading] =
+    useState(true);
+
+  const [saving, setSaving] =
+    useState(false);
+
+  const loadedTokenRef =
+    useRef<string | null>(null);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -469,24 +549,16 @@ export default function AccountPage() {
     []
   );
 
-  /**
-   * Authentication redirect.
-   *
-   * If religion exists:
-   * /hindu/login
-   *
-   * If religion does NOT exist:
-   * /login
-   */
   useEffect(() => {
     if (isLoggedIn) return;
 
-    router.push(religion ? `/${religion}/login` : "/login");
+    router.push(
+      religion
+        ? `/${religion}/login`
+        : "/login"
+    );
   }, [isLoggedIn, religion, router]);
 
-  /**
-   * Load user's existing document.
-   */
   useEffect(() => {
     if (!isLoggedIn || !token) {
       setLoading(false);
@@ -504,9 +576,13 @@ export default function AccountPage() {
       setError("");
 
       try {
-        const response = await getMyDocument(token);
+        const response =
+          await getMyDocument(token);
 
-        console.log("Document API response:", response);
+        console.log(
+          "Document API response:",
+          response
+        );
 
         const existingDocument =
           normalizeDocumentResponse(response);
@@ -518,13 +594,18 @@ export default function AccountPage() {
 
         if (existingDocument) {
           setDocument(existingDocument);
-          setForm(documentToForm(existingDocument));
+          setForm(
+            documentToForm(existingDocument)
+          );
         } else {
           setDocument(null);
           setForm({ ...EMPTY_FORM });
         }
       } catch (err: any) {
-        console.error("Error loading document:", err);
+        console.error(
+          "Error loading document:",
+          err
+        );
 
         setError(
           err?.message ||
@@ -542,19 +623,28 @@ export default function AccountPage() {
     if (!token) return;
 
     try {
-      const response = await getMyDocument(token);
+      const response =
+        await getMyDocument(token);
 
-      console.log("Refresh document response:", response);
+      console.log(
+        "Refresh document response:",
+        response
+      );
 
       const existingDocument =
         normalizeDocumentResponse(response);
 
       if (existingDocument) {
         setDocument(existingDocument);
-        setForm(documentToForm(existingDocument));
+        setForm(
+          documentToForm(existingDocument)
+        );
       }
     } catch (err) {
-      console.error("Error refreshing document:", err);
+      console.error(
+        "Error refreshing document:",
+        err
+      );
     }
   };
 
@@ -587,19 +677,27 @@ export default function AccountPage() {
       return "Please enter the groom's email.";
     }
 
-    if (!form.groomOtherInfoOccupation?.trim()) {
+    if (
+      !form.groomOtherInfoOccupation?.trim()
+    ) {
       return "Please enter the groom's occupation.";
     }
 
-    if (!form.groomOtherInfoReligion?.trim()) {
+    if (
+      !form.groomOtherInfoReligion?.trim()
+    ) {
       return "Please enter the groom's religion.";
     }
 
-    if (!form.groomOtherInfoMaritalStatus?.trim()) {
+    if (
+      !form.groomOtherInfoMaritalStatus?.trim()
+    ) {
       return "Please enter the groom's marital status.";
     }
 
-    if (!form.groomOtherInfoResidingSinceYear) {
+    if (
+      !form.groomOtherInfoResidingSinceYear
+    ) {
       return "Please enter the groom's residing-since year.";
     }
 
@@ -607,7 +705,9 @@ export default function AccountPage() {
       return "Please select the groom's identity proof.";
     }
 
-    if (form.groomIdProofType === "AADHAR") {
+    if (
+      form.groomIdProofType === "AADHAR"
+    ) {
       if (!form.groomAadharFront) {
         return "Please upload the groom's Aadhar front.";
       }
@@ -617,7 +717,9 @@ export default function AccountPage() {
       }
     }
 
-    if (form.groomIdProofType === "VOTER_ID") {
+    if (
+      form.groomIdProofType === "VOTER_ID"
+    ) {
       if (!form.groomVoterIdFront) {
         return "Please upload the groom's Voter ID front.";
       }
@@ -631,7 +733,10 @@ export default function AccountPage() {
       return "Please select the groom's birth proof.";
     }
 
-    if (form.groomBirthProofType === "PASSPORT") {
+    if (
+      form.groomBirthProofType ===
+      "PASSPORT"
+    ) {
       if (!form.groomPassportFront) {
         return "Please upload the groom's passport front.";
       }
@@ -642,27 +747,37 @@ export default function AccountPage() {
     }
 
     if (
-      form.groomBirthProofType === "BIRTH_CERTIFICATE" ||
-      form.groomBirthProofType === "10TH_BIRTH_CERTIFICATE"
+      form.groomBirthProofType ===
+        "BIRTH_CERTIFICATE" ||
+      form.groomBirthProofType ===
+        "10TH_BIRTH_CERTIFICATE"
     ) {
       if (!form.groomBirthCertificateImage) {
         return "Please upload the groom's birth certificate.";
       }
     }
 
-    if (!form.brideOtherInfoOccupation?.trim()) {
+    if (
+      !form.brideOtherInfoOccupation?.trim()
+    ) {
       return "Please enter the bride's occupation.";
     }
 
-    if (!form.brideOtherInfoReligion?.trim()) {
+    if (
+      !form.brideOtherInfoReligion?.trim()
+    ) {
       return "Please enter the bride's religion.";
     }
 
-    if (!form.brideOtherInfoMaritalStatus?.trim()) {
+    if (
+      !form.brideOtherInfoMaritalStatus?.trim()
+    ) {
       return "Please enter the bride's marital status.";
     }
 
-    if (!form.brideOtherInfoResidingSinceYear) {
+    if (
+      !form.brideOtherInfoResidingSinceYear
+    ) {
       return "Please enter the bride's residing-since year.";
     }
 
@@ -702,11 +817,10 @@ export default function AccountPage() {
       return "Please upload the marriage invitation.";
     }
 
-    /**
-     * Backend expects uppercase religious certificate types.
-     */
     const certificateReligion =
-      String(form.religiousCertificateType || "").toUpperCase();
+      String(
+        form.religiousCertificateType || ""
+      ).toUpperCase();
 
     if (
       certificateReligion === "SIKH" ||
@@ -717,11 +831,15 @@ export default function AccountPage() {
         return "Please upload the religious certificate.";
       }
 
-      if (!form.religiousCertificateName?.trim()) {
+      if (
+        !form.religiousCertificateName?.trim()
+      ) {
         return "Please enter the religious certificate name.";
       }
 
-      if (!form.religiousAuthorityName?.trim()) {
+      if (
+        !form.religiousAuthorityName?.trim()
+      ) {
         return "Please enter the religious authority name.";
       }
 
@@ -729,16 +847,22 @@ export default function AccountPage() {
         return "Please enter the religious certificate date.";
       }
 
-      if (!form.religiousCertificateNumber?.trim()) {
+      if (
+        !form.religiousCertificateNumber?.trim()
+      ) {
         return "Please enter the religious certificate number.";
       }
     }
 
-    if (!form.additionalDocumentWitness1Name?.trim()) {
+    if (
+      !form.additionalDocumentWitness1Name?.trim()
+    ) {
       return "Please enter witness 1 name.";
     }
 
-    if (!form.additionalDocumentWitness2Name?.trim()) {
+    if (
+      !form.additionalDocumentWitness2Name?.trim()
+    ) {
       return "Please enter witness 2 name.";
     }
 
@@ -799,30 +923,31 @@ export default function AccountPage() {
     event.preventDefault();
 
     if (!token) {
-      setError("Your session has expired. Please login again.");
+      setError(
+        "Your session has expired. Please login again."
+      );
       return;
     }
 
     setError("");
     setSuccess("");
 
-    const validationError = validateForm();
+    const validationError =
+      validateForm();
 
     if (validationError) {
       setError(validationError);
+
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
+
       return;
     }
 
     const payload = cleanPayload(form);
 
-    /**
-     * Do not send an empty religious certificate type
-     * if the user did not select one.
-     */
     if (!payload.religiousCertificateType) {
       delete payload.religiousCertificateType;
       delete payload.religiousCertificateImage;
@@ -832,7 +957,9 @@ export default function AccountPage() {
       delete payload.religiousCertificateNumber;
     } else {
       payload.religiousCertificateType =
-        String(payload.religiousCertificateType).toUpperCase();
+        String(
+          payload.religiousCertificateType
+        ).toUpperCase();
     }
 
     setSaving(true);
@@ -847,7 +974,10 @@ export default function AccountPage() {
           token
         );
 
-        console.log("Update document response:", response);
+        console.log(
+          "Update document response:",
+          response
+        );
 
         setSuccess(
           "Your marriage registration details have been updated successfully."
@@ -858,7 +988,10 @@ export default function AccountPage() {
           token
         );
 
-        console.log("Create document response:", response);
+        console.log(
+          "Create document response:",
+          response
+        );
 
         setSuccess(
           "Your marriage registration details have been saved successfully."
@@ -872,7 +1005,10 @@ export default function AccountPage() {
         behavior: "smooth",
       });
     } catch (err: any) {
-      console.error("Save document error:", err);
+      console.error(
+        "Save document error:",
+        err
+      );
 
       setError(
         err?.message ||
@@ -890,11 +1026,14 @@ export default function AccountPage() {
 
   const inputStyle: CSSProperties = {
     width: "100%",
-    padding: "12px 14px",
+    padding: "13px 14px",
     borderRadius: 10,
-    border: "1px solid #d1d5db",
+    border: `1px solid ${colors.border}`,
     fontSize: 14,
+    color: colors.darkText,
+    background: colors.inputBg,
     boxSizing: "border-box",
+    fontFamily: "'Lato', sans-serif",
   };
 
   if (!isLoggedIn) {
@@ -905,34 +1044,113 @@ export default function AccountPage() {
     <div
       style={{
         minHeight: "100vh",
-        background: "#f5f7fb",
+        background: colors.bg,
+        fontFamily: "'Lato', sans-serif",
       }}
     >
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;600;700&display=swap');
+
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+
+        html {
+          scroll-behavior: smooth;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+          color: #9A8589;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+          outline: none;
+        }
+
+        @media (max-width: 768px) {
+          .form-grid {
+            grid-template-columns: 1fr !important;
+          }
+
+          .account-main {
+            padding: 28px 16px 60px !important;
+          }
+
+          .account-title {
+            font-size: 30px !important;
+          }
+
+          .registration-section {
+            padding: 22px !important;
+          }
+
+          .account-submit {
+            width: 100% !important;
+          }
+        }
+      `}</style>
+
       <Navbar />
 
       <main
+        className="account-main"
         style={{
           maxWidth: 1200,
           margin: "0 auto",
-          padding: "40px 20px 80px",
+          padding: "46px 20px 90px",
         }}
       >
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
+          initial={{
+            opacity: 0,
+            y: 15,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 0.5,
+          }}
         >
+          {/* =================================================
+              HEADER
+          ================================================= */}
+
           <div
             style={{
-              marginBottom: 30,
+              marginBottom: 32,
+              textAlign: "center",
             }}
           >
-            <h1
+            <p
               style={{
-                fontSize: 32,
-                fontWeight: 800,
+                color: colors.darkText,
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                marginBottom: 10,
+              }}
+            >
+              VivahSetu
+            </p>
+
+            <h1
+              className="account-title"
+              style={{
+                fontSize: 38,
+                lineHeight: 1.15,
+                fontWeight: 700,
                 margin: 0,
-                color: "#111827",
+                color: colors.darkText,
+                fontFamily:
+                  "'Playfair Display', Georgia, serif",
               }}
             >
               Marriage Registration
@@ -940,58 +1158,155 @@ export default function AccountPage() {
 
             <p
               style={{
-                marginTop: 8,
-                color: "#6b7280",
+                marginTop: 10,
+                color: colors.muted,
                 fontSize: 15,
+                lineHeight: 1.6,
+                maxWidth: 650,
+                marginLeft: "auto",
+                marginRight: "auto",
               }}
             >
-              Fill in the details and upload the required documents
-              for marriage registration.
+              Fill in the details and upload the
+              required documents for marriage
+              registration.
             </p>
           </div>
 
-          {loading && (
+          {/* =================================================
+              INTRODUCTION CARD
+          ================================================= */}
+
+          <div
+            style={{
+              marginBottom: 28,
+              padding: "18px 22px",
+              background: colors.darkBg,
+              borderRadius: 14,
+              color: colors.white,
+              display: "flex",
+              alignItems: "center",
+              gap: 14,
+              boxShadow:
+                "0 6px 22px rgba(56, 9, 19, 0.14)",
+            }}
+          >
             <div
               style={{
-                padding: 20,
-                background: "#fff",
-                borderRadius: 14,
+                width: 34,
+                height: 34,
+                borderRadius: "50%",
+                border:
+                  "1px solid rgba(255,255,255,0.45)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+                fontFamily:
+                  "'Playfair Display', Georgia, serif",
+                fontSize: 17,
+              }}
+            >
+              i
+            </div>
+
+            <p
+              style={{
+                fontSize: 13,
+                lineHeight: 1.6,
+                color: "#F8EEEE",
+              }}
+            >
+              Please provide accurate information
+              and upload clear copies of all
+              required documents. You can update
+              your registration details later if
+              necessary.
+            </p>
+          </div>
+
+          {/* =================================================
+              STATUS
+          ================================================= */}
+
+          {loading && (
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: -8,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              style={{
+                padding: "16px 18px",
+                background: colors.cardBg,
+                border:
+                  `1px solid ${colors.border}`,
+                color: colors.darkText,
+                borderRadius: 12,
                 marginBottom: 24,
+                fontSize: 14,
               }}
             >
               Loading your registration details...
-            </div>
+            </motion.div>
           )}
 
           {error && (
-            <div
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: -8,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
               style={{
-                padding: "14px 18px",
-                background: "#fef2f2",
-                border: "1px solid #fecaca",
-                color: "#b91c1c",
+                padding: "15px 18px",
+                background: colors.errorBg,
+                border:
+                  `1px solid ${colors.errorBorder}`,
+                color: colors.errorText,
                 borderRadius: 12,
                 marginBottom: 24,
+                fontSize: 14,
               }}
             >
               {error}
-            </div>
+            </motion.div>
           )}
 
           {success && (
-            <div
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: -8,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
               style={{
-                padding: "14px 18px",
-                background: "#f0fdf4",
-                border: "1px solid #bbf7d0",
-                color: "#15803d",
+                padding: "15px 18px",
+                background: colors.successBg,
+                border:
+                  `1px solid ${colors.successBorder}`,
+                color: colors.successText,
                 borderRadius: 12,
                 marginBottom: 24,
+                fontSize: 14,
               }}
             >
               {success}
-            </div>
+            </motion.div>
           )}
+
+          {/* =================================================
+              FORM
+          ================================================= */}
 
           <form onSubmit={handleSubmit}>
             <Section title="Applicant Details">
@@ -1000,7 +1315,10 @@ export default function AccountPage() {
                   label="Mobile Number"
                   value={form.mobileNumber}
                   onChange={(value) =>
-                    updateField("mobileNumber", value)
+                    updateField(
+                      "mobileNumber",
+                      value
+                    )
                   }
                   required
                   type="tel"
@@ -1010,7 +1328,10 @@ export default function AccountPage() {
                   label="Email Address"
                   value={form.emailId}
                   onChange={(value) =>
-                    updateField("emailId", value)
+                    updateField(
+                      "emailId",
+                      value
+                    )
                   }
                   required
                   type="email"
@@ -1020,7 +1341,10 @@ export default function AccountPage() {
                   label="State"
                   value={form.selectedState}
                   onChange={(value) =>
-                    updateField("selectedState", value)
+                    updateField(
+                      "selectedState",
+                      value
+                    )
                   }
                   required
                   options={[
@@ -1059,7 +1383,10 @@ export default function AccountPage() {
                   label="Date of Marriage"
                   value={form.dateOfMarriage}
                   onChange={(value) =>
-                    updateField("dateOfMarriage", value)
+                    updateField(
+                      "dateOfMarriage",
+                      value
+                    )
                   }
                   required
                   type="date"
@@ -1075,7 +1402,9 @@ export default function AccountPage() {
                   </Label>
 
                   <textarea
-                    value={form.venueOfMarriage ?? ""}
+                    value={
+                      form.venueOfMarriage ?? ""
+                    }
                     onChange={(e) =>
                       updateField(
                         "venueOfMarriage",
@@ -1099,7 +1428,10 @@ export default function AccountPage() {
                   label="Groom Mobile"
                   value={form.groomMobile}
                   onChange={(value) =>
-                    updateField("groomMobile", value)
+                    updateField(
+                      "groomMobile",
+                      value
+                    )
                   }
                   required
                   type="tel"
@@ -1109,7 +1441,10 @@ export default function AccountPage() {
                   label="Groom Email"
                   value={form.groomEmail}
                   onChange={(value) =>
-                    updateField("groomEmail", value)
+                    updateField(
+                      "groomEmail",
+                      value
+                    )
                   }
                   required
                   type="email"
@@ -1117,7 +1452,9 @@ export default function AccountPage() {
 
                 <TextInput
                   label="Occupation"
-                  value={form.groomOtherInfoOccupation}
+                  value={
+                    form.groomOtherInfoOccupation
+                  }
                   onChange={(value) =>
                     updateField(
                       "groomOtherInfoOccupation",
@@ -1129,7 +1466,9 @@ export default function AccountPage() {
 
                 <TextInput
                   label="Religion"
-                  value={form.groomOtherInfoReligion}
+                  value={
+                    form.groomOtherInfoReligion
+                  }
                   onChange={(value) =>
                     updateField(
                       "groomOtherInfoReligion",
@@ -1141,7 +1480,9 @@ export default function AccountPage() {
 
                 <SelectInput
                   label="Marital Status"
-                  value={form.groomOtherInfoMaritalStatus}
+                  value={
+                    form.groomOtherInfoMaritalStatus
+                  }
                   onChange={(value) =>
                     updateField(
                       "groomOtherInfoMaritalStatus",
@@ -1190,7 +1531,9 @@ export default function AccountPage() {
               <Grid>
                 <SelectInput
                   label="Identity Proof Type"
-                  value={form.groomIdProofType}
+                  value={
+                    form.groomIdProofType
+                  }
                   onChange={(value) =>
                     updateField(
                       "groomIdProofType",
@@ -1210,11 +1553,14 @@ export default function AccountPage() {
                   ]}
                 />
 
-                {form.groomIdProofType === "AADHAR" && (
+                {form.groomIdProofType ===
+                  "AADHAR" && (
                   <>
                     <FileInput
                       label="Groom Aadhar Front"
-                      value={form.groomAadharFront}
+                      value={
+                        form.groomAadharFront
+                      }
                       onChange={(value) =>
                         updateField(
                           "groomAadharFront",
@@ -1226,7 +1572,9 @@ export default function AccountPage() {
 
                     <FileInput
                       label="Groom Aadhar Back"
-                      value={form.groomAadharBack}
+                      value={
+                        form.groomAadharBack
+                      }
                       onChange={(value) =>
                         updateField(
                           "groomAadharBack",
@@ -1238,11 +1586,14 @@ export default function AccountPage() {
                   </>
                 )}
 
-                {form.groomIdProofType === "VOTER_ID" && (
+                {form.groomIdProofType ===
+                  "VOTER_ID" && (
                   <>
                     <FileInput
                       label="Groom Voter ID Front"
-                      value={form.groomVoterIdFront}
+                      value={
+                        form.groomVoterIdFront
+                      }
                       onChange={(value) =>
                         updateField(
                           "groomVoterIdFront",
@@ -1254,7 +1605,9 @@ export default function AccountPage() {
 
                     <FileInput
                       label="Groom Voter ID Back"
-                      value={form.groomVoterIdBack}
+                      value={
+                        form.groomVoterIdBack
+                      }
                       onChange={(value) =>
                         updateField(
                           "groomVoterIdBack",
@@ -1272,7 +1625,9 @@ export default function AccountPage() {
               <Grid>
                 <SelectInput
                   label="Birth Proof Type"
-                  value={form.groomBirthProofType}
+                  value={
+                    form.groomBirthProofType
+                  }
                   onChange={(value) =>
                     updateField(
                       "groomBirthProofType",
@@ -1286,8 +1641,10 @@ export default function AccountPage() {
                       value: "PASSPORT",
                     },
                     {
-                      label: "10th Birth Certificate",
-                      value: "BIRTH_CERTIFICATE",
+                      label:
+                        "10th Birth Certificate",
+                      value:
+                        "BIRTH_CERTIFICATE",
                     },
                   ]}
                 />
@@ -1297,7 +1654,9 @@ export default function AccountPage() {
                   <>
                     <FileInput
                       label="Passport Front"
-                      value={form.groomPassportFront}
+                      value={
+                        form.groomPassportFront
+                      }
                       onChange={(value) =>
                         updateField(
                           "groomPassportFront",
@@ -1309,7 +1668,9 @@ export default function AccountPage() {
 
                     <FileInput
                       label="Passport Back"
-                      value={form.groomPassportBack}
+                      value={
+                        form.groomPassportBack
+                      }
                       onChange={(value) =>
                         updateField(
                           "groomPassportBack",
@@ -1346,7 +1707,9 @@ export default function AccountPage() {
               <Grid>
                 <TextInput
                   label="Occupation"
-                  value={form.brideOtherInfoOccupation}
+                  value={
+                    form.brideOtherInfoOccupation
+                  }
                   onChange={(value) =>
                     updateField(
                       "brideOtherInfoOccupation",
@@ -1358,7 +1721,9 @@ export default function AccountPage() {
 
                 <TextInput
                   label="Religion"
-                  value={form.brideOtherInfoReligion}
+                  value={
+                    form.brideOtherInfoReligion
+                  }
                   onChange={(value) =>
                     updateField(
                       "brideOtherInfoReligion",
@@ -1370,7 +1735,9 @@ export default function AccountPage() {
 
                 <SelectInput
                   label="Marital Status"
-                  value={form.brideOtherInfoMaritalStatus}
+                  value={
+                    form.brideOtherInfoMaritalStatus
+                  }
                   onChange={(value) =>
                     updateField(
                       "brideOtherInfoMaritalStatus",
@@ -1419,7 +1786,9 @@ export default function AccountPage() {
               <Grid>
                 <FileInput
                   label="Bride Aadhar Front"
-                  value={form.brideAadharFront}
+                  value={
+                    form.brideAadharFront
+                  }
                   onChange={(value) =>
                     updateField(
                       "brideAadharFront",
@@ -1431,7 +1800,9 @@ export default function AccountPage() {
 
                 <FileInput
                   label="Bride Aadhar Back"
-                  value={form.brideAadharBack}
+                  value={
+                    form.brideAadharBack
+                  }
                   onChange={(value) =>
                     updateField(
                       "brideAadharBack",
@@ -1443,7 +1814,9 @@ export default function AccountPage() {
 
                 <FileInput
                   label="Bride Other Proof"
-                  value={form.brideOtherProofImage}
+                  value={
+                    form.brideOtherProofImage
+                  }
                   onChange={(value) =>
                     updateField(
                       "brideOtherProofImage",
@@ -1455,7 +1828,9 @@ export default function AccountPage() {
 
                 <TextInput
                   label="Other Proof Name"
-                  value={form.brideOtherProofName}
+                  value={
+                    form.brideOtherProofName
+                  }
                   onChange={(value) =>
                     updateField(
                       "brideOtherProofName",
@@ -1467,7 +1842,9 @@ export default function AccountPage() {
 
                 <FileInput
                   label="Bride Birth Proof"
-                  value={form.brideBirthProofImage}
+                  value={
+                    form.brideBirthProofImage
+                  }
                   onChange={(value) =>
                     updateField(
                       "brideBirthProofImage",
@@ -1479,7 +1856,9 @@ export default function AccountPage() {
 
                 <TextInput
                   label="Birth Proof Name"
-                  value={form.brideBirthProofName}
+                  value={
+                    form.brideBirthProofName
+                  }
                   onChange={(value) =>
                     updateField(
                       "brideBirthProofName",
@@ -1495,7 +1874,9 @@ export default function AccountPage() {
               <Grid>
                 <FileInput
                   label="Marriage Proof Photo"
-                  value={form.marriageProofPhoto}
+                  value={
+                    form.marriageProofPhoto
+                  }
                   onChange={(value) =>
                     updateField(
                       "marriageProofPhoto",
@@ -1507,7 +1888,9 @@ export default function AccountPage() {
 
                 <FileInput
                   label="Couple Photograph"
-                  value={form.marriageProofCoupleImage}
+                  value={
+                    form.marriageProofCoupleImage
+                  }
                   onChange={(value) =>
                     updateField(
                       "marriageProofCoupleImage",
@@ -1519,7 +1902,9 @@ export default function AccountPage() {
 
                 <FileInput
                   label="Marriage Invitation"
-                  value={form.marriageProofInvitation}
+                  value={
+                    form.marriageProofInvitation
+                  }
                   onChange={(value) =>
                     updateField(
                       "marriageProofInvitation",
@@ -1535,7 +1920,9 @@ export default function AccountPage() {
               <Grid>
                 <SelectInput
                   label="Religious Certificate Type"
-                  value={form.religiousCertificateType}
+                  value={
+                    form.religiousCertificateType
+                  }
                   onChange={(value) =>
                     updateField(
                       "religiousCertificateType",
@@ -1653,7 +2040,9 @@ export default function AccountPage() {
 
                 <TextInput
                   label="Witness 1 Phone"
-                  value={form.witness1PhoneNumber}
+                  value={
+                    form.witness1PhoneNumber
+                  }
                   onChange={(value) =>
                     updateField(
                       "witness1PhoneNumber",
@@ -1666,7 +2055,9 @@ export default function AccountPage() {
 
                 <FileInput
                   label="Witness 1 Aadhar Front"
-                  value={form.witness1AadharFront}
+                  value={
+                    form.witness1AadharFront
+                  }
                   onChange={(value) =>
                     updateField(
                       "witness1AadharFront",
@@ -1678,7 +2069,9 @@ export default function AccountPage() {
 
                 <FileInput
                   label="Witness 1 Aadhar Back"
-                  value={form.witness1AadharBack}
+                  value={
+                    form.witness1AadharBack
+                  }
                   onChange={(value) =>
                     updateField(
                       "witness1AadharBack",
@@ -1690,7 +2083,9 @@ export default function AccountPage() {
 
                 <FileInput
                   label="Witness 1 PAN Card"
-                  value={form.witness1PanCardPhoto}
+                  value={
+                    form.witness1PanCardPhoto
+                  }
                   onChange={(value) =>
                     updateField(
                       "witness1PanCardPhoto",
@@ -1720,7 +2115,9 @@ export default function AccountPage() {
 
                 <TextInput
                   label="Witness 2 Phone"
-                  value={form.witness2PhoneNumber}
+                  value={
+                    form.witness2PhoneNumber
+                  }
                   onChange={(value) =>
                     updateField(
                       "witness2PhoneNumber",
@@ -1733,7 +2130,9 @@ export default function AccountPage() {
 
                 <FileInput
                   label="Witness 2 Aadhar Front"
-                  value={form.witness2AadharFront}
+                  value={
+                    form.witness2AadharFront
+                  }
                   onChange={(value) =>
                     updateField(
                       "witness2AadharFront",
@@ -1745,7 +2144,9 @@ export default function AccountPage() {
 
                 <FileInput
                   label="Witness 2 Aadhar Back"
-                  value={form.witness2AadharBack}
+                  value={
+                    form.witness2AadharBack
+                  }
                   onChange={(value) =>
                     updateField(
                       "witness2AadharBack",
@@ -1757,7 +2158,9 @@ export default function AccountPage() {
 
                 <FileInput
                   label="Witness 2 PAN Card"
-                  value={form.witness2PanCardPhoto}
+                  value={
+                    form.witness2PanCardPhoto
+                  }
                   onChange={(value) =>
                     updateField(
                       "witness2PanCardPhoto",
@@ -1773,7 +2176,9 @@ export default function AccountPage() {
               <Grid>
                 <FileInput
                   label="Groom Signature"
-                  value={form.signatureImageGroom}
+                  value={
+                    form.signatureImageGroom
+                  }
                   onChange={(value) =>
                     updateField(
                       "signatureImageGroom",
@@ -1785,7 +2190,9 @@ export default function AccountPage() {
 
                 <FileInput
                   label="Bride Signature"
-                  value={form.signatureImageBride}
+                  value={
+                    form.signatureImageBride
+                  }
                   onChange={(value) =>
                     updateField(
                       "signatureImageBride",
@@ -1797,7 +2204,9 @@ export default function AccountPage() {
 
                 <FileInput
                   label="Witness 1 Signature"
-                  value={form.signatureImageWitness1}
+                  value={
+                    form.signatureImageWitness1
+                  }
                   onChange={(value) =>
                     updateField(
                       "signatureImageWitness1",
@@ -1809,7 +2218,9 @@ export default function AccountPage() {
 
                 <FileInput
                   label="Witness 2 Signature"
-                  value={form.signatureImageWitness2}
+                  value={
+                    form.signatureImageWitness2
+                  }
                   onChange={(value) =>
                     updateField(
                       "signatureImageWitness2",
@@ -1821,34 +2232,48 @@ export default function AccountPage() {
               </Grid>
             </Section>
 
+            {/* =================================================
+                SUBMIT
+            ================================================= */}
+
             <div
               style={{
                 display: "flex",
                 justifyContent: "flex-end",
-                marginTop: 10,
+                marginTop: 12,
               }}
             >
-              <button
+              <motion.button
+                className="account-submit"
+                whileHover={{
+                  scale:
+                    saving || loading ? 1 : 1.02,
+                }}
+                whileTap={{
+                  scale:
+                    saving || loading ? 1 : 0.97,
+                }}
                 type="submit"
                 disabled={saving || loading}
                 style={{
                   border: "none",
-                  borderRadius: 12,
-                  padding: "14px 30px",
-                  fontSize: 15,
+                  borderRadius: 10,
+                  padding: "15px 30px",
+                  fontSize: 14,
                   fontWeight: 700,
                   cursor:
                     saving || loading
                       ? "not-allowed"
                       : "pointer",
                   opacity:
-                    saving || loading ? 0.7 : 1,
-                  background:
-                    (theme as any)?.accentTeal ||
-                    (theme as any)?.primary ||
-                    "#0f766e",
-                  color: "#fff",
-                  minWidth: 180,
+                    saving || loading ? 0.65 : 1,
+                  background: colors.darkText,
+                  color: colors.white,
+                  minWidth: 200,
+                  fontFamily:
+                    "'Lato', sans-serif",
+                  boxShadow:
+                    "0 5px 18px rgba(74,14,25,0.18)",
                 }}
               >
                 {saving
@@ -1856,16 +2281,45 @@ export default function AccountPage() {
                   : document?._id
                   ? "Update Registration"
                   : "Save Registration"}
-              </button>
+              </motion.button>
             </div>
           </form>
         </motion.div>
       </main>
+
+      {/* =====================================================
+          FOOTER — SAME BURGUNDY SYSTEM
+      ===================================================== */}
+
+      <footer
+        style={{
+          background: colors.darkBg,
+          color: colors.white,
+          padding: "30px 20px",
+          textAlign: "center",
+        }}
+      >
+        <p
+          style={{
+            fontFamily:
+              "'Playfair Display', Georgia, serif",
+            fontSize: 18,
+            marginBottom: 6,
+          }}
+        >
+          VivahSetu
+        </p>
+
+        <p
+          style={{
+            fontSize: 12,
+            color: "#D8BEC3",
+          }}
+        >
+          Simplifying marriage registration
+          with care and clarity.
+        </p>
+      </footer>
     </div>
   );
 }
-
-
-
-
-

@@ -7,54 +7,120 @@ import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../context/AuthContext";
 
+const COLORS = {
+  bg: "#E4E0D5",
+  burgundy: "#4A0E19",
+  darkBurgundy: "#380913",
+  cream: "#F7F3EA",
+  card: "#FBF9F4",
+  muted: "#76555C",
+  lightBorder: "#C9B8BA",
+  white: "#FFFFFF",
+};
+
 export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
 
   const [form, setForm] = useState({ email: "", password: "" });
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{
+    email?: string;
+    password?: string;
+  }>({});
   const [submitting, setSubmitting] = useState(false);
   const [apiError, setApiError] = useState("");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get('session') === 'expired') {
-      setApiError('Your session has expired. Please log in again.');
-      window.history.replaceState({}, '', window.location.pathname);
+
+    if (params.get("session") === "expired") {
+      setApiError(
+        "Your session has expired. Please log in again."
+      );
+
+      window.history.replaceState(
+        {},
+        "",
+        window.location.pathname
+      );
     }
   }, []);
 
-  const set = (field: "email" | "password") => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((p) => ({ ...p, [field]: e.target.value }));
-    setErrors((p) => ({ ...p, [field]: "" }));
-    setApiError("");
-  };
+  const set =
+    (field: "email" | "password") =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setForm((p) => ({
+        ...p,
+        [field]: e.target.value,
+      }));
+
+      setErrors((p) => ({
+        ...p,
+        [field]: "",
+      }));
+
+      setApiError("");
+    };
 
   const validate = () => {
     const e: typeof errors = {};
-    if (!form.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) e.email = "Valid email required";
-    if (!form.password) e.password = "Password is required";
+
+    if (
+      !form.email.match(
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      )
+    ) {
+      e.email = "Valid email required";
+    }
+
+    if (!form.password) {
+      e.password = "Password is required";
+    }
+
     setErrors(e);
+
     return Object.keys(e).length === 0;
   };
 
   const handleSubmit = async () => {
     if (!validate()) return;
+
     setSubmitting(true);
     setApiError("");
+
     try {
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
-      const res = await fetch(`${BASE_URL}/users/login/User`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: form.email, password: form.password }),
-      });
+      const BASE_URL =
+        process.env.NEXT_PUBLIC_API_URL || "";
+
+      const res = await fetch(
+        `${BASE_URL}/users/login/User`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: form.email,
+            password: form.password,
+          }),
+        }
+      );
+
       const data = await res.json();
-      if (!res.ok) throw new Error(data?.message || "Login failed");
+
+      if (!res.ok) {
+        throw new Error(
+          data?.message || "Login failed"
+        );
+      }
+
       login(data.user, data.token);
       router.push("/account");
     } catch (err: any) {
-      setApiError(err?.message || "Invalid credentials. Please try again.");
+      setApiError(
+        err?.message ||
+          "Invalid credentials. Please try again."
+      );
     } finally {
       setSubmitting(false);
     }
@@ -62,75 +128,221 @@ export default function LoginPage() {
 
   const inp: React.CSSProperties = {
     width: "100%",
-    padding: "12px 14px",
-    borderRadius: 9,
-    border: "1.5px solid #e0f2f1",
+    padding: "13px 14px",
+    borderRadius: 8,
+    border: `1.5px solid ${COLORS.lightBorder}`,
     fontSize: "0.9rem",
     fontFamily: "'Lato', sans-serif",
-    color: "#0f4c4c",
-    background: "#fafffe",
+    color: COLORS.burgundy,
+    background: COLORS.white,
     outline: "none",
     boxSizing: "border-box",
+    transition: "all 0.2s ease",
   };
 
   return (
     <div
       style={{
         fontFamily: "'Lato', sans-serif",
-        background: "#fafffe",
+        background: COLORS.bg,
         minHeight: "100vh",
+        color: COLORS.burgundy,
       }}
     >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        input:focus { border-color: #0d9488 !important; box-shadow: 0 0 0 3px rgba(13,148,136,0.08); }
+
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+
+        input:focus {
+          border-color: #4A0E19 !important;
+          box-shadow: 0 0 0 3px rgba(74,14,25,0.08);
+        }
+
+        input::placeholder {
+          color: #9B8589;
+        }
+
+        .login-card {
+          transition: all 0.3s ease;
+        }
+
+        .login-card:hover {
+          box-shadow: 0 18px 45px rgba(74,14,25,0.12) !important;
+        }
+
+        @media (max-width: 520px) {
+          .login-wrapper {
+            padding: 1.25rem !important;
+          }
+
+          .login-card {
+            padding: 2rem 1.5rem !important;
+          }
+        }
       `}</style>
 
       <Navbar />
 
-      <div
+      {/* HERO */}
+
+      <section
         style={{
-          minHeight: "calc(100vh - 68px)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "2rem",
+          background: COLORS.darkBurgundy,
+          padding: "4rem 2rem 4.5rem",
+          textAlign: "center",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
+        <div
+          style={{
+            position: "absolute",
+            width: 280,
+            height: 280,
+            borderRadius: "50%",
+            border: "1px solid rgba(255,255,255,0.07)",
+            top: -160,
+            left: -70,
+          }}
+        />
+
+        <div
+          style={{
+            position: "absolute",
+            width: 350,
+            height: 350,
+            borderRadius: "50%",
+            border: "1px solid rgba(255,255,255,0.06)",
+            bottom: -260,
+            right: -100,
+          }}
+        />
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           style={{
-            width: "100%",
-            maxWidth: 420,
-            background: "#fff",
-            padding: "2.5rem",
-            borderRadius: 16,
-            boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
+            position: "relative",
+            zIndex: 2,
           }}
         >
-          <h2
+          <span
             style={{
-              fontSize: "1.8rem",
+              fontSize: "0.7rem",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "#D9BFC4",
               fontWeight: 700,
-              color: "#0f4c4c",
-              fontFamily: "'Playfair Display', Georgia, serif",
-              marginBottom: "0.3rem",
             }}
           >
             Welcome Back
-          </h2>
+          </span>
+
+          <h1
+            style={{
+              marginTop: "0.7rem",
+              fontSize: "clamp(2.2rem, 5vw, 3rem)",
+              color: COLORS.white,
+              fontFamily:
+                "'Playfair Display', Georgia, serif",
+              lineHeight: 1.2,
+            }}
+          >
+            Sign In to VivahSetu
+          </h1>
+
           <p
             style={{
-              color: "#6b9e9e",
-              fontSize: "0.85rem",
+              marginTop: "0.9rem",
+              color: "rgba(255,255,255,0.68)",
+              fontSize: "0.9rem",
+            }}
+          >
+            Continue your marriage registration journey.
+          </p>
+        </motion.div>
+      </section>
+
+      {/* LOGIN */}
+
+      <div
+        className="login-wrapper"
+        style={{
+          minHeight: "calc(100vh - 68px)",
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "center",
+          padding: "4rem 2rem 6rem",
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="login-card"
+          style={{
+            width: "100%",
+            maxWidth: 430,
+            background: COLORS.card,
+            padding: "2.5rem",
+            borderRadius: 14,
+            border: `1px solid ${COLORS.burgundy}`,
+            boxShadow:
+              "0 8px 30px rgba(74,14,25,0.07)",
+          }}
+        >
+          <div
+            style={{
+              textAlign: "center",
               marginBottom: "2rem",
             }}
           >
-            Enter your credentials to continue
-          </p>
+            <div
+              style={{
+                width: 52,
+                height: 52,
+                borderRadius: "50%",
+                background: COLORS.darkBurgundy,
+                color: COLORS.white,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 1rem",
+                fontSize: "1.2rem",
+              }}
+            >
+              ♡
+            </div>
+
+            <h2
+              style={{
+                fontSize: "1.75rem",
+                fontWeight: 700,
+                color: COLORS.burgundy,
+                fontFamily:
+                  "'Playfair Display', Georgia, serif",
+                marginBottom: "0.45rem",
+              }}
+            >
+              Welcome Back
+            </h2>
+
+            <p
+              style={{
+                color: COLORS.muted,
+                fontSize: "0.84rem",
+                lineHeight: 1.6,
+              }}
+            >
+              Enter your credentials to continue
+            </p>
+          </div>
 
           <AnimatePresence>
             {apiError && (
@@ -139,13 +351,14 @@ export default function LoginPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 style={{
-                  padding: "10px 14px",
+                  padding: "11px 14px",
                   borderRadius: 8,
-                  background: "#fef2f2",
-                  border: "1px solid #fecaca",
-                  color: "#dc2626",
-                  fontSize: "0.84rem",
+                  background: "#FBEEEE",
+                  border: "1px solid #E8BABA",
+                  color: "#A51D2D",
+                  fontSize: "0.82rem",
                   marginBottom: "1.25rem",
+                  lineHeight: 1.5,
                 }}
               >
                 {apiError}
@@ -153,100 +366,154 @@ export default function LoginPage() {
             )}
           </AnimatePresence>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.25rem",
+            }}
+          >
+            {/* EMAIL */}
+
             <div>
               <label
                 style={{
                   display: "block",
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
-                  color: "#0f4c4c",
-                  marginBottom: 6,
+                  fontSize: "0.74rem",
+                  fontWeight: 700,
+                  color: COLORS.burgundy,
+                  marginBottom: 7,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.06em",
                 }}
               >
-                Email Address <span style={{ color: "#0d9488" }}>*</span>
+                Email Address{" "}
+                <span>*</span>
               </label>
+
               <input
                 type="email"
                 style={{
                   ...inp,
-                  borderColor: errors.email ? "#dc2626" : "#e0f2f1",
+                  borderColor: errors.email
+                    ? "#DC2626"
+                    : COLORS.lightBorder,
                 }}
                 placeholder="you@example.com"
                 value={form.email}
                 onChange={set("email")}
-                onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                onKeyDown={(e) =>
+                  e.key === "Enter" &&
+                  handleSubmit()
+                }
               />
+
               {errors.email && (
-                <p style={{ fontSize: "0.74rem", color: "#dc2626", marginTop: 4 }}>
+                <p
+                  style={{
+                    fontSize: "0.73rem",
+                    color: "#DC2626",
+                    marginTop: 5,
+                  }}
+                >
                   {errors.email}
                 </p>
               )}
             </div>
 
+            {/* PASSWORD */}
+
             <div>
-              <div
+              <label
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: 6,
+                  display: "block",
+                  fontSize: "0.74rem",
+                  fontWeight: 700,
+                  color: COLORS.burgundy,
+                  marginBottom: 7,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.06em",
                 }}
               >
-                <label
-                  style={{
-                    fontSize: "0.8rem",
-                    fontWeight: 600,
-                    color: "#0f4c4c",
-                  }}
-                >
-                  Password <span style={{ color: "#0d9488" }}>*</span>
-                </label>
-              </div>
+                Password <span>*</span>
+              </label>
+
               <input
                 type="password"
                 style={{
                   ...inp,
-                  borderColor: errors.password ? "#dc2626" : "#e0f2f1",
+                  borderColor: errors.password
+                    ? "#DC2626"
+                    : COLORS.lightBorder,
                 }}
                 placeholder="Your password"
                 value={form.password}
                 onChange={set("password")}
-                onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                onKeyDown={(e) =>
+                  e.key === "Enter" &&
+                  handleSubmit()
+                }
               />
+
               {errors.password && (
-                <p style={{ fontSize: "0.74rem", color: "#dc2626", marginTop: 4 }}>
+                <p
+                  style={{
+                    fontSize: "0.73rem",
+                    color: "#DC2626",
+                    marginTop: 5,
+                  }}
+                >
                   {errors.password}
                 </p>
               )}
             </div>
 
+            {/* BUTTON */}
+
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
+              whileHover={{
+                scale: 1.015,
+                y: -2,
+              }}
+              whileTap={{
+                scale: 0.98,
+              }}
               onClick={handleSubmit}
               disabled={submitting}
               style={{
                 padding: "14px",
-                borderRadius: 10,
-                border: "none",
+                borderRadius: 8,
+                border: `1px solid ${COLORS.burgundy}`,
                 background: submitting
-                  ? "#6b9e9e"
-                  : "linear-gradient(135deg, #0d9488, #0f4c4c)",
-                color: "#fff",
-                fontSize: "0.95rem",
+                  ? COLORS.muted
+                  : `linear-gradient(135deg, ${COLORS.burgundy}, ${COLORS.darkBurgundy})`,
+                color: COLORS.white,
+                fontSize: "0.9rem",
                 fontWeight: 700,
-                cursor: submitting ? "not-allowed" : "pointer",
+                cursor: submitting
+                  ? "not-allowed"
+                  : "pointer",
                 fontFamily: "'Lato', sans-serif",
-                marginTop: "0.25rem",
+                marginTop: "0.15rem",
               }}
             >
-              {submitting ? "Signing in..." : "Sign In →"}
+              {submitting
+                ? "Signing in..."
+                : "Sign In →"}
             </motion.button>
+
+            <div
+              style={{
+                height: 1,
+                background: "#D8C9CA",
+                margin: "0.2rem 0",
+              }}
+            />
 
             <p
               style={{
                 fontSize: "0.82rem",
-                color: "#6b9e9e",
+                color: COLORS.muted,
                 textAlign: "center",
               }}
             >
@@ -254,8 +521,8 @@ export default function LoginPage() {
               <Link
                 href="/register"
                 style={{
-                  color: "#0d9488",
-                  fontWeight: 600,
+                  color: COLORS.burgundy,
+                  fontWeight: 700,
                   textDecoration: "none",
                 }}
               >
@@ -265,6 +532,23 @@ export default function LoginPage() {
           </div>
         </motion.div>
       </div>
+
+      {/* FOOTER */}
+
+      <footer
+        style={{
+          background: COLORS.darkBurgundy,
+          padding: "2rem",
+          textAlign: "center",
+          color: "rgba(255,255,255,0.5)",
+          fontSize: "0.73rem",
+          borderTop:
+            "1px solid rgba(255,255,255,0.08)",
+        }}
+      >
+        © 2024 VivahSetu · India's trusted marriage
+        registration platform
+      </footer>
     </div>
   );
 }

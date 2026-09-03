@@ -28,33 +28,43 @@ export default function Navbar({ religionKey }: NavbarProps) {
     router.push("/");
   };
 
+  // Figma color scheme
+  const colors = {
+    bg: "#E4E0D5",
+    darkText: "#4A0E19",
+    lightBg: "#F0FDFA",
+    white: "#FFFFFF",
+    darkBg: "#380913",
+    accent: "#4A0E19",
+  };
+
   return (
     <nav
       style={{
         position: "sticky",
         top: 0,
         zIndex: 100,
-        background: "#074949",
-        borderBottom: "none",
+        background: colors.bg,
+        borderBottom: "1px solid rgba(74, 14, 25, 0.1)",
         backdropFilter: "blur(16px)",
         fontFamily: "'Lato', sans-serif",
-        boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
+        boxShadow: "0 4px 24px rgba(74, 14, 25, 0.08)",
       }}
     >
       <div style={{
-        maxWidth: 1200,
+        maxWidth: 1400,
         margin: "0 auto",
         padding: "0 2rem",
-        display: "grid",
-        gridTemplateColumns: "1fr auto 1fr",
+        display: "flex",
         alignItems: "center",
-        height: 68,
-        gap: "1rem",
+        justifyContent: "space-between",
+        height: 90,
+        gap: "1.5rem",
       }}>
         {/* LEFT: Blogs + Contact */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.25rem" }} className="desktop-left">
+        <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", flexShrink: 0 }} className="desktop-left">
           {[
-            { label: "Blogs", href: "/blogs" },
+            { label: "Blogs", href: "/blog" },
             { label: "Contact", href: "/contact" },
           ].map((link) => (
             <Link key={link.label} href={link.href} style={{
@@ -63,8 +73,8 @@ export default function Navbar({ religionKey }: NavbarProps) {
               borderRadius: 8,
               fontSize: "0.88rem",
               fontWeight: 500,
-              color: isActive(link.href) ? "#0d9488" : "white",
-              background: isActive(link.href) ? "#f0fdfa" : "transparent",
+              color: isActive(link.href) ? colors.white : colors.darkText,
+              background: isActive(link.href) ? colors.darkText : "transparent",
               transition: "all 0.2s",
               whiteSpace: "nowrap",
             }}>
@@ -73,7 +83,7 @@ export default function Navbar({ religionKey }: NavbarProps) {
           ))}
         </div>
 
-        {/* CENTER: Logo */}
+        {/* CENTER: Logo - MUCH BIGGER */}
         <Link
           href={base || "/"}
           style={{
@@ -83,6 +93,7 @@ export default function Navbar({ religionKey }: NavbarProps) {
             justifyContent: "center",
             position: "relative",
             zIndex: 1,
+            flexShrink: 0,
           }}
           onClick={(e) => {
             e.stopPropagation();
@@ -91,8 +102,8 @@ export default function Navbar({ religionKey }: NavbarProps) {
           <div
             style={{
               position: "relative",
-              width: 150,
-              height: 50,
+              width: 500,
+              height: 300,
               flexShrink: 0,
             }}
           >
@@ -110,14 +121,14 @@ export default function Navbar({ religionKey }: NavbarProps) {
         </Link>
 
         {/* RIGHT: Register + Login/Account */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", justifyContent: "flex-end" }} className="desktop-right">
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0 }} className="desktop-right">
           <Link href="/register" style={{ textDecoration: "none" }}>
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={{
-              padding: "9px 18px",
+              padding: "10px 24px",
               borderRadius: 8,
-              background: "linear-gradient(135deg, #061615, #021414)",
-              color: "#fff",
-              fontSize: "0.85rem",
+              background: colors.darkText,
+              color: colors.white,
+              fontSize: "0.9rem",
               fontWeight: 600,
               cursor: "pointer",
               whiteSpace: "nowrap",
@@ -132,32 +143,32 @@ export default function Navbar({ religionKey }: NavbarProps) {
                 display: "flex",
                 alignItems: "center",
                 gap: 8,
-                padding: "7px 12px",
+                padding: "7px 14px",
                 borderRadius: 8,
-                border: "1.5px solid #e0f2f1",
-                background: "#f0fdfa",
+                border: `1.5px solid ${colors.darkText}`,
+                background: colors.white,
                 cursor: "pointer",
                 fontFamily: "'Lato', sans-serif",
               }}>
                 <div style={{
-                  width: 26,
-                  height: 26,
+                  width: 32,
+                  height: 32,
                   borderRadius: "50%",
-                  background: "linear-gradient(135deg, #0d9488, #0f4c4c)",
+                  background: colors.darkText,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: "#fff",
-                  fontSize: "0.72rem",
+                  color: colors.white,
+                  fontSize: "0.8rem",
                   fontWeight: 700,
                   flexShrink: 0,
                 }}>
                   {user?.name?.[0]?.toUpperCase() || "U"}
                 </div>
-                <span style={{ fontSize: "0.83rem", fontWeight: 600, color: "#0f4c4c", maxWidth: 80, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: colors.darkText, maxWidth: 80, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {user?.name?.split(" ")[0]}
                 </span>
-                <span style={{ color: "#6b9e9e", fontSize: "0.65rem" }}>▾</span>
+                <span style={{ color: colors.darkText, fontSize: "0.65rem", opacity: 0.6 }}>▾</span>
               </button>
 
               <AnimatePresence>
@@ -166,20 +177,20 @@ export default function Navbar({ religionKey }: NavbarProps) {
                     position: "absolute",
                     top: "calc(100% + 8px)",
                     right: 0,
-                    background: "#fff",
-                    border: "1px solid #e0f2f1",
+                    background: colors.white,
+                    border: `1px solid ${colors.darkText}`,
                     borderRadius: 10,
-                    boxShadow: "0 8px 32px rgba(13,148,136,0.12)",
+                    boxShadow: "0 8px 32px rgba(74, 14, 25, 0.12)",
                     minWidth: 190,
                     zIndex: 200,
                     overflow: "hidden",
                   }}>
-                    <div style={{ padding: "0.75rem 1rem", borderBottom: "1px solid #e0f2f1" }}>
-                      <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f4c4c" }}>{user?.name}</div>
-                      <div style={{ fontSize: "0.72rem", color: "#6b9e9e", marginTop: 2 }}>{user?.email}</div>
+                    <div style={{ padding: "0.75rem 1rem", borderBottom: `1px solid ${colors.darkText}` }}>
+                      <div style={{ fontSize: "0.85rem", fontWeight: 700, color: colors.darkText }}>{user?.name}</div>
+                      <div style={{ fontSize: "0.72rem", color: colors.darkText, opacity: 0.6, marginTop: 2 }}>{user?.email}</div>
                     </div>
                     <Link href="/account" onClick={() => setDropdownOpen(false)}
-                      style={{ display: "block", padding: "0.75rem 1rem", textDecoration: "none", fontSize: "0.85rem", color: "#0f4c4c", fontWeight: 500 }}>
+                      style={{ display: "block", padding: "0.75rem 1rem", textDecoration: "none", fontSize: "0.85rem", color: colors.darkText, fontWeight: 500 }}>
                       👤 My Account
                     </Link>
                     <button onClick={handleLogout} style={{
@@ -189,7 +200,7 @@ export default function Navbar({ religionKey }: NavbarProps) {
                       padding: "0.75rem 1rem",
                       background: "none",
                       border: "none",
-                      borderTop: "1px solid #e0f2f1",
+                      borderTop: `1px solid ${colors.darkText}`,
                       fontSize: "0.85rem",
                       color: "#dc2626",
                       cursor: "pointer",
@@ -205,14 +216,14 @@ export default function Navbar({ religionKey }: NavbarProps) {
           ) : (
             <Link href="/login" style={{ textDecoration: "none" }}>
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={{
-                padding: "9px 18px",
+                padding: "10px 24px",
                 borderRadius: 8,
-                border: "1.5px solid #0d9488",
-                color: "#0d9488",
-                fontSize: "0.85rem",
+                border: `1.5px solid ${colors.darkText}`,
+                color: colors.darkText,
+                fontSize: "0.9rem",
                 fontWeight: 600,
                 cursor: "pointer",
-                background: "#fff",
+                background: "transparent",
                 whiteSpace: "nowrap",
               }}>
                 Login
@@ -223,12 +234,12 @@ export default function Navbar({ religionKey }: NavbarProps) {
 
         {/* Mobile Hamburger */}
         <button onClick={() => setMenuOpen((p) => !p)}
-          style={{ display: "none", background: "none", border: "none", cursor: "pointer", padding: 8, gridColumn: "3", justifySelf: "end" }}
+          style={{ display: "none", background: "none", border: "none", cursor: "pointer", padding: 8 }}
           className="mobile-menu-btn" aria-label="Toggle menu">
-          <div style={{ width: 22, display: "flex", flexDirection: "column", gap: 5 }}>
-            <span style={{ display: "block", height: 2, borderRadius: 2, background: "#0f4c4c", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translate(5px, 5px)" : "none" }} />
-            <span style={{ display: "block", height: 2, borderRadius: 2, background: "#0f4c4c", opacity: menuOpen ? 0 : 1, transition: "all 0.3s" }} />
-            <span style={{ display: "block", height: 2, borderRadius: 2, background: "#0f4c4c", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translate(5px, -5px)" : "none" }} />
+          <div style={{ width: 24, display: "flex", flexDirection: "column", gap: 5 }}>
+            <span style={{ display: "block", height: 2.5, borderRadius: 2, background: colors.darkText, transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translate(5px, 5px)" : "none" }} />
+            <span style={{ display: "block", height: 2.5, borderRadius: 2, background: colors.darkText, opacity: menuOpen ? 0 : 1, transition: "all 0.3s" }} />
+            <span style={{ display: "block", height: 2.5, borderRadius: 2, background: colors.darkText, transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translate(5px, -5px)" : "none" }} />
           </div>
         </button>
       </div>
@@ -237,26 +248,26 @@ export default function Navbar({ religionKey }: NavbarProps) {
       <AnimatePresence>
         {menuOpen && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
-            style={{ overflow: "hidden", borderTop: "1px solid #e0f2f1", background: "#fff" }}>
+            style={{ overflow: "hidden", borderTop: `1px solid ${colors.darkText}`, background: colors.white }}>
             <div style={{ padding: "1rem 2rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
               {[
-                { label: "Blogs", href: "/blogs" },
+                { label: "Blogs", href: "/blog" },
                 { label: "Contact", href: "/contact" }
               ].map((link) => (
                 <Link key={link.label} href={link.href} onClick={() => setMenuOpen(false)}
-                  style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: "#0f4c4c", background: "#f0fdfa", fontWeight: 500 }}>
+                  style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: colors.darkText, background: colors.lightBg, fontWeight: 500 }}>
                   {link.label}
                 </Link>
               ))}
               
               <Link href="/register" onClick={() => setMenuOpen(false)}
-                style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: "#fff", background: "linear-gradient(135deg, #0d9488, #0f4c4c)", fontWeight: 600, textAlign: "center" }}>
+                style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: colors.white, background: colors.darkText, fontWeight: 600, textAlign: "center" }}>
                 Register
               </Link>
               {isLoggedIn ? (
                 <>
                   <Link href="/account" onClick={() => setMenuOpen(false)}
-                    style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: "#0f4c4c", background: "#f0fdfa", fontWeight: 500 }}>
+                    style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: colors.darkText, background: colors.lightBg, fontWeight: 500 }}>
                     👤 My Account
                   </Link>
                   <button onClick={() => { handleLogout(); setMenuOpen(false); }}
@@ -266,7 +277,7 @@ export default function Navbar({ religionKey }: NavbarProps) {
                 </>
               ) : (
                 <Link href="/login" onClick={() => setMenuOpen(false)}
-                  style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: "#0d9488", background: "#f0fdfa", fontWeight: 600, textAlign: "center", border: "1.5px solid #0d9488" }}>
+                  style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: colors.darkText, background: colors.lightBg, fontWeight: 600, textAlign: "center", border: `1.5px solid ${colors.darkText}` }}>
                   Login
                 </Link>
               )}

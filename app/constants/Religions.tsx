@@ -1,5 +1,18 @@
+// constants/Religions.ts
+
 import React from "react";
 import { ReligionKey, ReligionTheme } from "../types/Religion";
+
+// Figma color scheme
+const figmaColors = {
+  bg: "#E4E0D5",
+  darkText: "#4A0E19",
+  lightBg: "#F0FDFA",
+  white: "#FFFFFF",
+  darkBg: "#380913",
+  accent: "#4A0E19",
+  cardBg: "#F8FEFE",
+};
 
 export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
   "hinduism-sikhism-buddhism-jainism": {
@@ -10,15 +23,15 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
     heroHeading: "Honouring Sacred Traditions",
     heroSubtext:
       "Legally register your Vivah, Anand Karaj or Dharmic union with dignity, care, and complete legal compliance — all from the comfort of your home.",
-    bannerImage: "/banners/dharmic.jpg",
-    accentTeal: "#0d9488",
-    lightTeal: "#f0fdfa",
-    darkTeal: "#0f4c4c",
-    borderColor: "#99f6e4",
+    bannerImage: "/media/hinduBanner.jpeg",
+    accentTeal: figmaColors.darkText,
+    lightTeal: figmaColors.lightBg,
+    darkTeal: figmaColors.darkBg,
+    borderColor: figmaColors.darkText,
     icon: (
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none">
-        <circle cx="24" cy="24" r="20" stroke="#99f6e4" strokeWidth="1.2" />
-        <text x="24" y="32" textAnchor="middle" fontSize="22" fill="#5eead4" fontFamily="serif">
+        <circle cx="24" cy="24" r="20" stroke={figmaColors.darkText} strokeWidth="1.2" />
+        <text x="24" y="32" textAnchor="middle" fontSize="22" fill={figmaColors.darkText} fontFamily="serif">
           ॐ
         </text>
       </svg>
@@ -48,6 +61,48 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
         body: "We help you compile the right ceremony-specific proofs — Varmala photos, Phera records, Laav certificates — that satisfy government requirements.",
       },
     ],
+    benefits: [
+      { title: "Valid Proof", text: "Gives official legal status to your marriage." },
+      { title: "Prevents bigamy & fraud", text: "Prevents bigamy and fraud by creating an official marriage record." },
+      { title: "Rights & Security", text: "Needed to access many welfare schemes, subsidies, and family pension benefits." },
+      { title: "Legal Recognition", text: "Protects inheritance and spousal rights." }
+    ],
+    trustReasons: [
+      {
+        title: "End-to-End Guidance",
+        body: "From document preparation to final certificate delivery, we handle every step. You never have to visit a government office or decipher bureaucratic language."
+      },
+      {
+        title: "Complete Privacy",
+        body: "All your documents and personal information are encrypted and handled with the highest standards of confidentiality."
+      },
+      {
+        title: "Faster Processing",
+        body: "Our experience means fewer errors, fewer rejections, and faster turnaround. Most certificates are delivered within 7–15 working days."
+      },
+      {
+        title: "Dedicated Support",
+        body: "A dedicated case manager is assigned to your registration — a real person you can reach by phone or email with any question."
+      },
+      {
+        title: "All-Religion Coverage",
+        body: "We are fluent in the legal nuances of Hindu, Muslim, Christian, Sikh, Buddhist, Jain, and civil marriages. No case is too complex."
+      },
+      {
+        title: "Legal Recognition",
+        body: "Establishes your marriage as legally valid under Indian law and prevents future legal disputes."
+      }
+    ],
+    steps: [
+      { num: "01", title: "Register & Upload", body: "Create your account and upload all required documents through our secure portal." },
+      { num: "02", title: "Government Filing", body: "We file your application with the correct registrar for your state and religion." },
+      { num: "03", title: "Office Visit", body: "Just visit the assigned registrar office and submit your files" },
+      { num: "04", title: "Certificate Delivery", body: "Your official marriage certificate is delivered digitally and by post." }
+    ],
+    ctaHeading: "Register today. Protect forever.",
+    ctaSubtext: "Takes less than 10 minutes. Valid for a lifetime.",
+    footerBrand: "Register my marriage",
+    footerTagline: "India's trusted marriage registration platform"
   },
 
   islam: {
@@ -59,19 +114,19 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
     heroSubtext:
       "Ensure your Nikah is recognised under Indian law with a seamless, guided registration process — preserving both religious sanctity and legal security.",
     bannerImage: "/media/MuslimBanner.png",
-    accentTeal: "#0d9488",
-    lightTeal: "#f0fdfa",
-    darkTeal: "#0f4c4c",
-    borderColor: "#99f6e4",
+    accentTeal: figmaColors.darkText,
+    lightTeal: figmaColors.lightBg,
+    darkTeal: figmaColors.darkBg,
+    borderColor: figmaColors.darkText,
     icon: (
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none">
-        <circle cx="24" cy="24" r="20" stroke="#99f6e4" strokeWidth="1.2" strokeDasharray="3 2" />
+        <circle cx="24" cy="24" r="20" stroke={figmaColors.darkText} strokeWidth="1.2" strokeDasharray="3 2" />
         <path
           d="M24 8 L25.5 18 L35 18 L27.5 23.5 L30 33 L24 28 L18 33 L20.5 23.5 L13 18 L22.5 18 Z"
-          fill="#5eead4"
+          fill={figmaColors.darkText}
           opacity="0.85"
         />
-        <circle cx="24" cy="11" r="2" fill="#5eead4" />
+        <circle cx="24" cy="11" r="2" fill={figmaColors.darkText} />
       </svg>
     ),
     description:
@@ -99,6 +154,48 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
         body: "We guide you through proper witness affidavit preparation — a critical requirement often overlooked in Nikah registrations.",
       },
     ],
+    benefits: [
+      { title: "Valid Proof", text: "Gives official legal status to your marriage." },
+      { title: "Prevents bigamy & fraud", text: "Prevents bigamy and fraud by creating an official marriage record." },
+      { title: "Rights & Security", text: "Needed to access many welfare schemes, subsidies, and family pension benefits." },
+      { title: "Legal Recognition", text: "Protects inheritance and spousal rights." }
+    ],
+    trustReasons: [
+      {
+        title: "End-to-End Guidance",
+        body: "From document preparation to final certificate delivery, we handle every step. You never have to visit a government office or decipher bureaucratic language."
+      },
+      {
+        title: "Complete Privacy",
+        body: "All your documents and personal information are encrypted and handled with the highest standards of confidentiality."
+      },
+      {
+        title: "Faster Processing",
+        body: "Our experience means fewer errors, fewer rejections, and faster turnaround. Most certificates are delivered within 7–15 working days."
+      },
+      {
+        title: "Dedicated Support",
+        body: "A dedicated case manager is assigned to your registration — a real person you can reach by phone or email with any question."
+      },
+      {
+        title: "All-Religion Coverage",
+        body: "We are fluent in the legal nuances of Hindu, Muslim, Christian, Sikh, Buddhist, Jain, and civil marriages. No case is too complex."
+      },
+      {
+        title: "Legal Recognition",
+        body: "Establishes your marriage as legally valid under Indian law and prevents future legal disputes."
+      }
+    ],
+    steps: [
+      { num: "01", title: "Register & Upload", body: "Create your account and upload all required documents through our secure portal." },
+      { num: "02", title: "Expert Review", body: "Our legal team verifies every document and flags any issues before submission." },
+      { num: "03", title: "Government Filing", body: "We file your application with the correct registrar for your state and religion." },
+      { num: "04", title: "Certificate Delivery", body: "Your official marriage certificate is delivered digitally and by post." }
+    ],
+    ctaHeading: "Register today. Protect forever.",
+    ctaSubtext: "Takes less than 10 minutes. Valid for a lifetime.",
+    footerBrand: "Register my marriage",
+    footerTagline: "India's trusted marriage registration platform"
   },
 
   christianity: {
@@ -110,14 +207,14 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
     heroSubtext:
       "From church ceremony to official certificate — we handle the legal registration of your Christian marriage with professionalism and care.",
     bannerImage: "/media/ChristianBanner.png",
-    accentTeal: "#0e7490",
-    lightTeal: "#ecfeff",
-    darkTeal: "#164e63",
-    borderColor: "#a5f3fc",
+    accentTeal: figmaColors.darkText,
+    lightTeal: figmaColors.lightBg,
+    darkTeal: figmaColors.darkBg,
+    borderColor: figmaColors.darkText,
     icon: (
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none">
-        <rect x="21" y="6" width="6" height="36" rx="3" fill="#67e8f9" opacity="0.9" />
-        <rect x="10" y="16" width="28" height="6" rx="3" fill="#67e8f9" opacity="0.9" />
+        <rect x="21" y="6" width="6" height="36" rx="3" fill={figmaColors.darkText} opacity="0.9" />
+        <rect x="10" y="16" width="28" height="6" rx="3" fill={figmaColors.darkText} opacity="0.9" />
       </svg>
     ),
     description:
@@ -145,6 +242,49 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
         body: "After verification, your official marriage certificate is delivered digitally and by post — legally valid across all government and international institutions.",
       },
     ],
+    // Christian-specific content from Figma
+    benefits: [
+      { title: "Valid Proof", text: "Gives official legal status to your marriage." },
+      { title: "Prevents bigamy & fraud", text: "Prevents bigamy and fraud by creating an official marriage record." },
+      { title: "Rights & Security", text: "Needed to access many welfare schemes, subsidies, and family pension benefits." },
+      { title: "Legal Recognition", text: "Protects inheritance and spousal rights." }
+    ],
+    trustReasons: [
+      {
+        title: "End-to-End Guidance",
+        body: "From document preparation to final certificate delivery, we handle every step. You never have to visit a government office or decipher bureaucratic language."
+      },
+      {
+        title: "Complete Privacy",
+        body: "All your documents and personal information are encrypted and handled with the highest standards of confidentiality."
+      },
+      {
+        title: "Faster Processing",
+        body: "Our experience means fewer errors, fewer rejections, and faster turnaround. Most certificates are delivered within 7–15 working days."
+      },
+      {
+        title: "Dedicated Support",
+        body: "A dedicated case manager is assigned to your registration — a real person you can reach by phone or email with any question."
+      },
+      {
+        title: "All-Religion Coverage",
+        body: "We are fluent in the legal nuances of Hindu, Muslim, Christian, Sikh, Buddhist, Jain, and civil marriages. No case is too complex."
+      },
+      {
+        title: "Legal Recognition",
+        body: "Establishes your marriage as legally valid under Indian law and prevents future legal disputes."
+      }
+    ],
+    steps: [
+      { num: "01", title: "Church Certificate Validation", body: "We help you prepare and validate your church-issued marriage certificate for submission to civil authorities — a step many couples find confusing." },
+      { num: "02", title: "Minister & Registrar Coordination", body: "Our team guides you on the role of the officiating minister, marriage registrar, and the notification period required under the 1872 Act." },
+      { num: "03", title: "Banns & Notice Compliance", body: "We ensure your marriage notice and banns comply with the legal publication requirements, avoiding delays in your registration." },
+      { num: "04", title: "Certificate Delivery", body: "After verification, your official marriage certificate is delivered digitally and by post — legally valid across all government and international institutions." }
+    ],
+    ctaHeading: "Register today. Protect forever.",
+    ctaSubtext: "Takes less than 10 minutes. Valid for a lifetime.",
+    footerBrand: "Register my marriage",
+    footerTagline: "India's trusted marriage registration platform"
   },
 
   other: {
@@ -156,15 +296,15 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
     heroSubtext:
       "For interfaith, inter-caste, or civil marriages — we provide a straightforward, judgement-free path to legal recognition under the Special Marriage Act.",
     bannerImage: "/media/otherBanner.jpeg",
-    accentTeal: "#14b8a6",
-    lightTeal: "#f0fdfa",
-    darkTeal: "#134e4a",
-    borderColor: "#5eead4",
+    accentTeal: figmaColors.darkText,
+    lightTeal: figmaColors.lightBg,
+    darkTeal: figmaColors.darkBg,
+    borderColor: figmaColors.darkText,
     icon: (
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none">
-        <circle cx="24" cy="24" r="18" stroke="#5eead4" strokeWidth="1.5" />
-        <path d="M16 24 C16 18, 32 18, 32 24 C32 30, 16 30, 16 24Z" stroke="#5eead4" strokeWidth="1.2" fill="none" />
-        <circle cx="24" cy="24" r="4" fill="#5eead4" opacity="0.7" />
+        <circle cx="24" cy="24" r="18" stroke={figmaColors.darkText} strokeWidth="1.5" />
+        <path d="M16 24 C16 18, 32 18, 32 24 C32 30, 16 30, 16 24Z" stroke={figmaColors.darkText} strokeWidth="1.2" fill="none" />
+        <circle cx="24" cy="24" r="4" fill={figmaColors.darkText} opacity="0.7" />
       </svg>
     ),
     description:
@@ -192,6 +332,48 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
         body: "Couples using our platform get access to legal Q&A sessions to address specific concerns about rights, objection handling, and post-registration matters.",
       },
     ],
+    benefits: [
+      { title: "Valid Proof", text: "Gives official legal status to your marriage." },
+      { title: "Legal Protection", text: "Protects your rights under Indian law." },
+      { title: "Rights & Security", text: "Ensures inheritance and property rights." },
+      { title: "Legal Recognition", text: "Protects your marriage under Indian law." }
+    ],
+    trustReasons: [
+      {
+        title: "End-to-End Guidance",
+        body: "From document preparation to final certificate delivery, we handle every step. You never have to visit a government office or decipher bureaucratic language."
+      },
+      {
+        title: "Complete Privacy",
+        body: "All your documents and personal information are encrypted and handled with the highest standards of confidentiality."
+      },
+      {
+        title: "Faster Processing",
+        body: "Our experience means fewer errors, fewer rejections, and faster turnaround. Most certificates are delivered within 7–15 working days."
+      },
+      {
+        title: "Dedicated Support",
+        body: "A dedicated case manager is assigned to your registration — a real person you can reach by phone or email with any question."
+      },
+      {
+        title: "All-Religion Coverage",
+        body: "We are fluent in the legal nuances of Hindu, Muslim, Christian, Sikh, Buddhist, Jain, and civil marriages. No case is too complex."
+      },
+      {
+        title: "Legal Recognition",
+        body: "Establishes your marriage as legally valid under Indian law and prevents future legal disputes."
+      }
+    ],
+    steps: [
+      { num: "01", title: "Register & Upload", body: "Create your account and upload all required documents through our secure portal." },
+      { num: "02", title: "Expert Review", body: "Our legal team verifies every document and flags any issues before submission." },
+      { num: "03", title: "Government Filing", body: "We file your application with the correct registrar for your state and religion." },
+      { num: "04", title: "Certificate Delivery", body: "Your official marriage certificate is delivered digitally and by post." }
+    ],
+    ctaHeading: "Register today. Protect forever.",
+    ctaSubtext: "Takes less than 10 minutes. Valid for a lifetime.",
+    footerBrand: "Register my marriage",
+    footerTagline: "India's trusted marriage registration platform"
   },
 
   "court-marriage": {
@@ -203,23 +385,19 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
     heroSubtext:
       "India's most straightforward path to a legally recognised marriage — secular, simple, and valid everywhere. No religion required. No ceremony required.",
     bannerImage: "/media/courtMarriageBanner.png",
-    accentTeal: "#0d9488",
-    lightTeal: "#f0fdfa",
-    darkTeal: "#0f4c4c",
-    borderColor: "#99f6e4",
+    accentTeal: figmaColors.darkText,
+    lightTeal: figmaColors.lightBg,
+    darkTeal: figmaColors.darkBg,
+    borderColor: figmaColors.darkText,
     icon: (
       <svg viewBox="0 0 48 48" width="40" height="40" fill="none">
-        {/* Scales of justice */}
-        <line x1="24" y1="8" x2="24" y2="40" stroke="#5eead4" strokeWidth="2" strokeLinecap="round" />
-        <line x1="14" y1="12" x2="34" y2="12" stroke="#5eead4" strokeWidth="2" strokeLinecap="round" />
-        {/* Left pan */}
-        <line x1="14" y1="12" x2="10" y2="24" stroke="#5eead4" strokeWidth="1.5" />
-        <path d="M7 24 Q10 28 13 24" stroke="#5eead4" strokeWidth="1.5" fill="none" />
-        {/* Right pan */}
-        <line x1="34" y1="12" x2="38" y2="24" stroke="#5eead4" strokeWidth="1.5" />
-        <path d="M35 24 Q38 28 41 24" stroke="#5eead4" strokeWidth="1.5" fill="none" />
-        {/* Base */}
-        <line x1="18" y1="40" x2="30" y2="40" stroke="#5eead4" strokeWidth="2" strokeLinecap="round" />
+        <line x1="24" y1="8" x2="24" y2="40" stroke={figmaColors.darkText} strokeWidth="2" strokeLinecap="round" />
+        <line x1="14" y1="12" x2="34" y2="12" stroke={figmaColors.darkText} strokeWidth="2" strokeLinecap="round" />
+        <line x1="14" y1="12" x2="10" y2="24" stroke={figmaColors.darkText} strokeWidth="1.5" />
+        <path d="M7 24 Q10 28 13 24" stroke={figmaColors.darkText} strokeWidth="1.5" fill="none" />
+        <line x1="34" y1="12" x2="38" y2="24" stroke={figmaColors.darkText} strokeWidth="1.5" />
+        <path d="M35 24 Q38 28 41 24" stroke={figmaColors.darkText} strokeWidth="1.5" fill="none" />
+        <line x1="18" y1="40" x2="30" y2="40" stroke={figmaColors.darkText} strokeWidth="2" strokeLinecap="round" />
       </svg>
     ),
     description:
@@ -248,6 +426,49 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
         body: "Special support for NRI, interfaith, and inter-caste marriages.",
       },
     ],
+    benefits: [
+      { title: "Valid Proof", text: "Gives official legal status to your marriage." },
+      { title: "Interfaith Freedom", text: "Allows marriage across religions legally." },
+      { title: "Rights & Security", text: "Required for visas, property, and financial matters." },
+      { title: "Legal Recognition", text: "Protects inheritance and spousal rights." }
+    ],
+    trustReasons: [
+      {
+        title: "End-to-End Guidance",
+        body: "From document preparation to final certificate delivery, we handle every step. You never have to visit a government office or decipher bureaucratic language."
+      },
+      {
+        title: "Complete Privacy",
+        body: "All your documents and personal information are encrypted and handled with the highest standards of confidentiality."
+      },
+      {
+        title: "Faster Processing",
+        body: "Our experience means fewer errors, fewer rejections, and faster turnaround. Most certificates are delivered within 7–15 working days."
+      },
+      {
+        title: "Dedicated Support",
+        body: "A dedicated case manager is assigned to your registration — a real person you can reach by phone or email with any question."
+      },
+      {
+        title: "All-Religion Coverage",
+        body: "We are fluent in the legal nuances of Hindu, Muslim, Christian, Sikh, Buddhist, Jain, and civil marriages. No case is too complex."
+      },
+      {
+        title: "Legal Recognition",
+        body: "Establishes your marriage as legally valid under Indian law and prevents future legal disputes."
+      }
+    ],
+    steps: [
+      { num: "01", title: "Submit Details", body: "Create your account and upload all required documents through our secure portal." },
+      { num: "02", title: "Document Verification", body: "Our legal team verifies every document and flags any issues before submission." },
+      { num: "03", title: "Notice Filing", body: "We file your application with the correct registrar for your state and religion." },
+      { num: "04", title: "Court Marriage", body: "We assist you in the process of the court marriage." },
+      { num: "05", title: "Certificate Issued", body: "Your official marriage certificate is delivered digitally and by post." }
+    ],
+    ctaHeading: "Register today. Protect forever.",
+    ctaSubtext: "Takes less than 10 minutes. Valid for a lifetime.",
+    footerBrand: "Register my marriage",
+    footerTagline: "India's trusted marriage registration platform"
   },
 };
 

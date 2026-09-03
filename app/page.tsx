@@ -15,14 +15,23 @@ export default function HomePage() {
   const [courtHovered, setCourtHovered] = useState(false);
   const { isLoggedIn } = useAuth();
 
+  // Figma color scheme
+  const colors = {
+    bg: "#E4E0D5",
+    darkText: "#4A0E19",
+    lightBg: "#F0FDFA",
+    white: "#FFFFFF",
+    darkBg: "#380913",
+    accent: "#4A0E19",
+    cardBg: "#F8FEFE",
+  };
+
   return (
     <>
-      {/* REMOVED the problematic @font-face that was causing 404 errors */}
-      
       <main
         style={{
           minHeight: "100vh",
-          backgroundColor: "#074949",
+          backgroundColor: colors.bg,
           display: "flex",
           flexDirection: "column",
           position: "relative",
@@ -35,7 +44,7 @@ export default function HomePage() {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(160deg, rgba(240,253,250,0.12) 0%, rgba(255,255,255,0.08) 50%, rgba(236,253,245,0.1) 100%)",
+              "linear-gradient(160deg, rgba(74,14,25,0.04) 0%, rgba(255,255,255,0.06) 50%, rgba(74,14,25,0.03) 100%)",
             pointerEvents: "none",
           }}
         />
@@ -67,15 +76,16 @@ export default function HomePage() {
                   display: "inline-block",
                   padding: "4px 14px",
                   borderRadius: 999,
-                  background: "rgba(240,253,250,0.9)",
-                  border: "1px solid rgba(153,246,228,0.8)",
-                  color: "#0d9488",
+                  background: colors.lightBg,
+                  border: `1px solid ${colors.darkText}`,
+                  color: colors.darkText,
                   fontSize: "0.65rem",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
                   fontWeight: 500,
                   marginBottom: "0.8rem",
                   fontFamily: "'Inter', sans-serif",
+                  opacity: 0.7,
                 }}
               >
                 India's Trusted Marriage Registration Service
@@ -84,12 +94,11 @@ export default function HomePage() {
               <h1
                 style={{
                   fontSize: "clamp(1.5rem, 3.5vw, 2.2rem)",
-                  color: "#ffffff",
+                  color: colors.darkText,
                   lineHeight: 1.2,
                   letterSpacing: "-0.02em",
                   marginBottom: "0.5rem",
-                  textShadow: "0 2px 6px rgba(0,0,0,0.35)",
-                  fontFamily: "'Playfair Display', Georgia, serif", // Replaced Quasira with Playfair
+                  fontFamily: "'Playfair Display', Georgia, serif",
                 }}
               >
                 Select Your Religion
@@ -98,11 +107,12 @@ export default function HomePage() {
               <p
                 style={{
                   fontSize: "0.85rem",
-                  color: "rgba(255,255,255,0.9)",
+                  color: colors.darkText,
                   lineHeight: 1.5,
                   maxWidth: 480,
                   margin: "0 auto",
                   fontFamily: "'Inter', sans-serif",
+                  opacity: 0.8,
                 }}
               >
                 We provide religion-specific guidance and legal support for your marriage registration.
@@ -126,7 +136,7 @@ export default function HomePage() {
                   initial={{ opacity: 0, y: 25 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + i * 0.07 }}
-                  whileHover={{ y: -4, boxShadow: "0 14px 28px rgba(13,148,136,0.25)" }}
+                  whileHover={{ y: -4, boxShadow: "0 14px 28px rgba(74,14,25,0.15)" }}
                   whileTap={{ scale: 0.98 }}
                   onHoverStart={() => setHovered(religion.key)}
                   onHoverEnd={() => setHovered(null)}
@@ -134,15 +144,17 @@ export default function HomePage() {
                   style={{
                     padding: "1.2rem 1rem",
                     borderRadius: 14,
-                    border: `1.5px solid ${hovered === religion.key ? "#0d9488" : "rgba(224,242,241,0.6)"}`,
-                    background: hovered === religion.key ? "rgba(240,253,250,0.95)" : "rgba(255,255,255,0.92)",
+                    border: `1.5px solid ${hovered === religion.key ? colors.darkText : "rgba(74,14,25,0.15)"}`,
+                    background: hovered === religion.key ? colors.darkText : colors.white,
                     cursor: "pointer",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                     gap: "0.7rem",
                     transition: "all 0.25s ease",
-                    boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
+                    boxShadow: hovered === religion.key 
+                      ? "0 8px 24px rgba(74,14,25,0.2)" 
+                      : "0 4px 12px rgba(74,14,25,0.06)",
                     backdropFilter: "blur(10px)",
                     fontFamily: "'Inter', sans-serif",
                   }}
@@ -152,19 +164,19 @@ export default function HomePage() {
                       width: 52,
                       height: 52,
                       borderRadius: "50%",
-                      background:
-                        hovered === religion.key
-                          ? "linear-gradient(135deg, #0d9488, #0f4c4c)"
-                          : "linear-gradient(135deg, rgba(240,253,250,0.95), rgba(204,251,241,0.9))",
+                      background: hovered === religion.key
+                        ? colors.white
+                        : colors.lightBg,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
+                      transition: "all 0.25s ease",
                     }}
                   >
                     <div
                       style={{
                         transform: "scale(0.8)",
-                        filter: hovered === religion.key ? "brightness(10%) invert(1)" : "none",
+                        filter: hovered === religion.key ? "none" : "none",
                       }}
                     >
                       {religion.icon}
@@ -175,9 +187,10 @@ export default function HomePage() {
                     <div
                       style={{
                         fontSize: "0.9rem",
-                        color: hovered === religion.key ? "#0d9488" : "#074949",
+                        color: hovered === religion.key ? colors.white : colors.darkText,
                         marginBottom: 2,
-                        fontFamily: "'Playfair Display', Georgia, serif", // Replaced Quasira with Playfair
+                        fontFamily: "'Playfair Display', Georgia, serif",
+                        transition: "color 0.25s",
                       }}
                     >
                       {religion.label}
@@ -185,10 +198,11 @@ export default function HomePage() {
                     <div
                       style={{
                         fontSize: "0.65rem",
-                        color: "rgba(107,158,158,0.9)",
+                        color: hovered === religion.key ? "rgba(255,255,255,0.7)" : "rgba(74,14,25,0.6)",
                         letterSpacing: "0.05em",
                         textTransform: "uppercase",
                         fontFamily: "'Inter', sans-serif",
+                        transition: "color 0.25s",
                       }}
                     >
                       {religion.subtitle}
@@ -211,23 +225,24 @@ export default function HomePage() {
                 maxWidth: 850,
               }}
             >
-              <div style={{ flex: 1, height: "1px", background: "rgba(153,246,228,0.25)" }} />
+              <div style={{ flex: 1, height: "1px", background: `rgba(74,14,25,0.15)` }} />
               <span
                 style={{
                   fontSize: "0.7rem",
-                  color: "rgba(255,255,255,0.5)",
+                  color: colors.darkText,
                   letterSpacing: "0.15em",
                   textTransform: "uppercase",
                   padding: "4px 12px",
                   borderRadius: 999,
-                  border: "1px solid rgba(153,246,228,0.2)",
+                  border: `1px solid rgba(74,14,25,0.15)`,
                   whiteSpace: "nowrap",
                   fontFamily: "'Inter', sans-serif",
+                  opacity: 0.6,
                 }}
               >
                 Or, skip the ceremony entirely
               </span>
-              <div style={{ flex: 1, height: "1px", background: "rgba(153,246,228,0.25)" }} />
+              <div style={{ flex: 1, height: "1px", background: `rgba(74,14,25,0.15)` }} />
             </motion.div>
 
             {/* ── COURT MARRIAGE CARD ── */}
@@ -238,7 +253,7 @@ export default function HomePage() {
               style={{ width: "100%", maxWidth: 850 }}
             >
               <motion.button
-                whileHover={{ y: -3, boxShadow: "0 20px 48px rgba(13,148,136,0.3)" }}
+                whileHover={{ y: -3, boxShadow: "0 20px 48px rgba(74,14,25,0.15)" }}
                 whileTap={{ scale: 0.99 }}
                 onHoverStart={() => setCourtHovered(true)}
                 onHoverEnd={() => setCourtHovered(false)}
@@ -247,10 +262,8 @@ export default function HomePage() {
                   width: "100%",
                   padding: "1.4rem 2rem",
                   borderRadius: 16,
-                  border: `1.5px solid ${courtHovered ? "#0d9488" : "rgba(153,246,228,0.5)"}`,
-                  background: courtHovered
-                    ? "rgba(240,253,250,0.97)"
-                    : "rgba(255,255,255,0.06)",
+                  border: `1.5px solid ${courtHovered ? colors.darkText : "rgba(74,14,25,0.15)"}`,
+                  background: courtHovered ? colors.darkText : colors.white,
                   backdropFilter: "blur(12px)",
                   cursor: "pointer",
                   display: "grid",
@@ -258,7 +271,9 @@ export default function HomePage() {
                   alignItems: "center",
                   gap: "1.5rem",
                   transition: "all 0.25s ease",
-                  boxShadow: "0 8px 28px rgba(0,0,0,0.25)",
+                  boxShadow: courtHovered 
+                    ? "0 8px 28px rgba(74,14,25,0.2)" 
+                    : "0 4px 16px rgba(74,14,25,0.06)",
                   textAlign: "left",
                   fontFamily: "'Inter', sans-serif",
                 }}
@@ -270,8 +285,8 @@ export default function HomePage() {
                     height: 56,
                     borderRadius: 14,
                     background: courtHovered
-                      ? "linear-gradient(135deg, #0d9488, #0f4c4c)"
-                      : "linear-gradient(135deg, rgba(13,148,136,0.25), rgba(15,76,76,0.3))",
+                      ? colors.white
+                      : colors.lightBg,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -282,7 +297,6 @@ export default function HomePage() {
                   <div
                     style={{
                       transform: "scale(0.85)",
-                      filter: courtHovered ? "brightness(10) invert(1)" : "none",
                       transition: "filter 0.3s",
                     }}
                   >
@@ -296,9 +310,9 @@ export default function HomePage() {
                     <span
                       style={{
                         fontSize: "1.05rem",
-                        color: courtHovered ? "#0d9488" : "#ffffff",
+                        color: courtHovered ? colors.white : colors.darkText,
                         transition: "color 0.25s",
-                        fontFamily: "'Playfair Display', Georgia, serif", // Replaced Quasira with Playfair
+                        fontFamily: "'Playfair Display', Georgia, serif",
                       }}
                     >
                       Court Marriage
@@ -310,11 +324,12 @@ export default function HomePage() {
                         textTransform: "uppercase",
                         padding: "2px 8px",
                         borderRadius: 999,
-                        background: courtHovered ? "#0d9488" : "rgba(13,148,136,0.3)",
-                        color: courtHovered ? "#fff" : "#5eead4",
+                        background: courtHovered ? "rgba(255,255,255,0.15)" : colors.lightBg,
+                        color: courtHovered ? colors.white : colors.darkText,
                         fontWeight: 600,
                         transition: "all 0.25s",
                         fontFamily: "'Inter', sans-serif",
+                        opacity: courtHovered ? 0.8 : 0.7,
                       }}
                     >
                       Special Marriage Act, 1954
@@ -323,12 +338,13 @@ export default function HomePage() {
                   <p
                     style={{
                       fontSize: "0.78rem",
-                      color: courtHovered ? "#4b7b7b" : "rgba(255,255,255,0.65)",
+                      color: courtHovered ? "rgba(255,255,255,0.8)" : colors.darkText,
                       lineHeight: 1.5,
                       margin: 0,
                       transition: "color 0.25s",
                       maxWidth: 520,
                       fontFamily: "'Inter', sans-serif",
+                      opacity: courtHovered ? 0.9 : 0.7,
                     }}
                   >
                     For interfaith, inter-caste, NRI, or couples who prefer a clean civil union — no religion required, no ceremony required.
@@ -344,11 +360,12 @@ export default function HomePage() {
                           fontSize: "0.58rem",
                           padding: "2px 8px",
                           borderRadius: 999,
-                          border: `1px solid ${courtHovered ? "#99f6e4" : "rgba(153,246,228,0.3)"}`,
-                          color: courtHovered ? "#0d9488" : "rgba(153,246,228,0.7)",
+                          border: `1px solid ${courtHovered ? "rgba(255,255,255,0.2)" : "rgba(74,14,25,0.1)"}`,
+                          color: courtHovered ? "rgba(255,255,255,0.7)" : colors.darkText,
                           transition: "all 0.25s",
                           letterSpacing: "0.05em",
                           fontFamily: "'Inter', sans-serif",
+                          opacity: courtHovered ? 0.8 : 0.6,
                         }}
                       >
                         {tag}
@@ -362,9 +379,10 @@ export default function HomePage() {
                   animate={{ x: courtHovered ? 4 : 0 }}
                   style={{
                     fontSize: "1.3rem",
-                    color: courtHovered ? "#0d9488" : "rgba(255,255,255,0.3)",
+                    color: courtHovered ? colors.white : colors.darkText,
                     transition: "color 0.25s",
                     flexShrink: 0,
+                    opacity: courtHovered ? 0.8 : 0.3,
                   }}
                 >
                   →
@@ -395,16 +413,19 @@ export default function HomePage() {
                 <div key={label} style={{ textAlign: "center" }}>
                   <div style={{
                     fontSize: "0.9rem",
-                    color: "#0d9488",
-                    fontFamily: "'Playfair Display', Georgia, serif", // Replaced Quasira with Playfair
+                    color: colors.darkText,
+                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontWeight: 700,
+                    opacity: 0.8,
                   }}>
                     {num}
                   </div>
                   <div style={{
                     fontSize: "0.6rem",
-                    color: "rgba(255,255,255,0.9)",
+                    color: colors.darkText,
                     textTransform: "uppercase",
                     fontFamily: "'Inter', sans-serif",
+                    opacity: 0.5,
                   }}>
                     {label}
                   </div>
@@ -418,10 +439,10 @@ export default function HomePage() {
             style={{
               textAlign: "center",
               padding: "0.6rem",
-              background: "rgba(7,73,73,0.95)",
-              color: "rgba(255,255,255,0.9)",
+              background: colors.darkBg,
+              color: "rgba(255,255,255,0.6)",
               fontSize: "0.6rem",
-              borderTop: "1px solid rgba(224,242,241,0.2)",
+              borderTop: `1px solid rgba(255,255,255,0.05)`,
               fontFamily: "'Inter', sans-serif",
             }}
           >

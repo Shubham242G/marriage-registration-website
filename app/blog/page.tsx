@@ -97,12 +97,23 @@ const CATEGORIES = [
   "Insights",
 ];
 
+// Figma color scheme
+const figmaColors = {
+  bg: "#E4E0D5",
+  darkText: "#4A0E19",
+  lightBg: "#F0FDFA",
+  white: "#FFFFFF",
+  darkBg: "#380913",
+  accent: "#4A0E19",
+  cardBg: "#F8FEFE",
+};
+
 const CATEGORY_COLORS: Record<string, string> = {
-  legal: "#0d9488",
-  religion: "#7c3aed",
-  guides: "#b45309",
-  insights: "#0e7490",
-  all: "#374151",
+  legal: "#4A0E19",
+  religion: "#4A0E19",
+  guides: "#4A0E19",
+  insights: "#4A0E19",
+  all: "#4A0E19",
 };
 
 export default function BlogPage() {
@@ -111,10 +122,8 @@ export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [search, setSearch] = useState("");
 
-  // Generic blog theme.
-  // No religion is required for this page.
   const theme = {
-    accentTeal: "#0d9488",
+    accentTeal: figmaColors.darkText,
     bannerImage: "",
   };
 
@@ -182,9 +191,6 @@ export default function BlogPage() {
   };
 
   const CategoryBadge = ({ cat }: { cat: string }) => {
-    const categoryColor =
-      CATEGORY_COLORS[cat.toLowerCase()] || "#374151";
-
     return (
       <span
         style={{
@@ -192,8 +198,8 @@ export default function BlogPage() {
           fontWeight: 700,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
-          color: categoryColor,
-          background: `${categoryColor}14`,
+          color: figmaColors.darkText,
+          background: `${figmaColors.darkText}14`,
           padding: "3px 10px",
           borderRadius: 999,
         }}
@@ -207,7 +213,7 @@ export default function BlogPage() {
     <div
       style={{
         fontFamily: "'Lato', sans-serif",
-        background: "#fafffe",
+        background: figmaColors.bg,
         minHeight: "100vh",
       }}
     >
@@ -227,13 +233,7 @@ export default function BlogPage() {
       {/* Page Header */}
       <section
         style={{
-          background:
-            theme.bannerImage
-              ? `url(${theme.bannerImage})`
-              : "linear-gradient(135deg, #0a3a3a 0%, #0d6963 100%)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          background: figmaColors.darkBg,
           padding: "4rem 2rem 3.5rem",
           textAlign: "center",
         }}
@@ -248,7 +248,8 @@ export default function BlogPage() {
               fontSize: "0.72rem",
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "#ccfbf1",
+              color: figmaColors.bg,
+              opacity: 0.7,
               display: "block",
               marginBottom: "0.75rem",
             }}
@@ -260,7 +261,7 @@ export default function BlogPage() {
             style={{
               fontSize: "clamp(2rem, 4vw, 3rem)",
               fontWeight: 700,
-              color: "#fff",
+              color: figmaColors.white,
               fontFamily:
                 "'Playfair Display', Georgia, serif",
               marginBottom: "1rem",
@@ -271,7 +272,8 @@ export default function BlogPage() {
 
           <p
             style={{
-              color: "rgba(255,255,255,0.72)",
+              color: figmaColors.bg,
+              opacity: 0.72,
               maxWidth: 520,
               margin: "0 auto",
               lineHeight: 1.8,
@@ -288,8 +290,8 @@ export default function BlogPage() {
       {/* Search + Filter Bar */}
       <div
         style={{
-          background: "#fff",
-          borderBottom: "1px solid #e0f2f1",
+          background: figmaColors.white,
+          borderBottom: `1px solid ${figmaColors.darkText}15`,
           padding: "1.25rem 2rem",
           position: "sticky",
           top: 68,
@@ -324,22 +326,23 @@ export default function BlogPage() {
                   borderRadius: 999,
                   border: `1.5px solid ${
                     activeCategory === cat
-                      ? theme.accentTeal
-                      : "#e0f2f1"
+                      ? figmaColors.darkText
+                      : `${figmaColors.darkText}20`
                   }`,
                   background:
                     activeCategory === cat
-                      ? theme.accentTeal
-                      : "#fff",
+                      ? figmaColors.darkText
+                      : figmaColors.white,
                   color:
                     activeCategory === cat
-                      ? "#fff"
-                      : "#4b7b7b",
+                      ? figmaColors.white
+                      : figmaColors.darkText,
                   fontSize: "0.82rem",
                   fontWeight: 600,
                   cursor: "pointer",
                   transition: "all 0.2s",
                   fontFamily: "'Lato', sans-serif",
+                  opacity: activeCategory === cat ? 1 : 0.7,
                 }}
               >
                 {cat}
@@ -356,13 +359,13 @@ export default function BlogPage() {
             style={{
               padding: "8px 16px",
               borderRadius: 8,
-              border: "1.5px solid #e0f2f1",
+              border: `1.5px solid ${figmaColors.darkText}20`,
               fontSize: "0.87rem",
               outline: "none",
               fontFamily: "'Lato', sans-serif",
-              color: "#0f4c4c",
+              color: figmaColors.darkText,
               width: 220,
-              background: "#fafffe",
+              background: figmaColors.lightBg,
             }}
           />
         </div>
@@ -381,7 +384,8 @@ export default function BlogPage() {
           <div
             style={{
               textAlign: "center",
-              color: "#6b9e9e",
+              color: figmaColors.darkText,
+              opacity: 0.6,
               padding: "3rem",
             }}
           >
@@ -394,7 +398,8 @@ export default function BlogPage() {
           <div
             style={{
               textAlign: "center",
-              color: "#6b9e9e",
+              color: figmaColors.darkText,
+              opacity: 0.6,
               padding: "4rem",
             }}
           >
@@ -405,12 +410,13 @@ export default function BlogPage() {
                 setActiveCategory("All");
               }}
               style={{
-                color: theme.accentTeal,
+                color: figmaColors.darkText,
                 background: "none",
                 border: "none",
                 cursor: "pointer",
                 fontWeight: 600,
                 fontFamily: "'Lato', sans-serif",
+                opacity: 0.8,
               }}
             >
               Clear filters
@@ -427,22 +433,19 @@ export default function BlogPage() {
             style={{
               marginBottom: "2.5rem",
               borderRadius: 18,
-              border: "1px solid #e0f2f1",
+              border: `1px solid ${figmaColors.darkText}15`,
               overflow: "hidden",
-              background: "#fff",
+              background: figmaColors.white,
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
               boxShadow:
-                "0 4px 24px rgba(13,148,136,0.07)",
+                `0 4px 24px ${figmaColors.darkText}0D`,
             }}
           >
             {/* Featured Image */}
             <div
               style={{
-                background:
-                  theme.bannerImage
-                    ? `url(${theme.bannerImage})`
-                    : "linear-gradient(135deg, #0a3a3a 0%, #0d6963 100%)",
+                background: figmaColors.darkBg,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -466,7 +469,7 @@ export default function BlogPage() {
               ) : (
                 <div
                   style={{
-                    color: "rgba(255,255,255,0.3)",
+                    color: `${figmaColors.white}30`,
                     fontSize: "4rem",
                   }}
                 >
@@ -488,7 +491,8 @@ export default function BlogPage() {
                 <span
                   style={{
                     fontSize: "0.7rem",
-                    color: "#6b9e9e",
+                    color: figmaColors.darkText,
+                    opacity: 0.6,
                   }}
                 >
                   Featured
@@ -503,7 +507,7 @@ export default function BlogPage() {
                 style={{
                   fontSize: "1.5rem",
                   fontWeight: 700,
-                  color: "#0f4c4c",
+                  color: figmaColors.darkText,
                   lineHeight: 1.3,
                   marginBottom: "1rem",
                   fontFamily:
@@ -515,7 +519,8 @@ export default function BlogPage() {
 
               <p
                 style={{
-                  color: "#4b7b7b",
+                  color: figmaColors.darkText,
+                  opacity: 0.8,
                   lineHeight: 1.8,
                   fontSize: "0.92rem",
                   marginBottom: "1.5rem",
@@ -536,7 +541,7 @@ export default function BlogPage() {
                     style={{
                       fontSize: "0.78rem",
                       fontWeight: 600,
-                      color: "#0f4c4c",
+                      color: figmaColors.darkText,
                     }}
                   >
                     {filtered[0].createdBy}
@@ -545,7 +550,8 @@ export default function BlogPage() {
                   <div
                     style={{
                       fontSize: "0.72rem",
-                      color: "#6b9e9e",
+                      color: figmaColors.darkText,
+                      opacity: 0.6,
                     }}
                   >
                     {formatDate(filtered[0].Date)}
@@ -559,8 +565,8 @@ export default function BlogPage() {
                   style={{
                     padding: "9px 20px",
                     borderRadius: 8,
-                    background: theme.accentTeal,
-                    color: "#fff",
+                    background: figmaColors.darkText,
+                    color: figmaColors.white,
                     textDecoration: "none",
                     fontSize: "0.82rem",
                     fontWeight: 600,
@@ -595,12 +601,12 @@ export default function BlogPage() {
               whileHover={{
                 y: -5,
                 boxShadow:
-                  "0 16px 40px rgba(13,148,136,0.1)",
+                  `0 16px 40px ${figmaColors.darkText}0D`,
               }}
               style={{
                 borderRadius: 14,
-                border: "1px solid #e0f2f1",
-                background: "#fff",
+                border: `1px solid ${figmaColors.darkText}15`,
+                background: figmaColors.white,
                 overflow: "hidden",
                 transition: "all 0.25s ease",
               }}
@@ -609,10 +615,7 @@ export default function BlogPage() {
               <div
                 style={{
                   height: 160,
-                  background:
-                    theme.bannerImage
-                      ? `url(${theme.bannerImage})`
-                      : "linear-gradient(135deg, #0a3a3a 0%, #0d6963 100%)",
+                  background: figmaColors.darkBg,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
@@ -636,7 +639,7 @@ export default function BlogPage() {
                 ) : (
                   <span
                     style={{
-                      color: "rgba(255,255,255,0.25)",
+                      color: `${figmaColors.white}25`,
                       fontSize: "2.5rem",
                     }}
                   >
@@ -663,7 +666,7 @@ export default function BlogPage() {
                   style={{
                     fontSize: "1rem",
                     fontWeight: 700,
-                    color: "#0f4c4c",
+                    color: figmaColors.darkText,
                     lineHeight: 1.4,
                     marginBottom: "0.75rem",
                     fontFamily:
@@ -676,7 +679,8 @@ export default function BlogPage() {
                 <p
                   style={
                     {
-                      color: "#4b7b7b",
+                      color: figmaColors.darkText,
+                      opacity: 0.8,
                       fontSize: "0.84rem",
                       lineHeight: 1.7,
                       marginBottom: "1.25rem",
@@ -702,7 +706,7 @@ export default function BlogPage() {
                       style={{
                         fontSize: "0.75rem",
                         fontWeight: 600,
-                        color: "#0f4c4c",
+                        color: figmaColors.darkText,
                       }}
                     >
                       {blog.createdBy}
@@ -711,7 +715,8 @@ export default function BlogPage() {
                     <div
                       style={{
                         fontSize: "0.7rem",
-                        color: "#6b9e9e",
+                        color: figmaColors.darkText,
+                        opacity: 0.6,
                       }}
                     >
                       {formatDate(blog.Date)}
@@ -724,9 +729,10 @@ export default function BlogPage() {
                     }`}
                     style={{
                       fontSize: "0.8rem",
-                      color: theme.accentTeal,
+                      color: figmaColors.darkText,
                       textDecoration: "none",
                       fontWeight: 600,
+                      opacity: 0.8,
                     }}
                   >
                     Read →
@@ -741,14 +747,16 @@ export default function BlogPage() {
       {/* Footer */}
       <footer
         style={{
-          background: "#0a3a3a",
+          background: figmaColors.darkBg,
           padding: "2rem",
           textAlign: "center",
-          color: "rgba(255,255,255,0.4)",
+          color: figmaColors.bg,
+          opacity: 0.5,
           fontSize: "0.75rem",
+          borderTop: `1px solid ${figmaColors.white}05`,
         }}
       >
-        © 2024 VivahSetu · All Rights Reserved
+        © 2024 Register my marriage · All Rights Reserved
       </footer>
     </div>
   );
