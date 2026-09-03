@@ -380,7 +380,7 @@ export default function RegisterPage() {
               lineHeight: 1.2,
             }}
           >
-            Create Your VivahSetu Account
+            Create Your Regsiter my marriage Account
           </h1>
 
           <p
@@ -972,7 +972,7 @@ export default function RegisterPage() {
             "1px solid rgba(255,255,255,0.08)",
         }}
       >
-        © 2024 VivahSetu · India's trusted marriage
+        © 2024 RegisterMyMarriage · India's trusted marriage
         registration platform
       </footer>
     </div>

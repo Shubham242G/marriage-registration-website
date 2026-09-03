@@ -95,7 +95,7 @@ export default function ReligionHomePage({ theme }: Props) {
           marginTop: "-1px",
         }}
       >
-        {/* IMAGE LAYER - Single static image for all religions */}
+        {/* IMAGE LAYER */}
         <div
           style={{
             position: "absolute",
@@ -116,6 +116,7 @@ export default function ReligionHomePage({ theme }: Props) {
             marginLeft: "58%",
             textAlign: "left",
           }}
+          className="hero-content"
         >
           <motion.h1
             key={theme.heroHeading}
@@ -125,10 +126,11 @@ export default function ReligionHomePage({ theme }: Props) {
             style={{
               fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)",
               fontWeight: 700,
-              color: "#fff",
+              color: figmaColors.darkText,
               lineHeight: 1.3,
               marginBottom: "1.2rem",
               fontFamily: "'Playfair Display', Georgia, serif",
+              textShadow: "0 2px 8px rgba(255,255,255,0.3)",
             }}
           >
             {theme.heroHeading}
@@ -141,47 +143,61 @@ export default function ReligionHomePage({ theme }: Props) {
               flexWrap: "wrap",
               justifyContent: "flex-start",
             }}
+            className="hero-buttons"
           >
             <Link href={`/register`} style={{ textDecoration: "none" }}>
-              <div
+              <motion.div
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.97 }}
                 style={{
                   padding: "12px 28px",
                   borderRadius: 8,
-                  background: figmaColors.white,
-                  color: figmaColors.darkText,
+                  background: figmaColors.darkText,
+                  color: figmaColors.white,
                   fontWeight: 700,
-                  fontSize: "0.9rem",
+                  fontSize: "clamp(0.8rem, 1.2vw, 0.9rem)",
                   cursor: "pointer",
-                  boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+                  boxShadow: "0 4px 20px rgba(74,14,25,0.25)",
+                  border: `1px solid ${figmaColors.darkText}`,
+                  transition: "all 0.25s ease",
                 }}
               >
                 Start Registration →
-              </div>
+              </motion.div>
             </Link>
 
             <Link href={`/contact`} style={{ textDecoration: "none" }}>
-              <div
+              <motion.div
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.97 }}
                 style={{
                   padding: "12px 28px",
                   borderRadius: 8,
-                  border: "1.5px solid rgba(255,255,255,0.4)",
-                  background: "rgba(255,255,255,0.08)",
-                  color: "#fff",
+                  border: `1.5px solid ${figmaColors.darkText}`,
+                  background: figmaColors.white,
+                  color: figmaColors.darkText,
                   fontWeight: 500,
-                  fontSize: "0.9rem",
+                  fontSize: "clamp(0.8rem, 1.2vw, 0.9rem)",
                   cursor: "pointer",
+                  boxShadow: "0 4px 12px rgba(74,14,25,0.1)",
+                  transition: "all 0.25s ease",
                 }}
               >
                 Talk to an Expert
-              </div>
+              </motion.div>
             </Link>
           </div>
         </div>
       </section>
 
       {/* ── ABOUT / DESCRIPTION ── */}
-      <section style={{ padding: "5rem 2rem", maxWidth: 1100, margin: "0 auto" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}>
+      <section style={{ padding: "clamp(2rem, 5vw, 5rem) 1.5rem", maxWidth: 1100, margin: "0 auto" }}>
+        <div style={{ 
+          display: "grid", 
+          gridTemplateColumns: "1fr 1fr", 
+          gap: "clamp(2rem, 4vw, 4rem)", 
+          alignItems: "center" 
+        }} className="about-grid">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -190,7 +206,7 @@ export default function ReligionHomePage({ theme }: Props) {
           >
             <span
               style={{
-                fontSize: "0.72rem",
+                fontSize: "clamp(0.65rem, 1vw, 0.72rem)",
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
                 color: figmaColors.darkText,
@@ -202,7 +218,7 @@ export default function ReligionHomePage({ theme }: Props) {
             </span>
             <h2
               style={{
-                fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
+                fontSize: "clamp(1.4rem, 3vw, 2.4rem)",
                 fontWeight: 700,
                 color: figmaColors.darkText,
                 lineHeight: 1.25,
@@ -212,10 +228,10 @@ export default function ReligionHomePage({ theme }: Props) {
             >
               Simplifying Marriage Registration for Every Indian Family
             </h2>
-            <p style={{ color: figmaColors.darkText, lineHeight: 1.9, fontSize: "0.98rem", marginBottom: "1.25rem", opacity: 0.85 }}>
+            <p style={{ color: figmaColors.darkText, lineHeight: 1.9, fontSize: "clamp(0.85rem, 1vw, 0.98rem)", marginBottom: "1.25rem", opacity: 0.85 }}>
               {theme.description}
             </p>
-            <p style={{ color: figmaColors.darkText, lineHeight: 1.9, fontSize: "0.98rem", opacity: 0.85 }}>
+            <p style={{ color: figmaColors.darkText, lineHeight: 1.9, fontSize: "clamp(0.85rem, 1vw, 0.98rem)", opacity: 0.85 }}>
               We help couples complete registration smoothly with proper documentation, timely filings, and complete legal support.
             </p>
           </motion.div>
@@ -231,7 +247,7 @@ export default function ReligionHomePage({ theme }: Props) {
               <div
                 key={i}
                 style={{
-                  padding: "1.5rem 1.5rem",
+                  padding: "clamp(1rem, 1.5vw, 1.5rem) 1.5rem",
                   borderRadius: 12,
                   border: `1px solid ${figmaColors.darkText}`,
                   background: figmaColors.lightBg,
@@ -263,13 +279,13 @@ export default function ReligionHomePage({ theme }: Props) {
                       fontWeight: 700,
                       color: figmaColors.darkText,
                       marginBottom: "0.3rem",
-                      fontSize: "0.92rem",
+                      fontSize: "clamp(0.85rem, 1vw, 0.92rem)",
                       fontFamily: "'Playfair Display', Georgia, serif",
                     }}
                   >
                     {item.title}
                   </div>
-                  <div style={{ color: figmaColors.darkText, fontSize: "0.85rem", lineHeight: 1.7, opacity: 0.8 }}>
+                  <div style={{ color: figmaColors.darkText, fontSize: "clamp(0.78rem, 0.9vw, 0.85rem)", lineHeight: 1.7, opacity: 0.8 }}>
                     {item.body}
                   </div>
                 </div>
@@ -279,13 +295,13 @@ export default function ReligionHomePage({ theme }: Props) {
         </div>
       </section>
 
-      {/* Why Marriage Registration is Important - FIGMA STYLE */}
-      <section style={{ background: figmaColors.bg, padding: "4rem 2rem" }}>
+      {/* Why Marriage Registration is Important */}
+      <section style={{ background: figmaColors.bg, padding: "clamp(2rem, 4vw, 4rem) 1.5rem" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
+          <div style={{ textAlign: "center", marginBottom: "clamp(2rem, 3vw, 3.5rem)" }}>
             <h2
               style={{
-                fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
+                fontSize: "clamp(1.5rem, 4vw, 2.6rem)",
                 fontWeight: 700,
                 color: figmaColors.darkText,
                 fontFamily: "'Playfair Display', Georgia, serif",
@@ -295,17 +311,21 @@ export default function ReligionHomePage({ theme }: Props) {
               How {isCourtMarriage ? 'court' : 'marriage'} registration helps?
             </h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1.5rem" }}>
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", 
+            gap: "1.5rem" 
+          }}>
             {benefits.map((item, index) => (
               <div 
                 key={index} 
                 style={{ 
-                  padding: "2rem 1.5rem", 
+                  padding: "clamp(1.2rem, 1.5vw, 2rem) 1.5rem", 
                   borderRadius: 14, 
                   background: figmaColors.cardBg, 
                   border: `1px solid ${figmaColors.darkText}`,
                   transition: "all 0.3s ease",
-                  minHeight: "184px",
+                  minHeight: "clamp(150px, 20vw, 184px)",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center"
@@ -313,7 +333,7 @@ export default function ReligionHomePage({ theme }: Props) {
               >
                 <h3 
                   style={{ 
-                    fontSize: "1.1rem", 
+                    fontSize: "clamp(0.95rem, 1.2vw, 1.1rem)", 
                     fontWeight: 700, 
                     color: figmaColors.darkText, 
                     marginBottom: "0.6rem", 
@@ -322,7 +342,7 @@ export default function ReligionHomePage({ theme }: Props) {
                 >
                   {item.title}
                 </h3>
-                <p style={{ color: figmaColors.darkText, fontSize: "0.92rem", lineHeight: 1.7, opacity: 0.8 }}>
+                <p style={{ color: figmaColors.darkText, fontSize: "clamp(0.8rem, 1vw, 0.92rem)", lineHeight: 1.7, opacity: 0.8 }}>
                   {item.text}
                 </p>
               </div>
@@ -331,13 +351,13 @@ export default function ReligionHomePage({ theme }: Props) {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS - FIGMA STYLE ── */}
-      <section style={{ background: figmaColors.bg, padding: "4rem 2rem" }}>
+      {/* ── HOW IT WORKS ── */}
+      <section style={{ background: figmaColors.bg, padding: "clamp(2rem, 4vw, 4rem) 1.5rem" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative" }}>
-          <div style={{ textAlign: "center", marginBottom: "4rem" }}>
+          <div style={{ textAlign: "center", marginBottom: "clamp(2rem, 3vw, 4rem)" }}>
             <span 
               style={{ 
-                fontSize: "0.72rem", 
+                fontSize: "clamp(0.65rem, 0.8vw, 0.72rem)", 
                 letterSpacing: "0.18em", 
                 textTransform: "uppercase", 
                 color: figmaColors.darkText, 
@@ -349,7 +369,7 @@ export default function ReligionHomePage({ theme }: Props) {
             </span>
             <h2 
               style={{ 
-                fontSize: "clamp(1.8rem, 3vw, 2.4rem)", 
+                fontSize: "clamp(1.4rem, 3vw, 2.4rem)", 
                 fontWeight: 700, 
                 color: figmaColors.darkText, 
                 marginTop: "0.75rem", 
@@ -360,7 +380,7 @@ export default function ReligionHomePage({ theme }: Props) {
             </h2>
           </div>
 
-          {/* Vertical Line */}
+          {/* Vertical Line - Hidden on mobile */}
           <div style={{ 
             position: "absolute", 
             left: "50%", 
@@ -368,8 +388,9 @@ export default function ReligionHomePage({ theme }: Props) {
             bottom: 0, 
             width: "3px", 
             background: figmaColors.darkText, 
-            transform: "translateX(-50%)" 
-          }} />
+            transform: "translateX(-50%)",
+            display: "none"
+          }} className="desktop-vertical-line" />
 
           {displayedSteps.map((step, index) => (
             <div 
@@ -377,20 +398,22 @@ export default function ReligionHomePage({ theme }: Props) {
               style={{ 
                 display: "flex", 
                 justifyContent: index % 2 === 0 ? "flex-start" : "flex-end", 
-                marginBottom: "4rem", 
+                marginBottom: "clamp(2rem, 3vw, 4rem)", 
                 position: "relative" 
               }}
+              className="step-item"
             >
               <div 
                 style={{ 
-                  width: "45%", 
+                  width: index % 2 === 0 ? "45%" : "45%",
                   padding: index % 2 === 0 ? "0 2rem 0 0" : "0 0 0 2rem", 
                   textAlign: index % 2 === 0 ? "right" : "left" 
                 }}
+                className="step-content"
               >
                 <div 
                   style={{ 
-                    fontSize: "1.4rem", 
+                    fontSize: "clamp(1.2rem, 1.5vw, 1.4rem)", 
                     fontWeight: 800, 
                     color: figmaColors.darkText, 
                     marginBottom: "0.4rem", 
@@ -405,13 +428,13 @@ export default function ReligionHomePage({ theme }: Props) {
                     fontWeight: 700, 
                     color: figmaColors.darkText, 
                     marginBottom: "0.5rem", 
-                    fontSize: "1rem", 
+                    fontSize: "clamp(0.9rem, 1.1vw, 1rem)", 
                     fontFamily: "'Playfair Display', Georgia, serif" 
                   }}
                 >
                   {step.title}
                 </div>
-                <div style={{ color: figmaColors.darkText, fontSize: "0.9rem", lineHeight: 1.7, opacity: 0.8 }}>
+                <div style={{ color: figmaColors.darkText, fontSize: "clamp(0.8rem, 0.95vw, 0.9rem)", lineHeight: 1.7, opacity: 0.8 }}>
                   {step.body}
                 </div>
               </div>
@@ -425,24 +448,25 @@ export default function ReligionHomePage({ theme }: Props) {
                 background: figmaColors.darkText, 
                 borderRadius: "50%", 
                 border: `4px solid ${figmaColors.bg}` 
-              }} />
+              }} 
+              className="step-marker" />
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── WHY TRUST US - FIGMA STYLE (WITH NUMBERS INSTEAD OF ICONS) ── */}
-      <section style={{ background: figmaColors.bg, padding: "4rem 2rem" }}>
+      {/* ── WHY TRUST US ── */}
+      <section style={{ background: figmaColors.bg, padding: "clamp(2rem, 4vw, 4rem) 1.5rem" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <motion.div 
             initial={{ opacity: 0, y: 20 }} 
             whileInView={{ opacity: 1, y: 0 }} 
             viewport={{ once: true }} 
-            style={{ textAlign: "center", marginBottom: "3.5rem" }}
+            style={{ textAlign: "center", marginBottom: "clamp(2rem, 3vw, 3.5rem)" }}
           >
             <span 
               style={{ 
-                fontSize: "0.72rem", 
+                fontSize: "clamp(0.65rem, 0.8vw, 0.72rem)", 
                 letterSpacing: "0.18em", 
                 textTransform: "uppercase", 
                 color: figmaColors.darkText, 
@@ -454,7 +478,7 @@ export default function ReligionHomePage({ theme }: Props) {
             </span>
             <h2 
               style={{ 
-                fontSize: "clamp(1.8rem, 3vw, 2.4rem)", 
+                fontSize: "clamp(1.4rem, 3vw, 2.4rem)", 
                 fontWeight: 700, 
                 color: figmaColors.darkText, 
                 marginTop: "0.75rem", 
@@ -463,12 +487,16 @@ export default function ReligionHomePage({ theme }: Props) {
             >
               Built Around Your Trust
             </h2>
-            <p style={{ color: figmaColors.darkText, maxWidth: 560, margin: "1rem auto 0", lineHeight: 1.8, fontSize: "0.97rem", opacity: 0.8 }}>
+            <p style={{ color: figmaColors.darkText, maxWidth: 560, margin: "1rem auto 0", lineHeight: 1.8, fontSize: "clamp(0.85rem, 1vw, 0.97rem)", opacity: 0.8 }}>
               Thousands of couples have trusted us to handle one of the most important documents of their lives. Here is why they choose us over the traditional route.
             </p>
           </motion.div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem" }}>
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", 
+            gap: "clamp(1rem, 1.5vw, 2rem)" 
+          }}>
             {trustReasons.map((item, i) => (
               <motion.div
                 key={i}
@@ -478,7 +506,7 @@ export default function ReligionHomePage({ theme }: Props) {
                 transition={{ delay: i * 0.08 }}
                 whileHover={{ y: -4, boxShadow: `0 12px 32px ${figmaColors.darkText}1A` }}
                 style={{ 
-                  padding: "1.75rem", 
+                  padding: "clamp(1.2rem, 1.5vw, 1.75rem)", 
                   borderRadius: 14, 
                   border: `1px solid ${figmaColors.darkText}`, 
                   background: figmaColors.white, 
@@ -488,7 +516,6 @@ export default function ReligionHomePage({ theme }: Props) {
                   transition: "all 0.25s ease" 
                 }}
               >
-                {/* Number instead of icon */}
                 <div
                   style={{
                     width: 36,
@@ -507,10 +534,10 @@ export default function ReligionHomePage({ theme }: Props) {
                   {i + 1}
                 </div>
                 <div>
-                  <div style={{ fontWeight: 700, color: figmaColors.darkText, marginBottom: "0.4rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
+                  <div style={{ fontWeight: 700, color: figmaColors.darkText, marginBottom: "0.4rem", fontSize: "clamp(0.9rem, 1vw, 1rem)", fontFamily: "'Playfair Display', Georgia, serif" }}>
                     {item.title}
                   </div>
-                  <div style={{ color: figmaColors.darkText, fontSize: "0.87rem", lineHeight: 1.7, opacity: 0.8 }}>
+                  <div style={{ color: figmaColors.darkText, fontSize: "clamp(0.8rem, 0.9vw, 0.87rem)", lineHeight: 1.7, opacity: 0.8 }}>
                     {item.body}
                   </div>
                 </div>
@@ -520,20 +547,20 @@ export default function ReligionHomePage({ theme }: Props) {
         </div>
       </section>
 
-      {/* ── CTA - FIGMA STYLE ── */}
-      <section style={{ background: figmaColors.darkBg, padding: "4rem 2rem" }}>
+      {/* ── CTA ── */}
+      <section style={{ background: figmaColors.darkBg, padding: "clamp(2rem, 4vw, 4rem) 1.5rem" }}>
         <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 style={{ 
-              fontSize: "clamp(1.8rem, 3vw, 2.4rem)", 
+              fontSize: "clamp(1.4rem, 3vw, 2.4rem)", 
               fontWeight: 700, 
-              color: "#fff", 
+              color: figmaColors.bg, 
               marginBottom: "1.5rem", 
               fontFamily: "'Playfair Display', Georgia, serif" 
             }}>
               {ctaHeading}
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.9, fontSize: "1.5rem", marginBottom: "1.5rem" }}>
+            <p style={{ color: `${figmaColors.bg}B8`, lineHeight: 1.9, fontSize: "clamp(1.1rem, 1.8vw, 1.5rem)", marginBottom: "1.5rem" }}>
               {ctaSubtext}
             </p>
             <Link href={`/${theme.key}/register`} style={{ textDecoration: "none" }}>
@@ -541,12 +568,12 @@ export default function ReligionHomePage({ theme }: Props) {
                 whileHover={{ scale: 1.03, y: -2 }} 
                 style={{ 
                   display: "inline-block", 
-                  padding: "14px 36px", 
+                  padding: "clamp(12px, 1.5vw, 14px) clamp(24px, 3vw, 36px)", 
                   borderRadius: 10, 
-                  background: "#fff", 
+                  background: figmaColors.bg, 
                   color: figmaColors.darkText, 
                   fontWeight: 700, 
-                  fontSize: "0.95rem", 
+                  fontSize: "clamp(0.85rem, 1vw, 0.95rem)", 
                   cursor: "pointer", 
                   letterSpacing: "0.03em", 
                   fontFamily: "'Lato', sans-serif" 
@@ -559,24 +586,91 @@ export default function ReligionHomePage({ theme }: Props) {
         </div>
       </section>
 
-      {/* ── FOOTER - FIGMA STYLE ── */}
-      <footer style={{ background: figmaColors.darkBg, padding: "3rem 2rem", color: "rgba(255,255,255,0.5)", fontSize: "0.78rem", letterSpacing: "0.04em" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "2rem", justifyContent: "space-between", alignItems: "center" }}>
+      {/* ── FOOTER ── */}
+      <footer style={{ background: figmaColors.darkBg, padding: "clamp(1.5rem, 2vw, 3rem) 1.5rem", color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.7rem, 0.8vw, 0.78rem)", letterSpacing: "0.04em" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "clamp(1rem, 1.5vw, 2rem)", justifyContent: "space-between", alignItems: "center" }}>
           <div>
-            <div style={{ color: "#fff", fontWeight: 700, fontSize: "1rem", marginBottom: "0.3rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
+            <div style={{ color: "#fff", fontWeight: 700, fontSize: "clamp(0.85rem, 1vw, 1rem)", marginBottom: "0.3rem", fontFamily: "'Playfair Display', Georgia, serif" }}>
               {footerBrand}
             </div>
-            <div style={{ opacity: 0.5 }}>{footerTagline}</div>
+            <div style={{ opacity: 0.5, fontSize: "clamp(0.6rem, 0.7vw, 0.7rem)" }}>{footerTagline}</div>
           </div>
-          <div style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}>
-            <Link href={`/blog`} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Blogs</Link>
-            <Link href={`/contact`} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Contact</Link>
-            <Link href={`/register`} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Register</Link>
-            <Link href="/" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Change Religion</Link>
+          <div style={{ display: "flex", gap: "clamp(0.5rem, 1vw, 2rem)", flexWrap: "wrap" }}>
+            <Link href={`/blog`} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: "clamp(0.6rem, 0.7vw, 0.7rem)" }}>Blogs</Link>
+            <Link href={`/contact`} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: "clamp(0.6rem, 0.7vw, 0.7rem)" }}>Contact</Link>
+            <Link href={`/register`} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: "clamp(0.6rem, 0.7vw, 0.7rem)" }}>Register</Link>
+            <Link href="/" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: "clamp(0.6rem, 0.7vw, 0.7rem)" }}>Change Religion</Link>
           </div>
-          <div style={{ opacity: 0.5 }}>© 2024 Register my marriage · All Rights Reserved</div>
+          <div style={{ opacity: 0.5, fontSize: "clamp(0.6rem, 0.7vw, 0.7rem)" }}>© 2024 Register my marriage · All Rights Reserved</div>
         </div>
       </footer>
+
+      {/* ── RESPONSIVE STYLES ── */}
+      <style>{`
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+          .hero-content {
+            margin-left: 0 !important;
+            text-align: center !important;
+            padding: 0 1.5rem !important;
+            max-width: 100% !important;
+            width: 100% !important;
+          }
+          
+          .hero-buttons {
+            justify-content: center !important;
+          }
+          
+          .about-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+          }
+          
+          .step-item {
+            justify-content: center !important;
+          }
+          
+          .step-content {
+            width: 100% !important;
+            padding: 0 !important;
+            text-align: center !important;
+          }
+          
+          .step-marker {
+            display: none !important;
+          }
+          
+          .desktop-vertical-line {
+            display: none !important;
+          }
+          
+          .step-item {
+            margin-bottom: 2rem !important;
+          }
+        }
+
+        /* Tablet Styles */
+        @media (min-width: 769px) and (max-width: 1024px) {
+          .hero-content {
+            margin-left: 40% !important;
+          }
+          
+          .about-grid {
+            grid-template-columns: 1fr !important;
+            gap: 2.5rem !important;
+          }
+        }
+
+        /* Large Screens */
+        @media (min-width: 1025px) {
+          .step-marker {
+            display: block !important;
+          }
+          .desktop-vertical-line {
+            display: block !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

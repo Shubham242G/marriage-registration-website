@@ -254,7 +254,7 @@ export default function LoginPage() {
               lineHeight: 1.2,
             }}
           >
-            Sign In to VivahSetu
+            Sign In to Register my marriage
           </h1>
 
           <p
@@ -546,7 +546,7 @@ export default function LoginPage() {
             "1px solid rgba(255,255,255,0.08)",
         }}
       >
-        © 2024 VivahSetu · India's trusted marriage
+        © 2024 RegisterMyMarriage · India's trusted marriage
         registration platform
       </footer>
     </div>

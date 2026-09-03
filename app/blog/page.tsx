@@ -24,7 +24,7 @@ const STATIC_ARTICLES: IBlog[] = [
     description:
       "Despite India conducting over 10 million weddings every year, a staggering proportion remain legally unregistered. The consequences — from inheritance disputes to visa complications — can be severe. We explain why registration is not optional.",
     Date: "2024-01-15",
-    createdBy: "VivahSetu Legal Team",
+    createdBy: "RegisterMyMarriage Legal Team",
     categoryId: "legal",
     slug: "why-register-marriage-india",
     bannerImage: "",
@@ -36,7 +36,7 @@ const STATIC_ARTICLES: IBlog[] = [
     description:
       "Two of India's most important marriage laws govern millions of couples — but most people don't understand the difference. We break down who qualifies under each act, the procedural differences, and which route is faster.",
     Date: "2024-01-22",
-    createdBy: "VivahSetu Legal Team",
+    createdBy: "Register my marriage Legal Team",
     categoryId: "legal",
     slug: "hindu-marriage-act-vs-special-marriage-act",
     bannerImage: "",
@@ -47,7 +47,7 @@ const STATIC_ARTICLES: IBlog[] = [
     description:
       "India's wedding market is one of the largest in the world — and it's growing at 15% annually. From destination weddings to digital invitations, we explore how the Indian marriage landscape is transforming.",
     Date: "2024-02-05",
-    createdBy: "VivahSetu Editorial",
+    createdBy: "Register my marriage Editorial",
     categoryId: "insights",
     slug: "india-wedding-industry-overview",
     bannerImage: "",
@@ -58,7 +58,7 @@ const STATIC_ARTICLES: IBlog[] = [
     description:
       "A Nikah holds deep religious significance, but without civil registration, couples face legal vulnerability. This guide explains exactly how Muslim couples can register their marriage under Indian law while preserving their religious customs.",
     Date: "2024-02-18",
-    createdBy: "VivahSetu Legal Team",
+    createdBy: "Register my marriage Legal Team",
     categoryId: "religion",
     slug: "nikah-registration-guide",
     bannerImage: "",
@@ -70,7 +70,7 @@ const STATIC_ARTICLES: IBlog[] = [
     description:
       "One of the most common reasons marriage applications are rejected is incomplete documentation. Our comprehensive checklist covers every document you'll need — across all religions and all Indian states.",
     Date: "2024-03-01",
-    createdBy: "VivahSetu Legal Team",
+    createdBy: "Register my marriage Legal Team",
     categoryId: "guides",
     slug: "marriage-registration-documents-checklist",
     bannerImage: "",
@@ -82,7 +82,7 @@ const STATIC_ARTICLES: IBlog[] = [
     description:
       "Many couples are confused about the difference between a court marriage and a religious ceremony. This article clarifies legal rights under each, addresses common misconceptions, and guides couples in choosing the right path.",
     Date: "2024-03-14",
-    createdBy: "VivahSetu Editorial",
+    createdBy: "Register my marriage Editorial",
     categoryId: "guides",
     slug: "court-marriage-vs-religious-marriage",
     bannerImage: "",

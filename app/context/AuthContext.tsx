@@ -42,6 +42,18 @@ const SESSION_CONFIG = {
   REFRESH_THRESHOLD: 5 * 60 * 1000, // 5 minutes
 };
 
+// Helper to set cookie
+const setCookie = (name: string, value: string, days: number = 7) => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+};
+
+// Helper to delete cookie
+const deleteCookie = (name: string) => {
+  document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+};
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
@@ -60,6 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem("rmm_user");
     localStorage.removeItem("rmm_token_expiry");
     localStorage.removeItem("rmm_last_activity");
+    deleteCookie("rmm_token");
   };
 
   // Perform logout
@@ -211,6 +224,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("rmm_user", JSON.stringify(userData));
     localStorage.setItem("rmm_token_expiry", expiryTime.toString());
     localStorage.setItem("rmm_last_activity", now.toString());
+    
+    // Set cookie for middleware
+    setCookie("rmm_token", tokenData, 7);
   };
 
   const refreshToken = async (): Promise<boolean> => {
@@ -249,6 +265,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           tokenExpiryRef.current = expiryTime;
           localStorage.setItem("rmm_token", data.token);
           localStorage.setItem("rmm_token_expiry", expiryTime.toString());
+          setCookie("rmm_token", data.token, 7);
           
           if (data.user) {
             setUser(data.user);
@@ -269,6 +286,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     performLogout();
+    router.push("/");
   };
 
   return (

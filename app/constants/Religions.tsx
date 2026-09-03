@@ -23,7 +23,7 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
     heroHeading: "Honouring Sacred Traditions",
     heroSubtext:
       "Legally register your Vivah, Anand Karaj or Dharmic union with dignity, care, and complete legal compliance — all from the comfort of your home.",
-    bannerImage: "/media/hinduBanner.jpeg",
+    bannerImage: "/media/hinduBanner.png",
     accentTeal: figmaColors.darkText,
     lightTeal: figmaColors.lightBg,
     darkTeal: figmaColors.darkBg,

@@ -4,10 +4,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import Image from "next/image";
 import { RELIGIOUS_CATEGORIES, COURT_MARRIAGE } from "./constants/Religions";
 import { ReligionKey } from "./types/Religion";
 import { useAuth } from "./context/AuthContext";
-import Navbar from "./components/Navbar";
 
 export default function HomePage() {
   const router = useRouter();
@@ -50,7 +51,54 @@ export default function HomePage() {
         />
 
         <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-          <Navbar />
+          
+          {/* ── LOGO HEADER ── */}
+<div
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottom: `1px solid ${colors.darkText}15`,
+    background: colors.bg,
+    flexShrink: 0,
+    height: "clamp(90px, 13vh, 125px)",
+    overflow: "hidden",
+  }}
+>
+  <Link
+    href="/"
+    style={{
+      textDecoration: "none",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      width: "100%",
+      height: "100%",
+    }}
+  >
+    <div
+      style={{
+        position: "relative",
+        width: "min(420px, 75vw)",
+        height: "100%",
+      }}
+    >
+      <Image
+        src="/media/logo.png"
+        alt="Register My Marriage"
+        fill
+        priority
+        loading="eager"
+        sizes="(max-width: 768px) 75vw, 420px"
+        style={{
+          objectFit: "contain",
+          objectPosition: "center",
+          transform: "scale(4.72)",
+        }}
+      />
+    </div>
+  </Link>
+</div>
 
           {/* ── CENTER SECTION ── */}
           <div
@@ -60,37 +108,17 @@ export default function HomePage() {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              padding: "2rem 1.5rem 1rem",
-              gap: "1.4rem",
+              padding: "0.5rem 1.5rem 0.75rem",
+              gap: "0.75rem",
             }}
           >
-            {/* HEADER */}
+            {/* HEADER - Removed the tagline */}
             <motion.div
               initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               style={{ textAlign: "center", maxWidth: 520 }}
             >
-              <div
-                style={{
-                  display: "inline-block",
-                  padding: "4px 14px",
-                  borderRadius: 999,
-                  background: colors.lightBg,
-                  border: `1px solid ${colors.darkText}`,
-                  color: colors.darkText,
-                  fontSize: "0.65rem",
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  fontWeight: 500,
-                  marginBottom: "0.8rem",
-                  fontFamily: "'Inter', sans-serif",
-                  opacity: 0.7,
-                }}
-              >
-                India's Trusted Marriage Registration Service
-              </div>
-
               <h1
                 style={{
                   fontSize: "clamp(1.5rem, 3.5vw, 2.2rem)",
@@ -125,7 +153,7 @@ export default function HomePage() {
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-                gap: "1rem",
+                gap: "0.85rem",
                 width: "100%",
                 maxWidth: 850,
               }}
@@ -142,7 +170,7 @@ export default function HomePage() {
                   onHoverEnd={() => setHovered(null)}
                   onClick={() => router.push(`/${religion.key}`)}
                   style={{
-                    padding: "1.2rem 1rem",
+                    padding: "1rem 1rem",
                     borderRadius: 14,
                     border: `1.5px solid ${hovered === religion.key ? colors.darkText : "rgba(74,14,25,0.15)"}`,
                     background: hovered === religion.key ? colors.darkText : colors.white,
@@ -150,7 +178,7 @@ export default function HomePage() {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    gap: "0.7rem",
+                    gap: "0.6rem",
                     transition: "all 0.25s ease",
                     boxShadow: hovered === religion.key 
                       ? "0 8px 24px rgba(74,14,25,0.2)" 
@@ -161,12 +189,10 @@ export default function HomePage() {
                 >
                   <div
                     style={{
-                      width: 52,
-                      height: 52,
+                      width: 48,
+                      height: 48,
                       borderRadius: "50%",
-                      background: hovered === religion.key
-                        ? colors.white
-                        : colors.lightBg,
+                      background: colors.white,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -175,7 +201,7 @@ export default function HomePage() {
                   >
                     <div
                       style={{
-                        transform: "scale(0.8)",
+                        transform: "scale(0.75)",
                         filter: hovered === religion.key ? "none" : "none",
                       }}
                     >
@@ -186,7 +212,7 @@ export default function HomePage() {
                   <div style={{ textAlign: "center" }}>
                     <div
                       style={{
-                        fontSize: "0.9rem",
+                        fontSize: "0.85rem",
                         color: hovered === religion.key ? colors.white : colors.darkText,
                         marginBottom: 2,
                         fontFamily: "'Playfair Display', Georgia, serif",
@@ -197,7 +223,7 @@ export default function HomePage() {
                     </div>
                     <div
                       style={{
-                        fontSize: "0.65rem",
+                        fontSize: "0.6rem",
                         color: hovered === religion.key ? "rgba(255,255,255,0.7)" : "rgba(74,14,25,0.6)",
                         letterSpacing: "0.05em",
                         textTransform: "uppercase",
@@ -228,11 +254,11 @@ export default function HomePage() {
               <div style={{ flex: 1, height: "1px", background: `rgba(74,14,25,0.15)` }} />
               <span
                 style={{
-                  fontSize: "0.7rem",
+                  fontSize: "0.65rem",
                   color: colors.darkText,
                   letterSpacing: "0.15em",
                   textTransform: "uppercase",
-                  padding: "4px 12px",
+                  padding: "3px 10px",
                   borderRadius: 999,
                   border: `1px solid rgba(74,14,25,0.15)`,
                   whiteSpace: "nowrap",
@@ -260,20 +286,20 @@ export default function HomePage() {
                 onClick={() => router.push("/court-marriage")}
                 style={{
                   width: "100%",
-                  padding: "1.4rem 2rem",
+                  padding: "1.2rem 1.8rem",
                   borderRadius: 16,
-                  border: `1.5px solid ${courtHovered ? colors.darkText : "rgba(74,14,25,0.15)"}`,
+                  border: `2px solid ${courtHovered ? colors.darkText : "rgba(74,14,25,0.2)"}`,
                   background: courtHovered ? colors.darkText : colors.white,
                   backdropFilter: "blur(12px)",
                   cursor: "pointer",
                   display: "grid",
                   gridTemplateColumns: "auto 1fr auto",
                   alignItems: "center",
-                  gap: "1.5rem",
+                  gap: "1.2rem",
                   transition: "all 0.25s ease",
                   boxShadow: courtHovered 
-                    ? "0 8px 28px rgba(74,14,25,0.2)" 
-                    : "0 4px 16px rgba(74,14,25,0.06)",
+                    ? "0 8px 28px rgba(74,14,25,0.25)" 
+                    : "0 4px 16px rgba(74,14,25,0.08)",
                   textAlign: "left",
                   fontFamily: "'Inter', sans-serif",
                 }}
@@ -281,12 +307,10 @@ export default function HomePage() {
                 {/* Icon */}
                 <div
                   style={{
-                    width: 56,
-                    height: 56,
+                    width: 52,
+                    height: 52,
                     borderRadius: 14,
-                    background: courtHovered
-                      ? colors.white
-                      : colors.lightBg,
+                    background: colors.white,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -296,7 +320,7 @@ export default function HomePage() {
                 >
                   <div
                     style={{
-                      transform: "scale(0.85)",
+                      transform: "scale(0.8)",
                       transition: "filter 0.3s",
                     }}
                   >
@@ -306,10 +330,11 @@ export default function HomePage() {
 
                 {/* Text */}
                 <div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.3rem", flexWrap: "wrap" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.2rem", flexWrap: "wrap" }}>
                     <span
                       style={{
                         fontSize: "1.05rem",
+                        fontWeight: 700,
                         color: courtHovered ? colors.white : colors.darkText,
                         transition: "color 0.25s",
                         fontFamily: "'Playfair Display', Georgia, serif",
@@ -319,7 +344,7 @@ export default function HomePage() {
                     </span>
                     <span
                       style={{
-                        fontSize: "0.6rem",
+                        fontSize: "0.55rem",
                         letterSpacing: "0.12em",
                         textTransform: "uppercase",
                         padding: "2px 8px",
@@ -338,13 +363,13 @@ export default function HomePage() {
                   <p
                     style={{
                       fontSize: "0.78rem",
-                      color: courtHovered ? "rgba(255,255,255,0.8)" : colors.darkText,
+                      color: courtHovered ? "rgba(255,255,255,0.85)" : colors.darkText,
                       lineHeight: 1.5,
                       margin: 0,
                       transition: "color 0.25s",
                       maxWidth: 520,
                       fontFamily: "'Inter', sans-serif",
-                      opacity: courtHovered ? 0.9 : 0.7,
+                      opacity: courtHovered ? 0.9 : 0.75,
                     }}
                   >
                     For interfaith, inter-caste, NRI, or couples who prefer a clean civil union — no religion required, no ceremony required.
@@ -352,20 +377,21 @@ export default function HomePage() {
                   </p>
 
                   {/* Tags */}
-                  <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.6rem", flexWrap: "wrap" }}>
+                  <div style={{ display: "flex", gap: "0.4rem", marginTop: "0.4rem", flexWrap: "wrap" }}>
                     {["Interfaith", "Inter-caste", "NRI Marriage", "No Ceremony Needed"].map((tag) => (
                       <span
                         key={tag}
                         style={{
-                          fontSize: "0.58rem",
+                          fontSize: "0.55rem",
                           padding: "2px 8px",
                           borderRadius: 999,
-                          border: `1px solid ${courtHovered ? "rgba(255,255,255,0.2)" : "rgba(74,14,25,0.1)"}`,
-                          color: courtHovered ? "rgba(255,255,255,0.7)" : colors.darkText,
+                          border: `1.5px solid ${courtHovered ? "rgba(255,255,255,0.2)" : "rgba(74,14,25,0.15)"}`,
+                          color: courtHovered ? "rgba(255,255,255,0.75)" : colors.darkText,
                           transition: "all 0.25s",
                           letterSpacing: "0.05em",
                           fontFamily: "'Inter', sans-serif",
-                          opacity: courtHovered ? 0.8 : 0.6,
+                          opacity: courtHovered ? 0.8 : 0.65,
+                          fontWeight: 500,
                         }}
                       >
                         {tag}
@@ -382,7 +408,7 @@ export default function HomePage() {
                     color: courtHovered ? colors.white : colors.darkText,
                     transition: "color 0.25s",
                     flexShrink: 0,
-                    opacity: courtHovered ? 0.8 : 0.3,
+                    opacity: courtHovered ? 0.9 : 0.4,
                   }}
                 >
                   →
@@ -398,7 +424,7 @@ export default function HomePage() {
               style={{
                 display: "flex",
                 flexWrap: "wrap",
-                gap: "1.2rem",
+                gap: "1rem",
                 justifyContent: "center",
                 marginTop: "0.25rem",
                 paddingBottom: "0.5rem",
@@ -412,7 +438,7 @@ export default function HomePage() {
               ].map(([num, label]) => (
                 <div key={label} style={{ textAlign: "center" }}>
                   <div style={{
-                    fontSize: "0.9rem",
+                    fontSize: "0.85rem",
                     color: colors.darkText,
                     fontFamily: "'Playfair Display', Georgia, serif",
                     fontWeight: 700,
@@ -421,7 +447,7 @@ export default function HomePage() {
                     {num}
                   </div>
                   <div style={{
-                    fontSize: "0.6rem",
+                    fontSize: "0.55rem",
                     color: colors.darkText,
                     textTransform: "uppercase",
                     fontFamily: "'Inter', sans-serif",
@@ -438,10 +464,10 @@ export default function HomePage() {
           <footer
             style={{
               textAlign: "center",
-              padding: "0.6rem",
+              padding: "0.5rem",
               background: colors.darkBg,
               color: "rgba(255,255,255,0.6)",
-              fontSize: "0.6rem",
+              fontSize: "0.55rem",
               borderTop: `1px solid rgba(255,255,255,0.05)`,
               fontFamily: "'Inter', sans-serif",
             }}

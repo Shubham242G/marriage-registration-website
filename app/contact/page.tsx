@@ -212,7 +212,7 @@ export default function ContactPage() {
     {
       icon: "✉",
       label: "Email",
-      value: "help@vivahsetu.in",
+      value: "info@registermymarriage.in",
     },
     {
       icon: "☎",
@@ -1250,7 +1250,7 @@ export default function ContactPage() {
                   "'Playfair Display', Georgia, serif",
               }}
             >
-              VivahSetu
+              Register my marriage
             </div>
 
             <div
@@ -1280,7 +1280,7 @@ export default function ContactPage() {
               opacity: 0.5,
             }}
           >
-            © 2024 VivahSetu · All Rights Reserved
+            © 2024 RegisterMyMarriage · All Rights Reserved
           </div>
         </div>
       </footer>
