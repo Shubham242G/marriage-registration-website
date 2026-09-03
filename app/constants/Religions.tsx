@@ -295,7 +295,7 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
     heroHeading: "Love is Universal. Registration too.",
     heroSubtext:
       "For interfaith, inter-caste, or civil marriages — we provide a straightforward, judgement-free path to legal recognition under the Special Marriage Act.",
-    bannerImage: "/media/otherBanner.jpeg",
+    bannerImage: "/media/interfaithBanner.png",
     accentTeal: figmaColors.darkText,
     lightTeal: figmaColors.lightBg,
     darkTeal: figmaColors.darkBg,
