@@ -144,7 +144,7 @@ export default function ReligionHomePage({ theme }: Props) {
             maxWidth: 650,
             padding: "0 2rem",
             marginLeft: "58%",
-            transform: "translateY(-6vh)",
+            transform: "translateY(-12svh)",
             textAlign: "left",
           }}
           className="hero-content"
@@ -159,7 +159,7 @@ export default function ReligionHomePage({ theme }: Props) {
               fontWeight: 700,
               color: figmaColors.darkText,
               lineHeight: 1.2,
-              marginBottom: "1.2rem",
+              marginBottom: "1.3rem",
               fontFamily: "'Playfair Display', Georgia, serif",
               textShadow: "0 2px 8px rgba(255,255,255,0.3)",
               maxWidth: "620px",
@@ -911,7 +911,7 @@ export default function ReligionHomePage({ theme }: Props) {
             padding: 0 1.5rem !important;
             max-width: 100% !important;
             width: 100% !important;
-            transform: translateY(-3vh) !important;
+            transform: translateY(-12vh) !important;
           }
 
           .hero-buttons {
