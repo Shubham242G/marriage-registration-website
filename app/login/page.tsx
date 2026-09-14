@@ -7,16 +7,25 @@ import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../context/AuthContext";
 
+/* ── BRAND GUIDELINE COLORS ── */
 const COLORS = {
-  bg: "#E4E0D5",
-  burgundy: "#4A0E19",
-  darkBurgundy: "#380913",
-  cream: "#F7F3EA",
-  card: "#FBF9F4",
-  muted: "#76555C",
-  lightBorder: "#C9B8BA",
+  bg: "#F7F0E7",              // Warm Cream — brand default
+  burgundy: "#650B18",        // Brand Burgundy — primary
+  darkBurgundy: "#4A0812",    // Deeper burgundy (derived)
+  cream: "#FBF6F0",           // Cream tint
+  card: "#FFFCF9",            // Card background
+  muted: "#7A5A60",           // Muted burgundy-grey
+  lightBorder: "#C9B8BA",     // Soft border
   white: "#FFFFFF",
+  ink: "#171717",             // Ink from brand
+  gold: "#D6AD62",            // Antique Gold accent
 };
+
+/* ── BRAND FONT STACKS ── */
+const FONT_DISPLAY =
+  "'Coolvetica', 'Helvetica Neue', 'Arial Narrow', Arial, sans-serif";
+const FONT_UI =
+  "'Inter', 'Helvetica Neue', Arial, system-ui, -apple-system, sans-serif";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -34,42 +43,24 @@ export default function LoginPage() {
     const params = new URLSearchParams(window.location.search);
 
     if (params.get("session") === "expired") {
-      setApiError(
-        "Your session has expired. Please log in again."
-      );
+      setApiError("Your session has expired. Please log in again.");
 
-      window.history.replaceState(
-        {},
-        "",
-        window.location.pathname
-      );
+      window.history.replaceState({}, "", window.location.pathname);
     }
   }, []);
 
   const set =
     (field: "email" | "password") =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setForm((p) => ({
-        ...p,
-        [field]: e.target.value,
-      }));
-
-      setErrors((p) => ({
-        ...p,
-        [field]: "",
-      }));
-
+      setForm((p) => ({ ...p, [field]: e.target.value }));
+      setErrors((p) => ({ ...p, [field]: "" }));
       setApiError("");
     };
 
   const validate = () => {
     const e: typeof errors = {};
 
-    if (
-      !form.email.match(
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      )
-    ) {
+    if (!form.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
       e.email = "Valid email required";
     }
 
@@ -78,7 +69,6 @@ export default function LoginPage() {
     }
 
     setErrors(e);
-
     return Object.keys(e).length === 0;
   };
 
@@ -89,37 +79,28 @@ export default function LoginPage() {
     setApiError("");
 
     try {
-      const BASE_URL =
-        process.env.NEXT_PUBLIC_API_URL || "";
+      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
-      const res = await fetch(
-        `${BASE_URL}/users/login/User`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: form.email,
-            password: form.password,
-          }),
-        }
-      );
+      const res = await fetch(`${BASE_URL}/users/login/User`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password,
+        }),
+      });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(
-          data?.message || "Login failed"
-        );
+        throw new Error(data?.message || "Login failed");
       }
 
       login(data.user, data.token);
       router.push("/account");
     } catch (err: any) {
       setApiError(
-        err?.message ||
-          "Invalid credentials. Please try again."
+        err?.message || "Invalid credentials. Please try again."
       );
     } finally {
       setSubmitting(false);
@@ -132,7 +113,7 @@ export default function LoginPage() {
     borderRadius: 8,
     border: `1.5px solid ${COLORS.lightBorder}`,
     fontSize: "0.9rem",
-    fontFamily: "'Lato', sans-serif",
+    fontFamily: FONT_UI,
     color: COLORS.burgundy,
     background: COLORS.white,
     outline: "none",
@@ -143,15 +124,13 @@ export default function LoginPage() {
   return (
     <div
       style={{
-        fontFamily: "'Lato', sans-serif",
+        fontFamily: FONT_UI,
         background: COLORS.bg,
         minHeight: "100vh",
         color: COLORS.burgundy,
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap');
-
         * {
           box-sizing: border-box;
           margin: 0;
@@ -159,8 +138,8 @@ export default function LoginPage() {
         }
 
         input:focus {
-          border-color: #4A0E19 !important;
-          box-shadow: 0 0 0 3px rgba(74,14,25,0.08);
+          border-color: #650B18 !important;
+          box-shadow: 0 0 0 3px rgba(101,11,24,0.08);
         }
 
         input::placeholder {
@@ -172,7 +151,7 @@ export default function LoginPage() {
         }
 
         .login-card:hover {
-          box-shadow: 0 18px 45px rgba(74,14,25,0.12) !important;
+          box-shadow: 0 18px 45px rgba(101,11,24,0.12) !important;
         }
 
         @media (max-width: 520px) {
@@ -189,7 +168,6 @@ export default function LoginPage() {
       <Navbar />
 
       {/* HERO */}
-
       <section
         style={{
           background: COLORS.darkBurgundy,
@@ -227,10 +205,7 @@ export default function LoginPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          style={{
-            position: "relative",
-            zIndex: 2,
-          }}
+          style={{ position: "relative", zIndex: 2 }}
         >
           <span
             style={{
@@ -239,6 +214,7 @@ export default function LoginPage() {
               textTransform: "uppercase",
               color: "#D9BFC4",
               fontWeight: 700,
+              fontFamily: FONT_UI,
             }}
           >
             Welcome Back
@@ -249,8 +225,7 @@ export default function LoginPage() {
               marginTop: "0.7rem",
               fontSize: "clamp(2.2rem, 5vw, 3rem)",
               color: COLORS.white,
-              fontFamily:
-                "'Playfair Display', Georgia, serif",
+              fontFamily: FONT_DISPLAY,
               lineHeight: 1.2,
             }}
           >
@@ -262,6 +237,7 @@ export default function LoginPage() {
               marginTop: "0.9rem",
               color: "rgba(255,255,255,0.68)",
               fontSize: "0.9rem",
+              fontFamily: FONT_UI,
             }}
           >
             Continue your marriage registration journey.
@@ -270,7 +246,6 @@ export default function LoginPage() {
       </section>
 
       {/* LOGIN */}
-
       <div
         className="login-wrapper"
         style={{
@@ -293,16 +268,10 @@ export default function LoginPage() {
             padding: "2.5rem",
             borderRadius: 14,
             border: `1px solid ${COLORS.burgundy}`,
-            boxShadow:
-              "0 8px 30px rgba(74,14,25,0.07)",
+            boxShadow: "0 8px 30px rgba(101,11,24,0.07)",
           }}
         >
-          <div
-            style={{
-              textAlign: "center",
-              marginBottom: "2rem",
-            }}
-          >
+          <div style={{ textAlign: "center", marginBottom: "2rem" }}>
             <div
               style={{
                 width: 52,
@@ -325,8 +294,7 @@ export default function LoginPage() {
                 fontSize: "1.75rem",
                 fontWeight: 700,
                 color: COLORS.burgundy,
-                fontFamily:
-                  "'Playfair Display', Georgia, serif",
+                fontFamily: FONT_DISPLAY,
                 marginBottom: "0.45rem",
               }}
             >
@@ -338,6 +306,7 @@ export default function LoginPage() {
                 color: COLORS.muted,
                 fontSize: "0.84rem",
                 lineHeight: 1.6,
+                fontFamily: FONT_UI,
               }}
             >
               Enter your credentials to continue
@@ -359,6 +328,7 @@ export default function LoginPage() {
                   fontSize: "0.82rem",
                   marginBottom: "1.25rem",
                   lineHeight: 1.5,
+                  fontFamily: FONT_UI,
                 }}
               >
                 {apiError}
@@ -374,7 +344,6 @@ export default function LoginPage() {
             }}
           >
             {/* EMAIL */}
-
             <div>
               <label
                 style={{
@@ -385,27 +354,22 @@ export default function LoginPage() {
                   marginBottom: 7,
                   textTransform: "uppercase",
                   letterSpacing: "0.06em",
+                  fontFamily: FONT_UI,
                 }}
               >
-                Email Address{" "}
-                <span>*</span>
+                Email Address <span>*</span>
               </label>
 
               <input
                 type="email"
                 style={{
                   ...inp,
-                  borderColor: errors.email
-                    ? "#DC2626"
-                    : COLORS.lightBorder,
+                  borderColor: errors.email ? "#DC2626" : COLORS.lightBorder,
                 }}
                 placeholder="you@example.com"
                 value={form.email}
                 onChange={set("email")}
-                onKeyDown={(e) =>
-                  e.key === "Enter" &&
-                  handleSubmit()
-                }
+                onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
               />
 
               {errors.email && (
@@ -414,6 +378,7 @@ export default function LoginPage() {
                     fontSize: "0.73rem",
                     color: "#DC2626",
                     marginTop: 5,
+                    fontFamily: FONT_UI,
                   }}
                 >
                   {errors.email}
@@ -422,7 +387,6 @@ export default function LoginPage() {
             </div>
 
             {/* PASSWORD */}
-
             <div>
               <label
                 style={{
@@ -433,6 +397,7 @@ export default function LoginPage() {
                   marginBottom: 7,
                   textTransform: "uppercase",
                   letterSpacing: "0.06em",
+                  fontFamily: FONT_UI,
                 }}
               >
                 Password <span>*</span>
@@ -442,17 +407,12 @@ export default function LoginPage() {
                 type="password"
                 style={{
                   ...inp,
-                  borderColor: errors.password
-                    ? "#DC2626"
-                    : COLORS.lightBorder,
+                  borderColor: errors.password ? "#DC2626" : COLORS.lightBorder,
                 }}
                 placeholder="Your password"
                 value={form.password}
                 onChange={set("password")}
-                onKeyDown={(e) =>
-                  e.key === "Enter" &&
-                  handleSubmit()
-                }
+                onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
               />
 
               {errors.password && (
@@ -461,6 +421,7 @@ export default function LoginPage() {
                     fontSize: "0.73rem",
                     color: "#DC2626",
                     marginTop: 5,
+                    fontFamily: FONT_UI,
                   }}
                 >
                   {errors.password}
@@ -469,15 +430,9 @@ export default function LoginPage() {
             </div>
 
             {/* BUTTON */}
-
             <motion.button
-              whileHover={{
-                scale: 1.015,
-                y: -2,
-              }}
-              whileTap={{
-                scale: 0.98,
-              }}
+              whileHover={{ scale: 1.015, y: -2 }}
+              whileTap={{ scale: 0.98 }}
               onClick={handleSubmit}
               disabled={submitting}
               style={{
@@ -490,16 +445,12 @@ export default function LoginPage() {
                 color: COLORS.white,
                 fontSize: "0.9rem",
                 fontWeight: 700,
-                cursor: submitting
-                  ? "not-allowed"
-                  : "pointer",
-                fontFamily: "'Lato', sans-serif",
+                cursor: submitting ? "not-allowed" : "pointer",
+                fontFamily: FONT_UI,
                 marginTop: "0.15rem",
               }}
             >
-              {submitting
-                ? "Signing in..."
-                : "Sign In →"}
+              {submitting ? "Signing in..." : "Sign In →"}
             </motion.button>
 
             <div
@@ -515,6 +466,7 @@ export default function LoginPage() {
                 fontSize: "0.82rem",
                 color: COLORS.muted,
                 textAlign: "center",
+                fontFamily: FONT_UI,
               }}
             >
               New here?{" "}
@@ -534,7 +486,6 @@ export default function LoginPage() {
       </div>
 
       {/* FOOTER */}
-
       <footer
         style={{
           background: COLORS.darkBurgundy,
@@ -542,12 +493,12 @@ export default function LoginPage() {
           textAlign: "center",
           color: "rgba(255,255,255,0.5)",
           fontSize: "0.73rem",
-          borderTop:
-            "1px solid rgba(255,255,255,0.08)",
+          borderTop: "1px solid rgba(255,255,255,0.08)",
+          fontFamily: FONT_UI,
         }}
       >
-        © 2024 RegisterMyMarriage · India's trusted marriage
-        registration platform
+        © 2024 RegisterMyMarriage · India's trusted marriage registration
+        platform
       </footer>
     </div>
   );

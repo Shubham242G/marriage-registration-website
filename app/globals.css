@@ -9,63 +9,76 @@ html {
 }
 
 body {
-  background: #fafffe;
-  color: #e4e0d5;
+  background: #F7F0E7;               /* Warm Cream — brand default */
+  color: #650B18;                    /* Brand Burgundy */
+  font-family: 'Inter', 'Helvetica Neue', Arial, system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar — brand palette */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f0fdfa;
+  background: #F7F0E7;
 }
 ::-webkit-scrollbar-thumb {
-  background: #99f6e4;
+  background: #D6AD62;               /* Antique Gold */
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #0d9488;
+  background: #650B18;               /* Brand Burgundy */
 }
 
-/* Focus ring */
+/* Focus ring — brand burgundy */
 :focus-visible {
-  outline: 2px solid #0d9488;
+  outline: 2px solid #650B18;
   outline-offset: 2px;
+}
+
+/* ─────────────────────────────────────────────
+   Brand font: Coolvetica (display)
+   ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'Coolvetica';
+  src: url('/fonts/CoolveticaRg-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Coolvetica';
+  src: url('/fonts/CoolveticaRg-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 /* Responsive grid helpers */
 @media (max-width: 768px) {
-  /* Blog featured card */
   .blog-featured-grid {
     grid-template-columns: 1fr !important;
   }
 
-  /* Landing hero grid */
   .hero-grid {
     grid-template-columns: 1fr !important;
     gap: 2rem !important;
     padding: 3rem 1.25rem 2rem !important;
   }
 
-  /* Religion selector cards */
   .religion-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 
-  /* Contact page grid */
   .contact-grid {
     grid-template-columns: 1fr !important;
   }
 
-  /* Register split layout */
   .register-split {
     grid-template-columns: 1fr !important;
   }
 
-  /* About section */
   .about-grid {
     grid-template-columns: 1fr !important;
     gap: 2rem !important;

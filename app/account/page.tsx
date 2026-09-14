@@ -1,11 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type {
-  ChangeEvent,
-  CSSProperties,
-  ReactNode,
-} from "react";
+import type { ChangeEvent, CSSProperties, ReactNode } from "react";
 import { motion } from "framer-motion";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -24,15 +20,16 @@ type FormState = Record<string, any>;
 type DocumentData = Record<string, any>;
 type ImageField = string;
 
+/* ── BRAND GUIDELINE COLORS ── */
 const colors = {
-  bg: "#E4E0D5",
-  darkText: "#4A0E19",
-  lightBg: "#F0FDFA",
-  cardBg: "#F8FEFE",
+  bg: "#F7F0E7",              // Warm Cream — brand default
+  darkText: "#650B18",        // Brand Burgundy — primary
+  lightBg: "#FBF6F0",         // Cream tint
+  cardBg: "#FFFCF9",          // Card background
   white: "#FFFFFF",
-  darkBg: "#380913",
-  muted: "#765C62",
-  border: "#D9C8C5",
+  darkBg: "#4A0812",          // Deeper burgundy (derived)
+  muted: "#7A5A60",           // Muted burgundy-grey
+  border: "#D9C8C5",          // Soft border
   softBorder: "#E7DCD8",
   inputBg: "#FCFAF6",
   successBg: "#F0FDF4",
@@ -42,6 +39,12 @@ const colors = {
   errorBorder: "#FECACA",
   errorText: "#B91C1C",
 };
+
+/* ── BRAND FONT STACKS ── */
+const FONT_DISPLAY =
+  "'Coolvetica', 'Helvetica Neue', 'Arial Narrow', Arial, sans-serif";
+const FONT_UI =
+  "'Inter', 'Helvetica Neue', Arial, system-ui, -apple-system, sans-serif";
 
 const EMPTY_FORM: FormState = {
   // Groom Documents
@@ -115,7 +118,11 @@ function normalizeDocumentResponse(response: any): DocumentData | null {
   if (Array.isArray(response?.data)) {
     return response.data.length > 0 ? response.data[0] : null;
   }
-  if (response?.data && typeof response.data === "object" && !Array.isArray(response.data)) {
+  if (
+    response?.data &&
+    typeof response.data === "object" &&
+    !Array.isArray(response.data)
+  ) {
     if (response.data._id || response.data.userId) return response.data;
   }
   if (Array.isArray(response)) {
@@ -139,6 +146,7 @@ function Label({ children }: { children: ReactNode }) {
         marginBottom: 8,
         color: colors.darkText,
         letterSpacing: "0.01em",
+        fontFamily: FONT_UI,
       }}
     >
       {children}
@@ -155,7 +163,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
         borderRadius: 16,
         background: colors.cardBg,
         border: `1px solid ${colors.border}`,
-        boxShadow: "0 5px 22px rgba(74, 14, 25, 0.06)",
+        boxShadow: "0 5px 22px rgba(101, 11, 24, 0.06)",
       }}
     >
       <div
@@ -180,7 +188,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
             fontWeight: 700,
             margin: 0,
             color: colors.darkText,
-            fontFamily: "'Playfair Display', Georgia, serif",
+            fontFamily: FONT_DISPLAY,
           }}
         >
           {title}
@@ -242,7 +250,7 @@ function FileInput({
           border: `1px dashed ${colors.border}`,
           borderRadius: 12,
           padding: "clamp(10px, 1vw, 14px)",
-          background: "#FBF9F4",
+          background: colors.lightBg,
         }}
       >
         <input
@@ -254,20 +262,31 @@ function FileInput({
             width: "100%",
             fontSize: "clamp(11px, 1vw, 13px)",
             color: colors.darkText,
+            fontFamily: FONT_UI,
           }}
         />
         {uploading && (
-          <p style={{ margin: "8px 0 0", fontSize: "clamp(10px, 1vw, 12px)", color: colors.muted }}>
+          <p
+            style={{
+              margin: "8px 0 0",
+              fontSize: "clamp(10px, 1vw, 12px)",
+              color: colors.muted,
+              fontFamily: FONT_UI,
+            }}
+          >
             Processing file...
           </p>
         )}
         {value && !uploading && (
-          <p style={{ 
-            margin: "8px 0 0", 
-            fontSize: "clamp(10px, 1vw, 12px)", 
-            color: colors.successText, 
-            fontWeight: 600 
-          }}>
+          <p
+            style={{
+              margin: "8px 0 0",
+              fontSize: "clamp(10px, 1vw, 12px)",
+              color: colors.successText,
+              fontWeight: 600,
+              fontFamily: FONT_UI,
+            }}
+          >
             ✓ File selected
           </p>
         )}
@@ -391,7 +410,9 @@ export default function AccountPage() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (err: any) {
       console.error("Save document error:", err);
-      setError(err?.message || "Something went wrong while saving your documents.");
+      setError(
+        err?.message || "Something went wrong while saving your documents."
+      );
       window.scrollTo({ top: 0, behavior: "smooth" });
     } finally {
       setSaving(false);
@@ -414,12 +435,10 @@ export default function AccountPage() {
       style={{
         minHeight: "100vh",
         background: colors.bg,
-        fontFamily: "'Lato', sans-serif",
+        fontFamily: FONT_UI,
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;600;700&display=swap');
-
         * {
           box-sizing: border-box;
           margin: 0;
@@ -583,13 +602,21 @@ export default function AccountPage() {
             display: "flex",
             alignItems: "center",
             gap: "0.5rem",
-            fontFamily: "'Lato', sans-serif",
+            fontFamily: FONT_UI,
           }}
         >
           ← Back to Home
         </Link>
 
-        <div className="header-actions" style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
+        <div
+          className="header-actions"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "1rem",
+            flexWrap: "wrap",
+          }}
+        >
           <Link
             href="/account"
             style={{
@@ -597,7 +624,7 @@ export default function AccountPage() {
               color: colors.darkText,
               fontSize: "clamp(0.75rem, 0.9vw, 0.85rem)",
               fontWeight: 600,
-              fontFamily: "'Lato', sans-serif",
+              fontFamily: FONT_UI,
               opacity: 0.6,
             }}
           >
@@ -614,7 +641,7 @@ export default function AccountPage() {
               cursor: "pointer",
               fontSize: "clamp(0.75rem, 0.9vw, 0.85rem)",
               fontWeight: 600,
-              fontFamily: "'Lato', sans-serif",
+              fontFamily: FONT_UI,
               transition: "all 0.25s ease",
             }}
             onMouseEnter={(e) => {
@@ -634,7 +661,8 @@ export default function AccountPage() {
         style={{
           maxWidth: 1200,
           margin: "0 auto",
-          padding: "clamp(20px, 4vw, 46px) clamp(12px, 2vw, 20px) clamp(40px, 6vw, 90px)",
+          padding:
+            "clamp(20px, 4vw, 46px) clamp(12px, 2vw, 20px) clamp(40px, 6vw, 90px)",
         }}
       >
         <motion.div
@@ -643,7 +671,12 @@ export default function AccountPage() {
           transition={{ duration: 0.5 }}
         >
           {/* HEADER */}
-          <div style={{ marginBottom: "clamp(20px, 2.5vw, 32px)", textAlign: "center" }}>
+          <div
+            style={{
+              marginBottom: "clamp(20px, 2.5vw, 32px)",
+              textAlign: "center",
+            }}
+          >
             <p
               style={{
                 color: colors.darkText,
@@ -652,6 +685,7 @@ export default function AccountPage() {
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
                 marginBottom: 10,
+                fontFamily: FONT_UI,
               }}
             >
               Register my marriage
@@ -664,7 +698,7 @@ export default function AccountPage() {
                 fontWeight: 700,
                 margin: 0,
                 color: colors.darkText,
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: FONT_DISPLAY,
               }}
             >
               Upload Documents
@@ -678,6 +712,7 @@ export default function AccountPage() {
                 maxWidth: 650,
                 marginLeft: "auto",
                 marginRight: "auto",
+                fontFamily: FONT_UI,
               }}
             >
               Upload the required documents for your marriage registration.
@@ -695,7 +730,7 @@ export default function AccountPage() {
               display: "flex",
               alignItems: "center",
               gap: "clamp(10px, 1vw, 14px)",
-              boxShadow: "0 6px 22px rgba(56, 9, 19, 0.14)",
+              boxShadow: "0 6px 22px rgba(74, 8, 18, 0.14)",
             }}
           >
             <div
@@ -708,15 +743,23 @@ export default function AccountPage() {
                 alignItems: "center",
                 justifyContent: "center",
                 flexShrink: 0,
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: FONT_DISPLAY,
                 fontSize: "clamp(14px, 1.2vw, 17px)",
               }}
             >
               i
             </div>
-            <p style={{ fontSize: "clamp(11px, 1vw, 13px)", lineHeight: 1.6, color: "#F8EEEE" }}>
-              Upload clear copies of all required documents. You can update them later if necessary.
-              None of the fields are required - submit only what you have.
+            <p
+              style={{
+                fontSize: "clamp(11px, 1vw, 13px)",
+                lineHeight: 1.6,
+                color: "#F8EEEE",
+                fontFamily: FONT_UI,
+              }}
+            >
+              Upload clear copies of all required documents. You can update
+              them later if necessary. None of the fields are required - submit
+              only what you have.
             </p>
           </div>
 
@@ -733,6 +776,7 @@ export default function AccountPage() {
                 borderRadius: 12,
                 marginBottom: 24,
                 fontSize: "clamp(12px, 1vw, 14px)",
+                fontFamily: FONT_UI,
               }}
             >
               Loading your documents...
@@ -751,6 +795,7 @@ export default function AccountPage() {
                 borderRadius: 12,
                 marginBottom: 24,
                 fontSize: "clamp(12px, 1vw, 14px)",
+                fontFamily: FONT_UI,
               }}
             >
               {error}
@@ -769,6 +814,7 @@ export default function AccountPage() {
                 borderRadius: 12,
                 marginBottom: 24,
                 fontSize: "clamp(12px, 1vw, 14px)",
+                fontFamily: FONT_UI,
               }}
             >
               {success}
@@ -813,7 +859,7 @@ export default function AccountPage() {
                   fontSize: "clamp(22px, 2.5vw, 28px)",
                   fontWeight: 700,
                   color: colors.successText,
-                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontFamily: FONT_DISPLAY,
                   marginBottom: 12,
                 }}
               >
@@ -827,9 +873,11 @@ export default function AccountPage() {
                   maxWidth: 500,
                   margin: "0 auto 24px",
                   lineHeight: 1.6,
+                  fontFamily: FONT_UI,
                 }}
               >
-                Your documents have been submitted successfully. The team will review them and get back to you shortly.
+                Your documents have been submitted successfully. The team will
+                review them and get back to you shortly.
               </p>
               <div
                 className="success-buttons"
@@ -843,7 +891,8 @@ export default function AccountPage() {
                 <button
                   onClick={handleReset}
                   style={{
-                    padding: "clamp(10px, 1vw, 12px) clamp(20px, 2vw, 28px)",
+                    padding:
+                      "clamp(10px, 1vw, 12px) clamp(20px, 2vw, 28px)",
                     borderRadius: 10,
                     background: colors.darkText,
                     color: colors.white,
@@ -851,7 +900,7 @@ export default function AccountPage() {
                     cursor: "pointer",
                     fontSize: "clamp(0.85rem, 0.9vw, 0.95rem)",
                     fontWeight: 600,
-                    fontFamily: "'Lato', sans-serif",
+                    fontFamily: FONT_UI,
                     transition: "all 0.25s ease",
                   }}
                   onMouseEnter={(e) => {
@@ -866,7 +915,8 @@ export default function AccountPage() {
                 <Link
                   href="/"
                   style={{
-                    padding: "clamp(10px, 1vw, 12px) clamp(20px, 2vw, 28px)",
+                    padding:
+                      "clamp(10px, 1vw, 12px) clamp(20px, 2vw, 28px)",
                     borderRadius: 10,
                     background: "transparent",
                     color: colors.darkText,
@@ -874,7 +924,7 @@ export default function AccountPage() {
                     textDecoration: "none",
                     fontSize: "clamp(0.85rem, 0.9vw, 0.95rem)",
                     fontWeight: 600,
-                    fontFamily: "'Lato', sans-serif",
+                    fontFamily: FONT_UI,
                     transition: "all 0.25s ease",
                   }}
                   onMouseEnter={(e) => {
@@ -921,17 +971,23 @@ export default function AccountPage() {
                   <FileInput
                     label="Groom Passport Front"
                     value={form.groomPassportFront}
-                    onChange={(value) => updateField("groomPassportFront", value)}
+                    onChange={(value) =>
+                      updateField("groomPassportFront", value)
+                    }
                   />
                   <FileInput
                     label="Groom Passport Back"
                     value={form.groomPassportBack}
-                    onChange={(value) => updateField("groomPassportBack", value)}
+                    onChange={(value) =>
+                      updateField("groomPassportBack", value)
+                    }
                   />
                   <FileInput
                     label="Groom Birth Certificate"
                     value={form.groomBirthCertificateImage}
-                    onChange={(value) => updateField("groomBirthCertificateImage", value)}
+                    onChange={(value) =>
+                      updateField("groomBirthCertificateImage", value)
+                    }
                   />
                 </Grid>
               </Section>
@@ -952,12 +1008,16 @@ export default function AccountPage() {
                   <FileInput
                     label="Bride Other Proof"
                     value={form.brideOtherProofImage}
-                    onChange={(value) => updateField("brideOtherProofImage", value)}
+                    onChange={(value) =>
+                      updateField("brideOtherProofImage", value)
+                    }
                   />
                   <FileInput
                     label="Bride Birth Proof"
                     value={form.brideBirthProofImage}
-                    onChange={(value) => updateField("brideBirthProofImage", value)}
+                    onChange={(value) =>
+                      updateField("brideBirthProofImage", value)
+                    }
                   />
                 </Grid>
               </Section>
@@ -973,12 +1033,16 @@ export default function AccountPage() {
                   <FileInput
                     label="Couple Photograph"
                     value={form.marriageProofCoupleImage}
-                    onChange={(value) => updateField("marriageProofCoupleImage", value)}
+                    onChange={(value) =>
+                      updateField("marriageProofCoupleImage", value)
+                    }
                   />
                   <FileInput
                     label="Marriage Invitation"
                     value={form.marriageProofInvitation}
-                    onChange={(value) => updateField("marriageProofInvitation", value)}
+                    onChange={(value) =>
+                      updateField("marriageProofInvitation", value)
+                    }
                   />
                 </Grid>
               </Section>
@@ -989,7 +1053,9 @@ export default function AccountPage() {
                   <FileInput
                     label="Religious Certificate"
                     value={form.religiousCertificateImage}
-                    onChange={(value) => updateField("religiousCertificateImage", value)}
+                    onChange={(value) =>
+                      updateField("religiousCertificateImage", value)
+                    }
                   />
                 </Grid>
               </Section>
@@ -1000,17 +1066,23 @@ export default function AccountPage() {
                   <FileInput
                     label="Witness 1 Aadhar Front"
                     value={form.witness1AadharFront}
-                    onChange={(value) => updateField("witness1AadharFront", value)}
+                    onChange={(value) =>
+                      updateField("witness1AadharFront", value)
+                    }
                   />
                   <FileInput
                     label="Witness 1 Aadhar Back"
                     value={form.witness1AadharBack}
-                    onChange={(value) => updateField("witness1AadharBack", value)}
+                    onChange={(value) =>
+                      updateField("witness1AadharBack", value)
+                    }
                   />
                   <FileInput
                     label="Witness 1 PAN Card"
                     value={form.witness1PanCardPhoto}
-                    onChange={(value) => updateField("witness1PanCardPhoto", value)}
+                    onChange={(value) =>
+                      updateField("witness1PanCardPhoto", value)
+                    }
                   />
                 </Grid>
               </Section>
@@ -1021,17 +1093,23 @@ export default function AccountPage() {
                   <FileInput
                     label="Witness 2 Aadhar Front"
                     value={form.witness2AadharFront}
-                    onChange={(value) => updateField("witness2AadharFront", value)}
+                    onChange={(value) =>
+                      updateField("witness2AadharFront", value)
+                    }
                   />
                   <FileInput
                     label="Witness 2 Aadhar Back"
                     value={form.witness2AadharBack}
-                    onChange={(value) => updateField("witness2AadharBack", value)}
+                    onChange={(value) =>
+                      updateField("witness2AadharBack", value)
+                    }
                   />
                   <FileInput
                     label="Witness 2 PAN Card"
                     value={form.witness2PanCardPhoto}
-                    onChange={(value) => updateField("witness2PanCardPhoto", value)}
+                    onChange={(value) =>
+                      updateField("witness2PanCardPhoto", value)
+                    }
                   />
                 </Grid>
               </Section>
@@ -1042,22 +1120,30 @@ export default function AccountPage() {
                   <FileInput
                     label="Groom Signature"
                     value={form.signatureImageGroom}
-                    onChange={(value) => updateField("signatureImageGroom", value)}
+                    onChange={(value) =>
+                      updateField("signatureImageGroom", value)
+                    }
                   />
                   <FileInput
                     label="Bride Signature"
                     value={form.signatureImageBride}
-                    onChange={(value) => updateField("signatureImageBride", value)}
+                    onChange={(value) =>
+                      updateField("signatureImageBride", value)
+                    }
                   />
                   <FileInput
                     label="Witness 1 Signature"
                     value={form.signatureImageWitness1}
-                    onChange={(value) => updateField("signatureImageWitness1", value)}
+                    onChange={(value) =>
+                      updateField("signatureImageWitness1", value)
+                    }
                   />
                   <FileInput
                     label="Witness 2 Signature"
                     value={form.signatureImageWitness2}
-                    onChange={(value) => updateField("signatureImageWitness2", value)}
+                    onChange={(value) =>
+                      updateField("signatureImageWitness2", value)
+                    }
                   />
                 </Grid>
               </Section>
@@ -1079,7 +1165,8 @@ export default function AccountPage() {
                   style={{
                     border: "none",
                     borderRadius: 10,
-                    padding: "clamp(12px, 1.2vw, 15px) clamp(20px, 2vw, 30px)",
+                    padding:
+                      "clamp(12px, 1.2vw, 15px) clamp(20px, 2vw, 30px)",
                     fontSize: "clamp(12px, 1vw, 14px)",
                     fontWeight: 700,
                     cursor: saving || loading ? "not-allowed" : "pointer",
@@ -1087,11 +1174,15 @@ export default function AccountPage() {
                     background: colors.darkText,
                     color: colors.white,
                     minWidth: "clamp(160px, 15vw, 200px)",
-                    fontFamily: "'Lato', sans-serif",
-                    boxShadow: "0 5px 18px rgba(74,14,25,0.18)",
+                    fontFamily: FONT_UI,
+                    boxShadow: "0 5px 18px rgba(101,11,24,0.18)",
                   }}
                 >
-                  {saving ? "Saving..." : document?._id ? "Update Documents" : "Submit Documents"}
+                  {saving
+                    ? "Saving..."
+                    : document?._id
+                    ? "Update Documents"
+                    : "Submit Documents"}
                 </motion.button>
               </div>
             </form>
@@ -1110,14 +1201,20 @@ export default function AccountPage() {
       >
         <p
           style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
+            fontFamily: FONT_DISPLAY,
             fontSize: "clamp(16px, 1.5vw, 18px)",
             marginBottom: 6,
           }}
         >
           Register my marriage
         </p>
-        <p style={{ fontSize: "clamp(10px, 0.9vw, 12px)", color: "#D8BEC3" }}>
+        <p
+          style={{
+            fontSize: "clamp(10px, 0.9vw, 12px)",
+            color: "#D8BEC3",
+            fontFamily: FONT_UI,
+          }}
+        >
           Simplifying marriage registration with care and clarity.
         </p>
       </footer>

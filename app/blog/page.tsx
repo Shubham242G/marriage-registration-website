@@ -89,43 +89,41 @@ const STATIC_ARTICLES: IBlog[] = [
   },
 ];
 
-const CATEGORIES = [
-  "All",
-  "Legal",
-  "Religion",
-  "Guides",
-  "Insights",
-];
+const CATEGORIES = ["All", "Legal", "Religion", "Guides", "Insights"];
 
-// Figma color scheme
-const figmaColors = {
-  bg: "#E4E0D5",
-  darkText: "#4A0E19",
-  lightBg: "#F0FDFA",
+/* ── BRAND GUIDELINE COLORS ── */
+const brand = {
+  burgundy: "#650B18",
+  ruby: "#7A1220",
+  gold: "#D6AD62",
+  rose: "#D98383",
+  cream: "#F7F0E7",
+  ink: "#171717",
   white: "#FFFFFF",
-  darkBg: "#380913",
-  accent: "#4A0E19",
-  cardBg: "#F8FEFE",
+  creamTint: "#FBF6F0",
+  cardBg: "#FFFCF9",
+  darkBg: "#4A0812",
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
-  legal: "#4A0E19",
-  religion: "#4A0E19",
-  guides: "#4A0E19",
-  insights: "#4A0E19",
-  all: "#4A0E19",
+  legal: brand.burgundy,
+  religion: brand.burgundy,
+  guides: brand.burgundy,
+  insights: brand.burgundy,
+  all: brand.burgundy,
 };
+
+/* ── BRAND FONT STACKS ── */
+const FONT_DISPLAY =
+  "'Coolvetica', 'Helvetica Neue', 'Arial Narrow', Arial, sans-serif";
+const FONT_UI =
+  "'Inter', 'Helvetica Neue', Arial, system-ui, -apple-system, sans-serif";
 
 export default function BlogPage() {
   const [blogs, setBlogs] = useState<IBlog[]>(STATIC_ARTICLES);
   const [loading, setLoading] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
   const [search, setSearch] = useState("");
-
-  const theme = {
-    accentTeal: figmaColors.darkText,
-    bannerImage: "",
-  };
 
   // Fetch real blogs from backend
   useEffect(() => {
@@ -135,18 +133,12 @@ export default function BlogPage() {
       try {
         const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
-        const res = await fetch(
-          `${BASE_URL}/blog/?pageIndex=0&pageSize=20`
-        );
+        const res = await fetch(`${BASE_URL}/blog/?pageIndex=0&pageSize=20`);
 
         if (res.ok) {
           const data = await res.json();
 
-          if (
-            data?.data &&
-            Array.isArray(data.data) &&
-            data.data.length > 0
-          ) {
+          if (data?.data && Array.isArray(data.data) && data.data.length > 0) {
             setBlogs(data.data);
           }
         }
@@ -163,17 +155,12 @@ export default function BlogPage() {
   const filtered = blogs.filter((b) => {
     const matchCategory =
       activeCategory === "All" ||
-      b.categoryId?.toLowerCase() ===
-        activeCategory.toLowerCase();
+      b.categoryId?.toLowerCase() === activeCategory.toLowerCase();
 
     const matchSearch =
       !search ||
-      b.bannerTitle
-        .toLowerCase()
-        .includes(search.toLowerCase()) ||
-      b.description
-        .toLowerCase()
-        .includes(search.toLowerCase());
+      b.bannerTitle.toLowerCase().includes(search.toLowerCase()) ||
+      b.description.toLowerCase().includes(search.toLowerCase());
 
     return matchCategory && matchSearch;
   });
@@ -198,10 +185,11 @@ export default function BlogPage() {
           fontWeight: 700,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
-          color: figmaColors.darkText,
-          background: `${figmaColors.darkText}14`,
+          color: brand.burgundy,
+          background: `${brand.burgundy}14`,
           padding: "3px 10px",
           borderRadius: 999,
+          fontFamily: FONT_UI,
         }}
       >
         {cat}
@@ -212,14 +200,12 @@ export default function BlogPage() {
   return (
     <div
       style={{
-        fontFamily: "'Lato', sans-serif",
-        background: figmaColors.bg,
+        fontFamily: FONT_UI,
+        background: brand.cream,
         minHeight: "100vh",
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;600;700&display=swap');
-
         * {
           box-sizing: border-box;
           margin: 0;
@@ -233,7 +219,7 @@ export default function BlogPage() {
       {/* Page Header */}
       <section
         style={{
-          background: figmaColors.darkBg,
+          background: brand.darkBg,
           padding: "4rem 2rem 3.5rem",
           textAlign: "center",
         }}
@@ -248,10 +234,11 @@ export default function BlogPage() {
               fontSize: "0.72rem",
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: figmaColors.bg,
+              color: brand.cream,
               opacity: 0.7,
               display: "block",
               marginBottom: "0.75rem",
+              fontFamily: FONT_UI,
             }}
           >
             Insights & Guides
@@ -261,9 +248,8 @@ export default function BlogPage() {
             style={{
               fontSize: "clamp(2rem, 4vw, 3rem)",
               fontWeight: 700,
-              color: figmaColors.white,
-              fontFamily:
-                "'Playfair Display', Georgia, serif",
+              color: brand.white,
+              fontFamily: FONT_DISPLAY,
               marginBottom: "1rem",
             }}
           >
@@ -272,17 +258,17 @@ export default function BlogPage() {
 
           <p
             style={{
-              color: figmaColors.bg,
+              color: brand.cream,
               opacity: 0.72,
               maxWidth: 520,
               margin: "0 auto",
               lineHeight: 1.8,
               fontSize: "0.97rem",
+              fontFamily: FONT_UI,
             }}
           >
-            Expert articles on Indian marriage laws,
-            traditions, registration processes, and everything
-            couples need to know.
+            Expert articles on Indian marriage laws, traditions, registration
+            processes, and everything couples need to know.
           </p>
         </motion.div>
       </section>
@@ -290,8 +276,8 @@ export default function BlogPage() {
       {/* Search + Filter Bar */}
       <div
         style={{
-          background: figmaColors.white,
-          borderBottom: `1px solid ${figmaColors.darkText}15`,
+          background: brand.white,
+          borderBottom: `1px solid ${brand.burgundy}15`,
           padding: "1.25rem 2rem",
           position: "sticky",
           top: 68,
@@ -310,13 +296,7 @@ export default function BlogPage() {
           }}
         >
           {/* Categories */}
-          <div
-            style={{
-              display: "flex",
-              gap: "0.5rem",
-              flexWrap: "wrap",
-            }}
-          >
+          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
@@ -326,22 +306,17 @@ export default function BlogPage() {
                   borderRadius: 999,
                   border: `1.5px solid ${
                     activeCategory === cat
-                      ? figmaColors.darkText
-                      : `${figmaColors.darkText}20`
+                      ? brand.burgundy
+                      : `${brand.burgundy}20`
                   }`,
                   background:
-                    activeCategory === cat
-                      ? figmaColors.darkText
-                      : figmaColors.white,
-                  color:
-                    activeCategory === cat
-                      ? figmaColors.white
-                      : figmaColors.darkText,
+                    activeCategory === cat ? brand.burgundy : brand.white,
+                  color: activeCategory === cat ? brand.white : brand.burgundy,
                   fontSize: "0.82rem",
                   fontWeight: 600,
                   cursor: "pointer",
                   transition: "all 0.2s",
-                  fontFamily: "'Lato', sans-serif",
+                  fontFamily: FONT_UI,
                   opacity: activeCategory === cat ? 1 : 0.7,
                 }}
               >
@@ -359,13 +334,13 @@ export default function BlogPage() {
             style={{
               padding: "8px 16px",
               borderRadius: 8,
-              border: `1.5px solid ${figmaColors.darkText}20`,
+              border: `1.5px solid ${brand.burgundy}20`,
               fontSize: "0.87rem",
               outline: "none",
-              fontFamily: "'Lato', sans-serif",
-              color: figmaColors.darkText,
+              fontFamily: FONT_UI,
+              color: brand.burgundy,
               width: 220,
-              background: figmaColors.lightBg,
+              background: brand.creamTint,
             }}
           />
         </div>
@@ -384,9 +359,10 @@ export default function BlogPage() {
           <div
             style={{
               textAlign: "center",
-              color: figmaColors.darkText,
+              color: brand.burgundy,
               opacity: 0.6,
               padding: "3rem",
+              fontFamily: FONT_UI,
             }}
           >
             Loading articles...
@@ -398,9 +374,10 @@ export default function BlogPage() {
           <div
             style={{
               textAlign: "center",
-              color: figmaColors.darkText,
+              color: brand.burgundy,
               opacity: 0.6,
               padding: "4rem",
+              fontFamily: FONT_UI,
             }}
           >
             No articles found.{" "}
@@ -410,12 +387,12 @@ export default function BlogPage() {
                 setActiveCategory("All");
               }}
               style={{
-                color: figmaColors.darkText,
+                color: brand.burgundy,
                 background: "none",
                 border: "none",
                 cursor: "pointer",
                 fontWeight: 600,
-                fontFamily: "'Lato', sans-serif",
+                fontFamily: FONT_UI,
                 opacity: 0.8,
               }}
             >
@@ -430,22 +407,22 @@ export default function BlogPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
+            className="blog-featured-grid"
             style={{
               marginBottom: "2.5rem",
               borderRadius: 18,
-              border: `1px solid ${figmaColors.darkText}15`,
+              border: `1px solid ${brand.burgundy}15`,
               overflow: "hidden",
-              background: figmaColors.white,
+              background: brand.white,
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
-              boxShadow:
-                `0 4px 24px ${figmaColors.darkText}0D`,
+              boxShadow: `0 4px 24px ${brand.burgundy}0D`,
             }}
           >
             {/* Featured Image */}
             <div
               style={{
-                background: figmaColors.darkBg,
+                background: brand.darkBg,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -460,19 +437,10 @@ export default function BlogPage() {
                 <img
                   src={filtered[0].bannerImage}
                   alt={filtered[0].bannerTitle}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               ) : (
-                <div
-                  style={{
-                    color: `${figmaColors.white}30`,
-                    fontSize: "4rem",
-                  }}
-                >
+                <div style={{ color: `${brand.white}30`, fontSize: "4rem" }}>
                   📖
                 </div>
               )}
@@ -491,27 +459,25 @@ export default function BlogPage() {
                 <span
                   style={{
                     fontSize: "0.7rem",
-                    color: figmaColors.darkText,
+                    color: brand.burgundy,
                     opacity: 0.6,
+                    fontFamily: FONT_UI,
                   }}
                 >
                   Featured
                 </span>
 
-                <CategoryBadge
-                  cat={filtered[0].categoryId || "legal"}
-                />
+                <CategoryBadge cat={filtered[0].categoryId || "legal"} />
               </div>
 
               <h2
                 style={{
                   fontSize: "1.5rem",
                   fontWeight: 700,
-                  color: figmaColors.darkText,
+                  color: brand.burgundy,
                   lineHeight: 1.3,
                   marginBottom: "1rem",
-                  fontFamily:
-                    "'Playfair Display', Georgia, serif",
+                  fontFamily: FONT_DISPLAY,
                 }}
               >
                 {filtered[0].bannerTitle}
@@ -519,11 +485,12 @@ export default function BlogPage() {
 
               <p
                 style={{
-                  color: figmaColors.darkText,
+                  color: brand.burgundy,
                   opacity: 0.8,
                   lineHeight: 1.8,
                   fontSize: "0.92rem",
                   marginBottom: "1.5rem",
+                  fontFamily: FONT_UI,
                 }}
               >
                 {filtered[0].description}
@@ -541,7 +508,8 @@ export default function BlogPage() {
                     style={{
                       fontSize: "0.78rem",
                       fontWeight: 600,
-                      color: figmaColors.darkText,
+                      color: brand.burgundy,
+                      fontFamily: FONT_UI,
                     }}
                   >
                     {filtered[0].createdBy}
@@ -550,8 +518,9 @@ export default function BlogPage() {
                   <div
                     style={{
                       fontSize: "0.72rem",
-                      color: figmaColors.darkText,
+                      color: brand.burgundy,
                       opacity: 0.6,
+                      fontFamily: FONT_UI,
                     }}
                   >
                     {formatDate(filtered[0].Date)}
@@ -559,17 +528,16 @@ export default function BlogPage() {
                 </div>
 
                 <Link
-                  href={`/blog/${
-                    filtered[0].slug || filtered[0]._id
-                  }`}
+                  href={`/blog/${filtered[0].slug || filtered[0]._id}`}
                   style={{
                     padding: "9px 20px",
                     borderRadius: 8,
-                    background: figmaColors.darkText,
-                    color: figmaColors.white,
+                    background: brand.burgundy,
+                    color: brand.white,
                     textDecoration: "none",
                     fontSize: "0.82rem",
                     fontWeight: 600,
+                    fontFamily: FONT_UI,
                   }}
                 >
                   Read More →
@@ -583,8 +551,7 @@ export default function BlogPage() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fill, minmax(310px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(310px, 1fr))",
             gap: "1.5rem",
           }}
         >
@@ -592,21 +559,17 @@ export default function BlogPage() {
             <motion.article
               key={blog._id || i}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-              }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.07 }}
               whileHover={{
                 y: -5,
-                boxShadow:
-                  `0 16px 40px ${figmaColors.darkText}0D`,
+                boxShadow: `0 16px 40px ${brand.burgundy}0D`,
               }}
               style={{
                 borderRadius: 14,
-                border: `1px solid ${figmaColors.darkText}15`,
-                background: figmaColors.white,
+                border: `1px solid ${brand.burgundy}15`,
+                background: brand.white,
                 overflow: "hidden",
                 transition: "all 0.25s ease",
               }}
@@ -615,7 +578,7 @@ export default function BlogPage() {
               <div
                 style={{
                   height: 160,
-                  background: figmaColors.darkBg,
+                  background: brand.darkBg,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
@@ -637,12 +600,7 @@ export default function BlogPage() {
                     }}
                   />
                 ) : (
-                  <span
-                    style={{
-                      color: `${figmaColors.white}25`,
-                      fontSize: "2.5rem",
-                    }}
-                  >
+                  <span style={{ color: `${brand.white}25`, fontSize: "2.5rem" }}>
                     📄
                   </span>
                 )}
@@ -654,9 +612,7 @@ export default function BlogPage() {
                     left: "0.75rem",
                   }}
                 >
-                  <CategoryBadge
-                    cat={blog.categoryId || "legal"}
-                  />
+                  <CategoryBadge cat={blog.categoryId || "legal"} />
                 </div>
               </div>
 
@@ -666,11 +622,10 @@ export default function BlogPage() {
                   style={{
                     fontSize: "1rem",
                     fontWeight: 700,
-                    color: figmaColors.darkText,
+                    color: brand.burgundy,
                     lineHeight: 1.4,
                     marginBottom: "0.75rem",
-                    fontFamily:
-                      "'Playfair Display', Georgia, serif",
+                    fontFamily: FONT_DISPLAY,
                   }}
                 >
                   {blog.bannerTitle}
@@ -679,7 +634,7 @@ export default function BlogPage() {
                 <p
                   style={
                     {
-                      color: figmaColors.darkText,
+                      color: brand.burgundy,
                       opacity: 0.8,
                       fontSize: "0.84rem",
                       lineHeight: 1.7,
@@ -688,6 +643,7 @@ export default function BlogPage() {
                       WebkitLineClamp: 3,
                       WebkitBoxOrient: "vertical",
                       overflow: "hidden",
+                      fontFamily: FONT_UI,
                     } as React.CSSProperties
                   }
                 >
@@ -706,7 +662,8 @@ export default function BlogPage() {
                       style={{
                         fontSize: "0.75rem",
                         fontWeight: 600,
-                        color: figmaColors.darkText,
+                        color: brand.burgundy,
+                        fontFamily: FONT_UI,
                       }}
                     >
                       {blog.createdBy}
@@ -715,8 +672,9 @@ export default function BlogPage() {
                     <div
                       style={{
                         fontSize: "0.7rem",
-                        color: figmaColors.darkText,
+                        color: brand.burgundy,
                         opacity: 0.6,
+                        fontFamily: FONT_UI,
                       }}
                     >
                       {formatDate(blog.Date)}
@@ -724,15 +682,14 @@ export default function BlogPage() {
                   </div>
 
                   <Link
-                    href={`/blog/${
-                      blog.slug || blog._id
-                    }`}
+                    href={`/blog/${blog.slug || blog._id}`}
                     style={{
                       fontSize: "0.8rem",
-                      color: figmaColors.darkText,
+                      color: brand.burgundy,
                       textDecoration: "none",
                       fontWeight: 600,
                       opacity: 0.8,
+                      fontFamily: FONT_UI,
                     }}
                   >
                     Read →
@@ -747,13 +704,14 @@ export default function BlogPage() {
       {/* Footer */}
       <footer
         style={{
-          background: figmaColors.darkBg,
+          background: brand.darkBg,
           padding: "2rem",
           textAlign: "center",
-          color: figmaColors.bg,
+          color: brand.cream,
           opacity: 0.5,
           fontSize: "0.75rem",
-          borderTop: `1px solid ${figmaColors.white}05`,
+          borderTop: `1px solid ${brand.white}05`,
+          fontFamily: FONT_UI,
         }}
       >
         © 2024 Register my marriage · All Rights Reserved

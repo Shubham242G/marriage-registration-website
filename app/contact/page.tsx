@@ -63,13 +63,13 @@ const INDIAN_STATES = [
 
 const figmaColors = {
   bg: "#E4E0D5",
-  darkText: "#4A0E19",
+  darkText: "#650B18",
   lightBg: "#F0FDFA",
   cardBg: "#F8FEFE",
   white: "#FFFFFF",
-  darkBg: "#380913",
+  darkBg: "#650B18",
   cream: "#F7F3EA",
-  muted: "#76555C",
+  muted: "#650B18",
 };
 
 export default function ContactPage() {
@@ -169,7 +169,7 @@ export default function ContactPage() {
     borderRadius: 8,
     border: `1.5px solid ${figmaColors.darkText}`,
     fontSize: "0.9rem",
-    fontFamily: "'Lato', sans-serif",
+    fontFamily: "'Coolvetica', sans-serif",
     color: figmaColors.darkText,
     background: "#FFFFFF",
     outline: "none",
@@ -179,7 +179,7 @@ export default function ContactPage() {
 
   const errorStyle: React.CSSProperties = {
     fontSize: "0.74rem",
-    color: "#B91C1C",
+    color: "#650B18",
     marginTop: 5,
   };
 
@@ -249,14 +249,27 @@ export default function ContactPage() {
   return (
     <div
       style={{
-        fontFamily: "'Lato', sans-serif",
+        fontFamily: "'Coolvetica', sans-serif",
         background: figmaColors.bg,
         minHeight: "100vh",
         color: figmaColors.darkText,
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap');
+        @font-face {
+          font-family: 'Coolvetica';
+          src: url('/fonts/CoolveticaRg-Regular.woff2') format('woff2');
+          font-weight: 400;
+          font-style: normal;
+          font-display: swap;
+        }
+        @font-face {
+          font-family: 'Coolvetica';
+          src: url('/fonts/CoolveticaRg-Bold.woff2') format('woff2');
+          font-weight: 700;
+          font-style: normal;
+          font-display: swap;
+        }
 
         * {
           box-sizing: border-box;
@@ -267,13 +280,13 @@ export default function ContactPage() {
         input:focus,
         select:focus,
         textarea:focus {
-          border-color: #4A0E19 !important;
-          box-shadow: 0 0 0 3px rgba(74,14,25,0.08);
+          border-color: #650B18 !important;
+          box-shadow: 0 0 0 3px rgba(101,11,24,0.08);
         }
 
         input::placeholder,
         textarea::placeholder {
-          color: #9B7D82;
+          color: #650B18;
         }
 
         select {
@@ -294,7 +307,7 @@ export default function ContactPage() {
 
         .contact-card-hover:hover {
           transform: translateY(-3px);
-          box-shadow: 0 12px 32px rgba(74,14,25,0.10);
+          box-shadow: 0 12px 32px rgba(101,11,24,0.10);
         }
 
         .contact-link:hover {
@@ -380,7 +393,7 @@ export default function ContactPage() {
               fontSize: "0.72rem",
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "#D9BFC4",
+              color: "#650B18",
               display: "block",
               marginBottom: "1rem",
               fontWeight: 700,
@@ -394,7 +407,7 @@ export default function ContactPage() {
               fontSize: "clamp(2.2rem, 5vw, 3.4rem)",
               fontWeight: 700,
               color: "#FFFFFF",
-              fontFamily: "'Playfair Display', Georgia, serif",
+              fontFamily: "'Coolvetica', sans-serif",
               lineHeight: 1.2,
               marginBottom: "1.2rem",
             }}
@@ -453,7 +466,7 @@ export default function ContactPage() {
                 borderRadius: 14,
                 background: figmaColors.cardBg,
                 border: `1px solid ${figmaColors.darkText}`,
-                boxShadow: "0 8px 30px rgba(74,14,25,0.08)",
+                boxShadow: "0 8px 30px rgba(101,11,24,0.08)",
               }}
             >
               <div
@@ -479,7 +492,7 @@ export default function ContactPage() {
                   fontWeight: 700,
                   color: figmaColors.darkText,
                   fontFamily:
-                    "'Playfair Display', Georgia, serif",
+                    "'Coolvetica', sans-serif",
                   marginBottom: "1rem",
                 }}
               >
@@ -546,7 +559,7 @@ export default function ContactPage() {
                 borderRadius: 14,
                 border: `1px solid ${figmaColors.darkText}`,
                 padding: "2.5rem",
-                boxShadow: "0 8px 30px rgba(74,14,25,0.06)",
+                boxShadow: "0 8px 30px rgba(101,11,24,0.06)",
               }}
             >
               <div
@@ -573,7 +586,7 @@ export default function ContactPage() {
                     fontWeight: 700,
                     color: figmaColors.darkText,
                     fontFamily:
-                      "'Playfair Display', Georgia, serif",
+                      "'Coolvetica', sans-serif",
                     marginTop: "0.6rem",
                     marginBottom: "0.5rem",
                   }}
@@ -613,7 +626,7 @@ export default function ContactPage() {
                     style={{
                       ...inputBase,
                       borderColor: errors.name
-                        ? "#B91C1C"
+                        ? "#650B18"
                         : figmaColors.darkText,
                     }}
                     placeholder="As per Aadhaar / PAN"
@@ -636,7 +649,7 @@ export default function ContactPage() {
                     style={{
                       ...inputBase,
                       borderColor: errors.email
-                        ? "#B91C1C"
+                        ? "#650B18"
                         : figmaColors.darkText,
                     }}
                     placeholder="you@example.com"
@@ -658,7 +671,7 @@ export default function ContactPage() {
                     style={{
                       ...inputBase,
                       borderColor: errors.phone
-                        ? "#B91C1C"
+                        ? "#650B18"
                         : figmaColors.darkText,
                     }}
                     placeholder="10-digit mobile number"
@@ -682,7 +695,7 @@ export default function ContactPage() {
                     style={{
                       ...inputBase,
                       borderColor: errors.queryType
-                        ? "#B91C1C"
+                        ? "#650B18"
                         : figmaColors.darkText,
                     }}
                     value={form.queryType}
@@ -715,7 +728,7 @@ export default function ContactPage() {
                     style={{
                       ...inputBase,
                       borderColor: errors.state
-                        ? "#B91C1C"
+                        ? "#650B18"
                         : figmaColors.darkText,
                     }}
                     value={form.state}
@@ -786,7 +799,7 @@ export default function ContactPage() {
                       resize: "vertical",
                       minHeight: 130,
                       borderColor: errors.message
-                        ? "#B91C1C"
+                        ? "#650B18"
                         : figmaColors.darkText,
                     }}
                     placeholder="Please describe your query in detail. Include any specific challenges you're facing with your documentation or registration process..."
@@ -830,7 +843,7 @@ export default function ContactPage() {
                   borderRadius: 8,
                   border: `1.5px solid ${figmaColors.darkText}`,
                   background: submitting
-                    ? "#76555C"
+                    ? "#650B18"
                     : figmaColors.darkText,
                   color: "#FFFFFF",
                   fontSize: "0.9rem",
@@ -839,7 +852,7 @@ export default function ContactPage() {
                     ? "not-allowed"
                     : "pointer",
                   letterSpacing: "0.04em",
-                  fontFamily: "'Lato', sans-serif",
+                  fontFamily: "'Coolvetica', sans-serif",
                   transition: "all 0.25s ease",
                 }}
               >
@@ -894,7 +907,7 @@ export default function ContactPage() {
               borderRadius: 14,
               border: `1px solid ${figmaColors.darkText}`,
               padding: "1.75rem",
-              boxShadow: "0 4px 20px rgba(74,14,25,0.05)",
+              boxShadow: "0 4px 20px rgba(101,11,24,0.05)",
             }}
           >
             <span
@@ -916,7 +929,7 @@ export default function ContactPage() {
                 fontWeight: 700,
                 color: figmaColors.darkText,
                 fontFamily:
-                  "'Playfair Display', Georgia, serif",
+                  "'Coolvetica', sans-serif",
                 marginTop: "0.55rem",
                 marginBottom: "1.5rem",
               }}
@@ -1017,7 +1030,7 @@ export default function ContactPage() {
                 fontWeight: 700,
                 color: figmaColors.darkText,
                 fontFamily:
-                  "'Playfair Display', Georgia, serif",
+                  "'Coolvetica', sans-serif",
                 marginTop: "0.55rem",
                 marginBottom: "1.4rem",
               }}
@@ -1036,7 +1049,7 @@ export default function ContactPage() {
                   borderBottom:
                     index === faqs.length - 1
                       ? "none"
-                      : `1px solid rgba(74,14,25,0.25)`,
+                      : `1px solid rgba(101,11,24,0.25)`,
                 }}
               >
                 <div
@@ -1046,7 +1059,7 @@ export default function ContactPage() {
                     fontSize: "0.86rem",
                     marginBottom: "0.35rem",
                     fontFamily:
-                      "'Playfair Display', Georgia, serif",
+                      "'Coolvetica', sans-serif",
                   }}
                 >
                   {q}
@@ -1079,7 +1092,7 @@ export default function ContactPage() {
               borderRadius: 14,
               padding: "2rem 1.75rem",
               textAlign: "center",
-              boxShadow: "0 8px 25px rgba(56,9,19,0.15)",
+              boxShadow: "0 8px 25px rgba(101,11,24,0.15)",
             }}
           >
             <div
@@ -1087,7 +1100,7 @@ export default function ContactPage() {
                 fontSize: "0.7rem",
                 letterSpacing: "0.16em",
                 textTransform: "uppercase",
-                color: "#D9BFC4",
+                color: "#650B18",
                 marginBottom: "0.7rem",
                 fontWeight: 700,
               }}
@@ -1101,7 +1114,7 @@ export default function ContactPage() {
                 fontWeight: 700,
                 color: "#FFFFFF",
                 fontFamily:
-                  "'Playfair Display', Georgia, serif",
+                  "'Coolvetica', sans-serif",
                 marginBottom: "1.35rem",
                 lineHeight: 1.3,
               }}
@@ -1120,7 +1133,7 @@ export default function ContactPage() {
                 textDecoration: "none",
                 fontWeight: 700,
                 fontSize: "0.87rem",
-                fontFamily: "'Lato', sans-serif",
+                fontFamily: "'Coolvetica', sans-serif",
               }}
             >
               Get Started →
@@ -1162,7 +1175,7 @@ export default function ContactPage() {
                 fontSize: "0.7rem",
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
-                color: "#D9BFC4",
+                color: "#650B18",
                 fontWeight: 700,
               }}
             >
@@ -1177,7 +1190,7 @@ export default function ContactPage() {
                 marginTop: "0.8rem",
                 marginBottom: "1rem",
                 fontFamily:
-                  "'Playfair Display', Georgia, serif",
+                  "'Coolvetica', sans-serif",
               }}
             >
               Ready to Make It Official?
@@ -1247,7 +1260,7 @@ export default function ContactPage() {
                 fontSize: "1rem",
                 marginBottom: "0.3rem",
                 fontFamily:
-                  "'Playfair Display', Georgia, serif",
+                  "'Coolvetica', sans-serif",
               }}
             >
               Register my marriage

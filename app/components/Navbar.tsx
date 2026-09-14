@@ -8,6 +8,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ReligionKey } from "../types/Religion";
 import { useAuth } from "../context/AuthContext";
 
+/* ── BRAND FONT STACKS ── */
+const FONT_DISPLAY =
+  "'Coolvetica', 'Helvetica Neue', 'Arial Narrow', Arial, sans-serif";
+const FONT_UI =
+  "'Inter', 'Helvetica Neue', Arial, system-ui, -apple-system, sans-serif";
+
 interface NavbarProps {
   religionKey?: ReligionKey;
 }
@@ -28,14 +34,14 @@ export default function Navbar({ religionKey }: NavbarProps) {
     router.push("/");
   };
 
-  // Figma color scheme
+  /* ── BRAND GUIDELINE COLORS ── */
   const colors = {
-    bg: "#E4E0D5",
-    darkText: "#4A0E19",
-    lightBg: "#F0FDFA",
+    bg: "#F7F0E7",            // Warm Cream
+    darkText: "#650B18",      // Brand Burgundy
+    lightBg: "#FBF6F0",       // Cream tint
     white: "#FFFFFF",
-    darkBg: "#380913",
-    accent: "#4A0E19",
+    darkBg: "#4A0812",        // Deeper burgundy
+    accent: "#650B18",
   };
 
   return (
@@ -45,45 +51,62 @@ export default function Navbar({ religionKey }: NavbarProps) {
         top: 0,
         zIndex: 100,
         background: colors.bg,
-        borderBottom: "1px solid rgba(74, 14, 25, 0.1)",
+        borderBottom: "1px solid rgba(101,11,24,0.1)",
         backdropFilter: "blur(16px)",
-        fontFamily: "'Lato', sans-serif",
-        boxShadow: "0 4px 24px rgba(74, 14, 25, 0.08)",
+        fontFamily: FONT_UI,
+        boxShadow: "0 4px 24px rgba(101,11,24,0.08)",
       }}
     >
-      <div style={{
-        maxWidth: 1400,
-        margin: "0 auto",
-        padding: "0 2rem",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        height: 90,
-        gap: "1.5rem",
-      }}>
+      <div
+        style={{
+          maxWidth: 1400,
+          margin: "0 auto",
+          padding: "0 2rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          height: 90,
+          gap: "1.5rem",
+        }}
+      >
         {/* LEFT: Blogs + Contact */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", flexShrink: 0 }} className="desktop-left">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.25rem",
+            flexShrink: 0,
+          }}
+          className="desktop-left"
+        >
           {[
             { label: "Blogs", href: "/blog" },
             { label: "Contact", href: "/contact" },
           ].map((link) => (
-            <Link key={link.label} href={link.href} style={{
-              textDecoration: "none",
-              padding: "8px 16px",
-              borderRadius: 8,
-              fontSize: "0.88rem",
-              fontWeight: 500,
-              color: isActive(link.href) ? colors.white : colors.darkText,
-              background: isActive(link.href) ? colors.darkText : "transparent",
-              transition: "all 0.2s",
-              whiteSpace: "nowrap",
-            }}>
+            <Link
+              key={link.label}
+              href={link.href}
+              style={{
+                textDecoration: "none",
+                padding: "8px 16px",
+                borderRadius: 8,
+                fontSize: "0.88rem",
+                fontWeight: 500,
+                color: isActive(link.href) ? colors.white : colors.darkText,
+                background: isActive(link.href)
+                  ? colors.darkText
+                  : "transparent",
+                transition: "all 0.2s",
+                whiteSpace: "nowrap",
+                fontFamily: FONT_UI,
+              }}
+            >
               {link.label}
             </Link>
           ))}
         </div>
 
-        {/* CENTER: Logo - MUCH BIGGER */}
+        {/* CENTER: Logo */}
         <Link
           href={base || "/"}
           style={{
@@ -113,100 +136,175 @@ export default function Navbar({ religionKey }: NavbarProps) {
               fill
               priority
               loading="eager"
-              style={{
-                objectFit: "contain",
-              }}
+              style={{ objectFit: "contain" }}
             />
           </div>
         </Link>
 
         {/* RIGHT: Register + Login/Account */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0 }} className="desktop-right">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
+            flexShrink: 0,
+          }}
+          className="desktop-right"
+        >
           <Link href="/register" style={{ textDecoration: "none" }}>
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={{
-              padding: "10px 24px",
-              borderRadius: 8,
-              background: colors.darkText,
-              color: colors.white,
-              fontSize: "0.9rem",
-              fontWeight: 600,
-              cursor: "pointer",
-              whiteSpace: "nowrap",
-            }}>
+            <motion.div
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              style={{
+                padding: "10px 24px",
+                borderRadius: 8,
+                background: colors.darkText,
+                color: colors.white,
+                fontSize: "0.9rem",
+                fontWeight: 600,
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+                fontFamily: FONT_UI,
+              }}
+            >
               Register
             </motion.div>
           </Link>
 
           {isLoggedIn ? (
             <div style={{ position: "relative" }}>
-              <button onClick={() => setDropdownOpen((p) => !p)} style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "7px 14px",
-                borderRadius: 8,
-                border: `1.5px solid ${colors.darkText}`,
-                background: colors.white,
-                cursor: "pointer",
-                fontFamily: "'Lato', sans-serif",
-              }}>
-                <div style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: "50%",
-                  background: colors.darkText,
+              <button
+                onClick={() => setDropdownOpen((p) => !p)}
+                style={{
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  color: colors.white,
-                  fontSize: "0.8rem",
-                  fontWeight: 700,
-                  flexShrink: 0,
-                }}>
+                  gap: 8,
+                  padding: "7px 14px",
+                  borderRadius: 8,
+                  border: `1.5px solid ${colors.darkText}`,
+                  background: colors.white,
+                  cursor: "pointer",
+                  fontFamily: FONT_UI,
+                }}
+              >
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: "50%",
+                    background: colors.darkText,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: colors.white,
+                    fontSize: "0.8rem",
+                    fontWeight: 700,
+                    flexShrink: 0,
+                  }}
+                >
                   {user?.name?.[0]?.toUpperCase() || "U"}
                 </div>
-                <span style={{ fontSize: "0.85rem", fontWeight: 600, color: colors.darkText, maxWidth: 80, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <span
+                  style={{
+                    fontSize: "0.85rem",
+                    fontWeight: 600,
+                    color: colors.darkText,
+                    maxWidth: 80,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
                   {user?.name?.split(" ")[0]}
                 </span>
-                <span style={{ color: colors.darkText, fontSize: "0.65rem", opacity: 0.6 }}>▾</span>
+                <span
+                  style={{
+                    color: colors.darkText,
+                    fontSize: "0.65rem",
+                    opacity: 0.6,
+                  }}
+                >
+                  ▾
+                </span>
               </button>
 
               <AnimatePresence>
                 {dropdownOpen && (
-                  <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} style={{
-                    position: "absolute",
-                    top: "calc(100% + 8px)",
-                    right: 0,
-                    background: colors.white,
-                    border: `1px solid ${colors.darkText}`,
-                    borderRadius: 10,
-                    boxShadow: "0 8px 32px rgba(74, 14, 25, 0.12)",
-                    minWidth: 190,
-                    zIndex: 200,
-                    overflow: "hidden",
-                  }}>
-                    <div style={{ padding: "0.75rem 1rem", borderBottom: `1px solid ${colors.darkText}` }}>
-                      <div style={{ fontSize: "0.85rem", fontWeight: 700, color: colors.darkText }}>{user?.name}</div>
-                      <div style={{ fontSize: "0.72rem", color: colors.darkText, opacity: 0.6, marginTop: 2 }}>{user?.email}</div>
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    style={{
+                      position: "absolute",
+                      top: "calc(100% + 8px)",
+                      right: 0,
+                      background: colors.white,
+                      border: `1px solid ${colors.darkText}`,
+                      borderRadius: 10,
+                      boxShadow: "0 8px 32px rgba(101,11,24,0.12)",
+                      minWidth: 190,
+                      zIndex: 200,
+                      overflow: "hidden",
+                      fontFamily: FONT_UI,
+                    }}
+                  >
+                    <div
+                      style={{
+                        padding: "0.75rem 1rem",
+                        borderBottom: `1px solid ${colors.darkText}`,
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: "0.85rem",
+                          fontWeight: 700,
+                          color: colors.darkText,
+                        }}
+                      >
+                        {user?.name}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "0.72rem",
+                          color: colors.darkText,
+                          opacity: 0.6,
+                          marginTop: 2,
+                        }}
+                      >
+                        {user?.email}
+                      </div>
                     </div>
-                    <Link href="/account" onClick={() => setDropdownOpen(false)}
-                      style={{ display: "block", padding: "0.75rem 1rem", textDecoration: "none", fontSize: "0.85rem", color: colors.darkText, fontWeight: 500 }}>
+                    <Link
+                      href="/account"
+                      onClick={() => setDropdownOpen(false)}
+                      style={{
+                        display: "block",
+                        padding: "0.75rem 1rem",
+                        textDecoration: "none",
+                        fontSize: "0.85rem",
+                        color: colors.darkText,
+                        fontWeight: 500,
+                      }}
+                    >
                       👤 My Account
                     </Link>
-                    <button onClick={handleLogout} style={{
-                      display: "block",
-                      width: "100%",
-                      textAlign: "left",
-                      padding: "0.75rem 1rem",
-                      background: "none",
-                      border: "none",
-                      borderTop: `1px solid ${colors.darkText}`,
-                      fontSize: "0.85rem",
-                      color: "#dc2626",
-                      cursor: "pointer",
-                      fontFamily: "'Lato', sans-serif",
-                      fontWeight: 500,
-                    }}>
+                    <button
+                      onClick={handleLogout}
+                      style={{
+                        display: "block",
+                        width: "100%",
+                        textAlign: "left",
+                        padding: "0.75rem 1rem",
+                        background: "none",
+                        border: "none",
+                        borderTop: `1px solid ${colors.darkText}`,
+                        fontSize: "0.85rem",
+                        color: "#dc2626",
+                        cursor: "pointer",
+                        fontFamily: FONT_UI,
+                        fontWeight: 500,
+                      }}
+                    >
                       🚪 Sign Out
                     </button>
                   </motion.div>
@@ -215,17 +313,22 @@ export default function Navbar({ religionKey }: NavbarProps) {
             </div>
           ) : (
             <Link href="/login" style={{ textDecoration: "none" }}>
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} style={{
-                padding: "10px 24px",
-                borderRadius: 8,
-                border: `1.5px solid ${colors.darkText}`,
-                color: colors.darkText,
-                fontSize: "0.9rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                background: "transparent",
-                whiteSpace: "nowrap",
-              }}>
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                style={{
+                  padding: "10px 24px",
+                  borderRadius: 8,
+                  border: `1.5px solid ${colors.darkText}`,
+                  color: colors.darkText,
+                  fontSize: "0.9rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  background: "transparent",
+                  whiteSpace: "nowrap",
+                  fontFamily: FONT_UI,
+                }}
+              >
                 Login
               </motion.div>
             </Link>
@@ -233,13 +336,60 @@ export default function Navbar({ religionKey }: NavbarProps) {
         </div>
 
         {/* Mobile Hamburger */}
-        <button onClick={() => setMenuOpen((p) => !p)}
-          style={{ display: "none", background: "none", border: "none", cursor: "pointer", padding: 8 }}
-          className="mobile-menu-btn" aria-label="Toggle menu">
-          <div style={{ width: 24, display: "flex", flexDirection: "column", gap: 5 }}>
-            <span style={{ display: "block", height: 2.5, borderRadius: 2, background: colors.darkText, transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translate(5px, 5px)" : "none" }} />
-            <span style={{ display: "block", height: 2.5, borderRadius: 2, background: colors.darkText, opacity: menuOpen ? 0 : 1, transition: "all 0.3s" }} />
-            <span style={{ display: "block", height: 2.5, borderRadius: 2, background: colors.darkText, transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translate(5px, -5px)" : "none" }} />
+        <button
+          onClick={() => setMenuOpen((p) => !p)}
+          style={{
+            display: "none",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: 8,
+          }}
+          className="mobile-menu-btn"
+          aria-label="Toggle menu"
+        >
+          <div
+            style={{
+              width: 24,
+              display: "flex",
+              flexDirection: "column",
+              gap: 5,
+            }}
+          >
+            <span
+              style={{
+                display: "block",
+                height: 2.5,
+                borderRadius: 2,
+                background: colors.darkText,
+                transition: "all 0.3s",
+                transform: menuOpen
+                  ? "rotate(45deg) translate(5px, 5px)"
+                  : "none",
+              }}
+            />
+            <span
+              style={{
+                display: "block",
+                height: 2.5,
+                borderRadius: 2,
+                background: colors.darkText,
+                opacity: menuOpen ? 0 : 1,
+                transition: "all 0.3s",
+              }}
+            />
+            <span
+              style={{
+                display: "block",
+                height: 2.5,
+                borderRadius: 2,
+                background: colors.darkText,
+                transition: "all 0.3s",
+                transform: menuOpen
+                  ? "rotate(-45deg) translate(5px, -5px)"
+                  : "none",
+              }}
+            />
           </div>
         </button>
       </div>
@@ -247,37 +397,120 @@ export default function Navbar({ religionKey }: NavbarProps) {
       {/* Mobile Menu */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
-            style={{ overflow: "hidden", borderTop: `1px solid ${colors.darkText}`, background: colors.white }}>
-            <div style={{ padding: "1rem 2rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            style={{
+              overflow: "hidden",
+              borderTop: `1px solid ${colors.darkText}`,
+              background: colors.white,
+            }}
+          >
+            <div
+              style={{
+                padding: "1rem 2rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.5rem",
+              }}
+            >
               {[
                 { label: "Blogs", href: "/blog" },
-                { label: "Contact", href: "/contact" }
+                { label: "Contact", href: "/contact" },
               ].map((link) => (
-                <Link key={link.label} href={link.href} onClick={() => setMenuOpen(false)}
-                  style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: colors.darkText, background: colors.lightBg, fontWeight: 500 }}>
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  style={{
+                    textDecoration: "none",
+                    padding: "10px 14px",
+                    borderRadius: 8,
+                    fontSize: "0.95rem",
+                    color: colors.darkText,
+                    background: colors.lightBg,
+                    fontWeight: 500,
+                    fontFamily: FONT_UI,
+                  }}
+                >
                   {link.label}
                 </Link>
               ))}
-              
-              <Link href="/register" onClick={() => setMenuOpen(false)}
-                style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: colors.white, background: colors.darkText, fontWeight: 600, textAlign: "center" }}>
+
+              <Link
+                href="/register"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  textDecoration: "none",
+                  padding: "10px 14px",
+                  borderRadius: 8,
+                  fontSize: "0.95rem",
+                  color: colors.white,
+                  background: colors.darkText,
+                  fontWeight: 600,
+                  textAlign: "center",
+                  fontFamily: FONT_UI,
+                }}
+              >
                 Register
               </Link>
               {isLoggedIn ? (
                 <>
-                  <Link href="/account" onClick={() => setMenuOpen(false)}
-                    style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: colors.darkText, background: colors.lightBg, fontWeight: 500 }}>
+                  <Link
+                    href="/account"
+                    onClick={() => setMenuOpen(false)}
+                    style={{
+                      textDecoration: "none",
+                      padding: "10px 14px",
+                      borderRadius: 8,
+                      fontSize: "0.95rem",
+                      color: colors.darkText,
+                      background: colors.lightBg,
+                      fontWeight: 500,
+                      fontFamily: FONT_UI,
+                    }}
+                  >
                     👤 My Account
                   </Link>
-                  <button onClick={() => { handleLogout(); setMenuOpen(false); }}
-                    style={{ padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: "#dc2626", background: "#fff5f5", fontWeight: 500, border: "none", cursor: "pointer", fontFamily: "'Lato', sans-serif", textAlign: "left" }}>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setMenuOpen(false);
+                    }}
+                    style={{
+                      padding: "10px 14px",
+                      borderRadius: 8,
+                      fontSize: "0.95rem",
+                      color: "#dc2626",
+                      background: "#fff5f5",
+                      fontWeight: 500,
+                      border: "none",
+                      cursor: "pointer",
+                      fontFamily: FONT_UI,
+                      textAlign: "left",
+                    }}
+                  >
                     🚪 Sign Out
                   </button>
                 </>
               ) : (
-                <Link href="/login" onClick={() => setMenuOpen(false)}
-                  style={{ textDecoration: "none", padding: "10px 14px", borderRadius: 8, fontSize: "0.95rem", color: colors.darkText, background: colors.lightBg, fontWeight: 600, textAlign: "center", border: `1.5px solid ${colors.darkText}` }}>
+                <Link
+                  href="/login"
+                  onClick={() => setMenuOpen(false)}
+                  style={{
+                    textDecoration: "none",
+                    padding: "10px 14px",
+                    borderRadius: 8,
+                    fontSize: "0.95rem",
+                    color: colors.darkText,
+                    background: colors.lightBg,
+                    fontWeight: 600,
+                    textAlign: "center",
+                    border: `1.5px solid ${colors.darkText}`,
+                    fontFamily: FONT_UI,
+                  }}
+                >
                   Login
                 </Link>
               )}

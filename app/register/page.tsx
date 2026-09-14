@@ -7,16 +7,25 @@ import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../context/AuthContext";
 
+/* ── BRAND GUIDELINE COLORS ── */
 const COLORS = {
-  bg: "#E4E0D5",
-  burgundy: "#4A0E19",
-  darkBurgundy: "#380913",
-  cream: "#F7F3EA",
-  card: "#FBF9F4",
-  muted: "#76555C",
-  lightBorder: "#C9B8BA",
+  bg: "#F7F0E7",              // Warm Cream — brand default
+  burgundy: "#650B18",        // Brand Burgundy — primary
+  darkBurgundy: "#4A0812",    // Deeper burgundy (derived)
+  cream: "#FBF6F0",           // Cream tint
+  card: "#FFFCF9",            // Card background
+  muted: "#7A5A60",           // Muted burgundy-grey (readable on cream)
+  lightBorder: "#C9B8BA",     // Soft border
   white: "#FFFFFF",
+  ink: "#171717",             // Ink from brand
+  gold: "#D6AD62",            // Antique Gold accent
 };
+
+/* ── BRAND FONT STACKS ── */
+const FONT_DISPLAY =
+  "'Coolvetica', 'Helvetica Neue', 'Arial Narrow', Arial, sans-serif";
+const FONT_UI =
+  "'Inter', 'Helvetica Neue', Arial, system-ui, -apple-system, sans-serif";
 
 interface RegisterForm {
   name: string;
@@ -27,9 +36,7 @@ interface RegisterForm {
   agreeToTerms: boolean;
 }
 
-type FormErrors = Partial<
-  Record<keyof RegisterForm, string>
->;
+type FormErrors = Partial<Record<keyof RegisterForm, string>>;
 
 export default function RegisterPage() {
   const { login } = useAuth();
@@ -54,20 +61,10 @@ export default function RegisterPage() {
     (field: keyof RegisterForm) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const value =
-        e.target.type === "checkbox"
-          ? e.target.checked
-          : e.target.value;
+        e.target.type === "checkbox" ? e.target.checked : e.target.value;
 
-      setForm((p) => ({
-        ...p,
-        [field]: value,
-      }));
-
-      setErrors((p) => ({
-        ...p,
-        [field]: "",
-      }));
-
+      setForm((p) => ({ ...p, [field]: value }));
+      setErrors((p) => ({ ...p, [field]: "" }));
       setApiError("");
     };
 
@@ -78,27 +75,20 @@ export default function RegisterPage() {
       e.name = "Full name is required";
     }
 
-    if (
-      !form.email.match(
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      )
-    ) {
+    if (!form.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
       e.email = "Valid email required";
     }
 
     if (!form.phone.match(/^[6-9]\d{9}$/)) {
-      e.phone =
-        "Valid 10-digit Indian mobile number required";
+      e.phone = "Valid 10-digit Indian mobile number required";
     }
 
     if (form.password.length < 8) {
-      e.password =
-        "Password must be at least 8 characters";
+      e.password = "Password must be at least 8 characters";
     }
 
     if (!/[A-Z]/.test(form.password)) {
-      e.password =
-        "Must contain at least one uppercase letter";
+      e.password = "Must contain at least one uppercase letter";
     }
 
     if (form.password !== form.confirmPassword) {
@@ -106,12 +96,10 @@ export default function RegisterPage() {
     }
 
     if (!form.agreeToTerms) {
-      e.agreeToTerms =
-        "You must agree to continue";
+      e.agreeToTerms = "You must agree to continue";
     }
 
     setErrors(e);
-
     return Object.keys(e).length === 0;
   };
 
@@ -122,61 +110,43 @@ export default function RegisterPage() {
     setApiError("");
 
     try {
-      const BASE_URL =
-        process.env.NEXT_PUBLIC_API_URL || "";
+      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
-      const res = await fetch(
-        `${BASE_URL}/users/register/email`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: form.name,
-            email: form.email,
-            phone: form.phone,
-            password: form.password,
-          }),
-        }
-      );
+      const res = await fetch(`${BASE_URL}/users/register/email`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          password: form.password,
+        }),
+      });
 
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(
-          data?.message || "Registration failed"
-        );
+        throw new Error(data?.message || "Registration failed");
       }
 
-      const loginRes = await fetch(
-        `${BASE_URL}/users/login/User`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: form.email,
-            password: form.password,
-          }),
-        }
-      );
+      const loginRes = await fetch(`${BASE_URL}/users/login/User`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password,
+        }),
+      });
 
       const loginData = await loginRes.json();
 
       if (loginRes.ok && loginData.token) {
-        login(
-          loginData.user,
-          loginData.token
-        );
+        login(loginData.user, loginData.token);
       }
 
       router.push("/account");
     } catch (err: any) {
-      setApiError(
-        err?.message || "Something went wrong."
-      );
+      setApiError(err?.message || "Something went wrong.");
     } finally {
       setSubmitting(false);
     }
@@ -188,7 +158,7 @@ export default function RegisterPage() {
     borderRadius: 8,
     border: `1.5px solid ${COLORS.lightBorder}`,
     fontSize: "0.88rem",
-    fontFamily: "'Lato', sans-serif",
+    fontFamily: FONT_UI,
     color: COLORS.burgundy,
     background: COLORS.white,
     outline: "none",
@@ -196,11 +166,7 @@ export default function RegisterPage() {
     transition: "all 0.2s ease",
   };
 
-  const PasswordStrength = ({
-    pwd,
-  }: {
-    pwd: string;
-  }) => {
+  const PasswordStrength = ({ pwd }: { pwd: string }) => {
     if (!pwd) return null;
 
     const score = [
@@ -218,23 +184,11 @@ export default function RegisterPage() {
       COLORS.burgundy,
     ];
 
-    const labels = [
-      "",
-      "Weak",
-      "Fair",
-      "Good",
-      "Strong",
-    ];
+    const labels = ["", "Weak", "Fair", "Good", "Strong"];
 
     return (
       <div style={{ marginTop: 7 }}>
-        <div
-          style={{
-            display: "flex",
-            gap: 4,
-            marginBottom: 4,
-          }}
-        >
+        <div style={{ display: "flex", gap: 4, marginBottom: 4 }}>
           {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
@@ -242,10 +196,7 @@ export default function RegisterPage() {
                 flex: 1,
                 height: 3,
                 borderRadius: 2,
-                background:
-                  i <= score
-                    ? colors[score]
-                    : "#D8C9CA",
+                background: i <= score ? colors[score] : "#D8C9CA",
               }}
             />
           ))}
@@ -256,6 +207,7 @@ export default function RegisterPage() {
             fontSize: "0.68rem",
             color: colors[score],
             fontWeight: 700,
+            fontFamily: FONT_UI,
           }}
         >
           {labels[score]}
@@ -267,15 +219,13 @@ export default function RegisterPage() {
   return (
     <div
       style={{
-        fontFamily: "'Lato', sans-serif",
+        fontFamily: FONT_UI,
         background: COLORS.bg,
         minHeight: "100vh",
         color: COLORS.burgundy,
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600;700&display=swap');
-
         * {
           box-sizing: border-box;
           margin: 0;
@@ -283,8 +233,8 @@ export default function RegisterPage() {
         }
 
         input:focus {
-          border-color: #4A0E19 !important;
-          box-shadow: 0 0 0 3px rgba(74,14,25,0.08);
+          border-color: #650B18 !important;
+          box-shadow: 0 0 0 3px rgba(101,11,24,0.08);
         }
 
         input::placeholder {
@@ -296,7 +246,7 @@ export default function RegisterPage() {
         }
 
         .register-card:hover {
-          box-shadow: 0 18px 45px rgba(74,14,25,0.12) !important;
+          box-shadow: 0 18px 45px rgba(101,11,24,0.12) !important;
         }
 
         @media (max-width: 520px) {
@@ -313,7 +263,6 @@ export default function RegisterPage() {
       <Navbar />
 
       {/* HERO */}
-
       <section
         style={{
           background: COLORS.darkBurgundy,
@@ -329,8 +278,7 @@ export default function RegisterPage() {
             width: 280,
             height: 280,
             borderRadius: "50%",
-            border:
-              "1px solid rgba(255,255,255,0.07)",
+            border: "1px solid rgba(255,255,255,0.07)",
             top: -160,
             left: -70,
           }}
@@ -342,8 +290,7 @@ export default function RegisterPage() {
             width: 350,
             height: 350,
             borderRadius: "50%",
-            border:
-              "1px solid rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.06)",
             bottom: -260,
             right: -100,
           }}
@@ -353,10 +300,7 @@ export default function RegisterPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          style={{
-            position: "relative",
-            zIndex: 2,
-          }}
+          style={{ position: "relative", zIndex: 2 }}
         >
           <span
             style={{
@@ -365,6 +309,7 @@ export default function RegisterPage() {
               textTransform: "uppercase",
               color: "#D9BFC4",
               fontWeight: 700,
+              fontFamily: FONT_UI,
             }}
           >
             Begin Your Journey
@@ -375,12 +320,11 @@ export default function RegisterPage() {
               marginTop: "0.7rem",
               fontSize: "clamp(2.2rem, 5vw, 3rem)",
               color: COLORS.white,
-              fontFamily:
-                "'Playfair Display', Georgia, serif",
+              fontFamily: FONT_DISPLAY,
               lineHeight: 1.2,
             }}
           >
-            Create Your Regsiter my marriage Account
+            Create Your Register my marriage Account
           </h1>
 
           <p
@@ -388,16 +332,15 @@ export default function RegisterPage() {
               marginTop: "0.9rem",
               color: "rgba(255,255,255,0.68)",
               fontSize: "0.9rem",
+              fontFamily: FONT_UI,
             }}
           >
-            Start your marriage registration journey
-            with us.
+            Start your marriage registration journey with us.
           </p>
         </motion.div>
       </section>
 
       {/* REGISTER */}
-
       <div
         className="register-wrapper"
         style={{
@@ -407,14 +350,8 @@ export default function RegisterPage() {
         }}
       >
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 25,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="register-card"
           style={{
@@ -424,16 +361,10 @@ export default function RegisterPage() {
             padding: "2.5rem",
             borderRadius: 14,
             border: `1px solid ${COLORS.burgundy}`,
-            boxShadow:
-              "0 8px 30px rgba(74,14,25,0.07)",
+            boxShadow: "0 8px 30px rgba(101,11,24,0.07)",
           }}
         >
-          <div
-            style={{
-              textAlign: "center",
-              marginBottom: "2rem",
-            }}
-          >
+          <div style={{ textAlign: "center", marginBottom: "2rem" }}>
             <div
               style={{
                 width: 52,
@@ -456,8 +387,7 @@ export default function RegisterPage() {
                 fontSize: "1.75rem",
                 fontWeight: 700,
                 color: COLORS.burgundy,
-                fontFamily:
-                  "'Playfair Display', Georgia, serif",
+                fontFamily: FONT_DISPLAY,
                 marginBottom: "0.5rem",
               }}
             >
@@ -468,6 +398,7 @@ export default function RegisterPage() {
               style={{
                 color: COLORS.muted,
                 fontSize: "0.83rem",
+                fontFamily: FONT_UI,
               }}
             >
               Already have an account?{" "}
@@ -487,27 +418,19 @@ export default function RegisterPage() {
           <AnimatePresence>
             {apiError && (
               <motion.div
-                initial={{
-                  opacity: 0,
-                  y: -8,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                exit={{
-                  opacity: 0,
-                }}
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
                 style={{
                   padding: "11px 14px",
                   borderRadius: 8,
                   background: "#FBEEEE",
-                  border:
-                    "1px solid #E8BABA",
+                  border: "1px solid #E8BABA",
                   color: "#A51D2D",
                   fontSize: "0.82rem",
                   marginBottom: "1.2rem",
                   lineHeight: 1.5,
+                  fontFamily: FONT_UI,
                 }}
               >
                 {apiError}
@@ -523,7 +446,6 @@ export default function RegisterPage() {
             }}
           >
             {/* NAME */}
-
             <div>
               <label
                 style={{
@@ -534,6 +456,7 @@ export default function RegisterPage() {
                   marginBottom: 6,
                   textTransform: "uppercase",
                   letterSpacing: "0.06em",
+                  fontFamily: FONT_UI,
                 }}
               >
                 Full Name *
@@ -542,9 +465,7 @@ export default function RegisterPage() {
               <input
                 style={{
                   ...inp,
-                  borderColor: errors.name
-                    ? "#DC2626"
-                    : COLORS.lightBorder,
+                  borderColor: errors.name ? "#DC2626" : COLORS.lightBorder,
                 }}
                 placeholder="Your full name"
                 value={form.name}
@@ -557,6 +478,7 @@ export default function RegisterPage() {
                     fontSize: "0.72rem",
                     color: "#DC2626",
                     marginTop: 4,
+                    fontFamily: FONT_UI,
                   }}
                 >
                   {errors.name}
@@ -565,7 +487,6 @@ export default function RegisterPage() {
             </div>
 
             {/* EMAIL */}
-
             <div>
               <label
                 style={{
@@ -576,6 +497,7 @@ export default function RegisterPage() {
                   marginBottom: 6,
                   textTransform: "uppercase",
                   letterSpacing: "0.06em",
+                  fontFamily: FONT_UI,
                 }}
               >
                 Email Address *
@@ -585,9 +507,7 @@ export default function RegisterPage() {
                 type="email"
                 style={{
                   ...inp,
-                  borderColor: errors.email
-                    ? "#DC2626"
-                    : COLORS.lightBorder,
+                  borderColor: errors.email ? "#DC2626" : COLORS.lightBorder,
                 }}
                 placeholder="you@example.com"
                 value={form.email}
@@ -600,6 +520,7 @@ export default function RegisterPage() {
                     fontSize: "0.72rem",
                     color: "#DC2626",
                     marginTop: 4,
+                    fontFamily: FONT_UI,
                   }}
                 >
                   {errors.email}
@@ -608,7 +529,6 @@ export default function RegisterPage() {
             </div>
 
             {/* PHONE */}
-
             <div>
               <label
                 style={{
@@ -619,26 +539,23 @@ export default function RegisterPage() {
                   marginBottom: 6,
                   textTransform: "uppercase",
                   letterSpacing: "0.06em",
+                  fontFamily: FONT_UI,
                 }}
               >
                 Mobile Number *
               </label>
 
-              <div
-                style={{
-                  position: "relative",
-                }}
-              >
+              <div style={{ position: "relative" }}>
                 <span
                   style={{
                     position: "absolute",
                     left: 13,
                     top: "50%",
-                    transform:
-                      "translateY(-50%)",
+                    transform: "translateY(-50%)",
                     color: COLORS.muted,
                     fontSize: "0.85rem",
                     fontWeight: 700,
+                    fontFamily: FONT_UI,
                   }}
                 >
                   +91
@@ -648,9 +565,7 @@ export default function RegisterPage() {
                   style={{
                     ...inp,
                     paddingLeft: 47,
-                    borderColor: errors.phone
-                      ? "#DC2626"
-                      : COLORS.lightBorder,
+                    borderColor: errors.phone ? "#DC2626" : COLORS.lightBorder,
                   }}
                   placeholder="10-digit mobile"
                   value={form.phone}
@@ -666,6 +581,7 @@ export default function RegisterPage() {
                     fontSize: "0.72rem",
                     color: "#DC2626",
                     marginTop: 4,
+                    fontFamily: FONT_UI,
                   }}
                 >
                   {errors.phone}
@@ -674,7 +590,6 @@ export default function RegisterPage() {
             </div>
 
             {/* PASSWORD */}
-
             <div>
               <label
                 style={{
@@ -685,22 +600,15 @@ export default function RegisterPage() {
                   marginBottom: 6,
                   textTransform: "uppercase",
                   letterSpacing: "0.06em",
+                  fontFamily: FONT_UI,
                 }}
               >
                 Password *
               </label>
 
-              <div
-                style={{
-                  position: "relative",
-                }}
-              >
+              <div style={{ position: "relative" }}>
                 <input
-                  type={
-                    showPassword
-                      ? "text"
-                      : "password"
-                  }
+                  type={showPassword ? "text" : "password"}
                   style={{
                     ...inp,
                     paddingRight: 48,
@@ -715,17 +623,12 @@ export default function RegisterPage() {
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowPassword(
-                      (p) => !p
-                    )
-                  }
+                  onClick={() => setShowPassword((p) => !p)}
                   style={{
                     position: "absolute",
                     right: 12,
                     top: "50%",
-                    transform:
-                      "translateY(-50%)",
+                    transform: "translateY(-50%)",
                     background: "none",
                     border: "none",
                     cursor: "pointer",
@@ -743,19 +646,17 @@ export default function RegisterPage() {
                     fontSize: "0.72rem",
                     color: "#DC2626",
                     marginTop: 4,
+                    fontFamily: FONT_UI,
                   }}
                 >
                   {errors.password}
                 </p>
               )}
 
-              <PasswordStrength
-                pwd={form.password}
-              />
+              <PasswordStrength pwd={form.password} />
             </div>
 
             {/* CONFIRM PASSWORD */}
-
             <div>
               <label
                 style={{
@@ -766,50 +667,35 @@ export default function RegisterPage() {
                   marginBottom: 6,
                   textTransform: "uppercase",
                   letterSpacing: "0.06em",
+                  fontFamily: FONT_UI,
                 }}
               >
                 Confirm Password *
               </label>
 
-              <div
-                style={{
-                  position: "relative",
-                }}
-              >
+              <div style={{ position: "relative" }}>
                 <input
-                  type={
-                    showConfirm
-                      ? "text"
-                      : "password"
-                  }
+                  type={showConfirm ? "text" : "password"}
                   style={{
                     ...inp,
                     paddingRight: 48,
-                    borderColor:
-                      errors.confirmPassword
-                        ? "#DC2626"
-                        : COLORS.lightBorder,
+                    borderColor: errors.confirmPassword
+                      ? "#DC2626"
+                      : COLORS.lightBorder,
                   }}
                   placeholder="Re-enter password"
                   value={form.confirmPassword}
-                  onChange={set(
-                    "confirmPassword"
-                  )}
+                  onChange={set("confirmPassword")}
                 />
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowConfirm(
-                      (p) => !p
-                    )
-                  }
+                  onClick={() => setShowConfirm((p) => !p)}
                   style={{
                     position: "absolute",
                     right: 12,
                     top: "50%",
-                    transform:
-                      "translateY(-50%)",
+                    transform: "translateY(-50%)",
                     background: "none",
                     border: "none",
                     cursor: "pointer",
@@ -827,6 +713,7 @@ export default function RegisterPage() {
                     fontSize: "0.72rem",
                     color: "#DC2626",
                     marginTop: 4,
+                    fontFamily: FONT_UI,
                   }}
                 >
                   {errors.confirmPassword}
@@ -835,7 +722,6 @@ export default function RegisterPage() {
             </div>
 
             {/* TERMS */}
-
             <div>
               <label
                 style={{
@@ -848,13 +734,10 @@ export default function RegisterPage() {
                 <input
                   type="checkbox"
                   checked={form.agreeToTerms}
-                  onChange={set(
-                    "agreeToTerms"
-                  )}
+                  onChange={set("agreeToTerms")}
                   style={{
                     marginTop: 4,
-                    accentColor:
-                      COLORS.burgundy,
+                    accentColor: COLORS.burgundy,
                     flexShrink: 0,
                   }}
                 />
@@ -864,6 +747,7 @@ export default function RegisterPage() {
                     fontSize: "0.78rem",
                     color: COLORS.muted,
                     lineHeight: 1.6,
+                    fontFamily: FONT_UI,
                   }}
                 >
                   I agree to{" "}
@@ -895,6 +779,7 @@ export default function RegisterPage() {
                     fontSize: "0.72rem",
                     color: "#DC2626",
                     marginTop: 4,
+                    fontFamily: FONT_UI,
                   }}
                 >
                   {errors.agreeToTerms}
@@ -903,15 +788,9 @@ export default function RegisterPage() {
             </div>
 
             {/* BUTTON */}
-
             <motion.button
-              whileHover={{
-                scale: 1.015,
-                y: -2,
-              }}
-              whileTap={{
-                scale: 0.98,
-              }}
+              whileHover={{ scale: 1.015, y: -2 }}
+              whileTap={{ scale: 0.98 }}
               onClick={handleSubmit}
               disabled={submitting}
               style={{
@@ -924,17 +803,12 @@ export default function RegisterPage() {
                 color: COLORS.white,
                 fontSize: "0.9rem",
                 fontWeight: 700,
-                cursor: submitting
-                  ? "not-allowed"
-                  : "pointer",
-                fontFamily:
-                  "'Lato', sans-serif",
+                cursor: submitting ? "not-allowed" : "pointer",
+                fontFamily: FONT_UI,
                 marginTop: "0.15rem",
               }}
             >
-              {submitting
-                ? "Creating Account..."
-                : "Create Account →"}
+              {submitting ? "Creating Account..." : "Create Account →"}
             </motion.button>
 
             <div
@@ -950,17 +824,16 @@ export default function RegisterPage() {
                 fontSize: "0.7rem",
                 color: COLORS.muted,
                 textAlign: "center",
+                fontFamily: FONT_UI,
               }}
             >
-              🔒 Your data is encrypted and
-              never shared.
+              🔒 Your data is encrypted and never shared.
             </p>
           </div>
         </motion.div>
       </div>
 
       {/* FOOTER */}
-
       <footer
         style={{
           background: COLORS.darkBurgundy,
@@ -968,12 +841,12 @@ export default function RegisterPage() {
           textAlign: "center",
           color: "rgba(255,255,255,0.5)",
           fontSize: "0.73rem",
-          borderTop:
-            "1px solid rgba(255,255,255,0.08)",
+          borderTop: "1px solid rgba(255,255,255,0.08)",
+          fontFamily: FONT_UI,
         }}
       >
-        © 2024 RegisterMyMarriage · India's trusted marriage
-        registration platform
+        © 2024 RegisterMyMarriage · India's trusted marriage registration
+        platform
       </footer>
     </div>
   );
