@@ -4,42 +4,46 @@
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
+:root {
+  /* Radius tokens — enforce 8–12px band */
+  --radius-card: 10px;
+  --radius-btn: 10px;
+  --radius-pill: 999px;
+
+  /* Brand */
+  --burgundy: #650B18;
+  --burgundy-deep: #4A0812;
+  --gold: #D6AD62;
+  --cream: #F7F0E7;
+  --cream-tint: #FBF6F0;
+  --card-bg: #FFFCF9;
+  --ink: #171717;
+
+  /* Hairline borders — minimal, not solid */
+  --hairline: rgba(101, 11, 24, 0.08);
+  --hairline-strong: rgba(101, 11, 24, 0.15);
 }
 
+html { scroll-behavior: smooth; }
+
 body {
-  background: #F7F0E7;               /* Warm Cream — brand default */
-  color: #650B18;                    /* Brand Burgundy */
+  background: var(--cream);
+  color: var(--burgundy);
   font-family: 'Inter', 'Helvetica Neue', Arial, system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar — brand palette */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #F7F0E7;
-}
-::-webkit-scrollbar-thumb {
-  background: #D6AD62;               /* Antique Gold */
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #650B18;               /* Brand Burgundy */
-}
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--burgundy); }
 
-/* Focus ring — brand burgundy */
 :focus-visible {
-  outline: 2px solid #650B18;
+  outline: 2px solid var(--burgundy);
   outline-offset: 2px;
 }
 
-/* ─────────────────────────────────────────────
-   Brand font: Coolvetica (display)
-   ───────────────────────────────────────────── */
 @font-face {
   font-family: 'Coolvetica';
   src: url('/fonts/CoolveticaRg-Regular.woff2') format('woff2');
@@ -57,36 +61,14 @@ body {
 
 /* Responsive grid helpers */
 @media (max-width: 768px) {
-  .blog-featured-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .hero-grid {
-    grid-template-columns: 1fr !important;
-    gap: 2rem !important;
-    padding: 3rem 1.25rem 2rem !important;
-  }
-
-  .religion-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-
-  .contact-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .register-split {
-    grid-template-columns: 1fr !important;
-  }
-
-  .about-grid {
-    grid-template-columns: 1fr !important;
-    gap: 2rem !important;
-  }
+  .blog-featured-grid { grid-template-columns: 1fr !important; }
+  .hero-grid { grid-template-columns: 1fr !important; gap: 2rem !important; padding: 3rem 1.25rem 2rem !important; }
+  .religion-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .contact-grid { grid-template-columns: 1fr !important; }
+  .register-split { grid-template-columns: 1fr !important; }
+  .about-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
 }
 
 @media (max-width: 480px) {
-  .religion-grid {
-    grid-template-columns: 1fr !important;
-  }
+  .religion-grid { grid-template-columns: 1fr !important; }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Navbar from "../components/Navbar";
 import { ReligionTheme } from "../types/Religion";
@@ -10,20 +10,91 @@ interface Props {
   theme: ReligionTheme;
 }
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 32 },
-  visible: (i: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.12, duration: 0.7, ease: "easeOut" },
-  }),
-};
-
 /* ── BRAND FONT STACKS ── */
 const FONT_DISPLAY =
   "'Coolvetica', 'Helvetica Neue', 'Arial Narrow', Arial, sans-serif";
 const FONT_UI =
   "'Inter', 'Helvetica Neue', Arial, system-ui, -apple-system, sans-serif";
+
+/* ── DESIGN TOKENS ── */
+const T = {
+  burgundy: "#650B18",       // Primary
+  burgundyDeep: "#4A0812",
+  cream: "#F7F0E7",          // Warm Cream
+  creamTint: "#FBF6F0",      // Cream tint (secondary button bg)
+  cardBg: "#FFFCF9",         // Warm neutral card
+  ink: "#171717",            // Secondary button text/border
+  white: "#FFFFFF",
+  hairline: "rgba(101,11,24,0.08)",
+  hairlineStrong: "rgba(101,11,24,0.15)",
+  radiusCard: 10,            // 8–12 px band
+  radiusBtn: 10,
+};
+
+/* ── LINE ICONS (rounded joins, no stock imagery) ── */
+const strokeProps = {
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.6,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+};
+
+const Icon = {
+  File: ({ size = 18 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...strokeProps}>
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+      <path d="M14 3v5h5" />
+      <path d="M9 13h6M9 17h4" />
+    </svg>
+  ),
+  Shield: ({ size = 18 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...strokeProps}>
+      <path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z" />
+      <path d="M9 12l2 2 4-4" />
+    </svg>
+  ),
+  Headset: ({ size = 18 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...strokeProps}>
+      <path d="M4 13a8 8 0 1 1 16 0" />
+      <path d="M4 13v3a2 2 0 0 0 2 2h1v-6H6a2 2 0 0 0-2 2z" />
+      <path d="M20 13v3a2 2 0 0 1-2 2h-1v-6h1a2 2 0 0 1 2 2z" />
+    </svg>
+  ),
+  Scale: ({ size = 18 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...strokeProps}>
+      <path d="M12 3v18" />
+      <path d="M5 7h14" />
+      <path d="M7 7l-3 7h6z" />
+      <path d="M17 7l-3 7h6z" />
+      <path d="M8 20h8" />
+    </svg>
+  ),
+  Lock: ({ size = 18 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...strokeProps}>
+      <rect x="4" y="10" width="16" height="10" rx="2" />
+      <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+    </svg>
+  ),
+  Bolt: ({ size = 18 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...strokeProps}>
+      <path d="M13 3L5 13h6l-1 8 8-10h-6z" />
+    </svg>
+  ),
+  Check: ({ size = 18 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...strokeProps}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M8 12l3 3 5-6" />
+    </svg>
+  ),
+  Globe: ({ size = 18 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...strokeProps}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18" />
+      <path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z" />
+    </svg>
+  ),
+};
 
 export default function ReligionHomePage({ theme }: Props) {
   const isCourtMarriage = theme.key === "court-marriage";
@@ -43,47 +114,28 @@ export default function ReligionHomePage({ theme }: Props) {
   ];
 
   const trustReasons = theme.trustReasons || [
-    { title: "End-to-End Guidance", body: "From document preparation to final certificate delivery, we handle every step. You never have to visit a government office or decipher bureaucratic language." },
+    { title: "End-to-End Guidance", body: "From document preparation to final certificate delivery, we handle every step." },
     { title: "Complete Privacy", body: "All your documents and personal information are encrypted and handled with the highest standards of confidentiality." },
-    { title: "Faster Processing", body: "Our experience means fewer errors, fewer rejections, and faster turnaround. Most certificates are delivered within 7–15 working days." },
-    { title: "Dedicated Support", body: "A dedicated case manager is assigned to your registration — a real person you can reach by phone or email with any question." },
-    { title: "All-Religion Coverage", body: "We are fluent in the legal nuances of Hindu, Muslim, Christian, Sikh, Buddhist, Jain, and civil marriages. No case is too complex." },
+    { title: "Faster Processing", body: "Our experience means fewer errors, fewer rejections, and faster turnaround." },
+    { title: "Dedicated Support", body: "A dedicated case manager is assigned to your registration — a real person you can reach." },
+    { title: "All-Religion Coverage", body: "We are fluent in the legal nuances of Hindu, Muslim, Christian, Sikh, Buddhist, Jain, and civil marriages." },
     { title: "Legal Recognition", body: "Establishes your marriage as legally valid under Indian law and prevents future legal disputes." },
   ];
 
-  const ctaHeading = theme.ctaHeading || "Register today. Protect forever.";
-  const ctaSubtext =
-    theme.ctaSubtext || "Takes less than 10 minutes. Valid for a lifetime.";
-  const footerBrand = theme.footerBrand || "Register my marriage";
-  const footerTagline =
-    theme.footerTagline || "India's trusted marriage registration platform";
+  const trustIcons = [Icon.Shield, Icon.Lock, Icon.Bolt, Icon.Headset, Icon.Globe, Icon.Scale];
+  const helpIcons = [Icon.File, Icon.Shield, Icon.Headset, Icon.Scale];
 
-  /* ── BRAND GUIDELINE COLORS ──
-     Brand Burgundy  #650B18
-     Ruby Accent     #7A1220
-     Antique Gold    #D6AD62
-     Rose            #D98383
-     Warm Cream      #F7F0E7
-     Ink             #171717
-  */
-  const brand = {
-    burgundy: "#650B18",
-    ruby: "#7A1220",
-    gold: "#D6AD62",
-    rose: "#D98383",
-    cream: "#F7F0E7",
-    ink: "#171717",
-    white: "#FFFFFF",
-    creamTint: "#FBF6F0",
-    cardBg: "#FFFCF9",
-    darkBg: "#4A0812",
-  };
+  const ctaHeading = theme.ctaHeading || "Register today. Protect forever.";
+  const ctaSubtext = theme.ctaSubtext || "Takes less than 10 minutes. Valid for a lifetime.";
+  const footerBrand = theme.footerBrand || "Register my marriage";
+  const footerTagline = theme.footerTagline || "India's trusted marriage registration platform";
 
   return (
-    <div style={{ background: brand.cream, minHeight: "100vh", fontFamily: FONT_UI }}>
+    <div style={{ background: T.cream, minHeight: "100vh", fontFamily: FONT_UI }}>
       <Navbar religionKey={theme.key} />
 
-      {/* ───────────────── HERO SECTION ───────────────── */}
+      
+       {/* ───────────────── HERO ───────────────── */}
       <section
         style={{
           position: "relative",
@@ -95,6 +147,7 @@ export default function ReligionHomePage({ theme }: Props) {
           marginTop: "-1px",
         }}
       >
+        {/* Banner image — restored */}
         <div
           style={{
             position: "absolute",
@@ -125,7 +178,7 @@ export default function ReligionHomePage({ theme }: Props) {
             style={{
               fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)",
               fontWeight: 700,
-              color: brand.burgundy,
+              color: T.burgundy,
               lineHeight: 1.2,
               marginBottom: "1.3rem",
               fontFamily: FONT_DISPLAY,
@@ -134,10 +187,23 @@ export default function ReligionHomePage({ theme }: Props) {
               maxWidth: "620px",
             }}
           >
-            {theme.heroHeading.split(" ").map((word, index) => (
-              <React.Fragment key={index}>
-                {index > 0 && " "}
-                <span style={{ whiteSpace: "nowrap" }}>{word}</span>
+            {theme.heroHeading.split(" ").map((word, wordIndex) => (
+              <React.Fragment key={wordIndex}>
+                {wordIndex > 0 && " "}
+                <span style={{ whiteSpace: "nowrap" }}>
+                  {word.split("").map((char, charIndex) => {
+                    // First letter of the first word → gold
+                    const isGold = wordIndex === 1 && charIndex === 0;
+                    return (
+                      <span
+                        key={charIndex}
+                        style={{ color: isGold ? "#D6AD62" : undefined }}
+                      >
+                        {char}
+                      </span>
+                    );
+                  })}
+                </span>
               </React.Fragment>
             ))}
           </motion.h1>
@@ -151,20 +217,21 @@ export default function ReligionHomePage({ theme }: Props) {
             }}
             className="hero-buttons"
           >
-            <Link href={`/register`} style={{ textDecoration: "none" }}>
+            {/* PRIMARY — burgundy */}
+            <Link href="/register" style={{ textDecoration: "none" }}>
               <motion.div
-                whileHover={{ scale: 1.03, y: -2 }}
+                whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 style={{
                   padding: "12px 28px",
-                  borderRadius: 8,
-                  background: brand.burgundy,
-                  color: brand.white,
+                  borderRadius: T.radiusBtn,
+                  background: T.burgundy,
+                  color: T.white,
                   fontWeight: 700,
                   fontSize: "clamp(0.8rem, 1.2vw, 0.9rem)",
                   cursor: "pointer",
-                  boxShadow: "0 4px 20px rgba(101,11,24,0.25)",
-                  border: `1px solid ${brand.burgundy}`,
+                  boxShadow: "0 4px 16px rgba(101,11,24,0.22)",
+                  border: `1px solid ${T.burgundy}`,
                   transition: "all 0.25s ease",
                   fontFamily: FONT_UI,
                 }}
@@ -173,20 +240,21 @@ export default function ReligionHomePage({ theme }: Props) {
               </motion.div>
             </Link>
 
-            <Link href={`/contact`} style={{ textDecoration: "none" }}>
+            {/* SECONDARY — cream/ink */}
+            <Link href="/contact" style={{ textDecoration: "none" }}>
               <motion.div
-                whileHover={{ scale: 1.03, y: -2 }}
+                whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 style={{
                   padding: "12px 28px",
-                  borderRadius: 8,
-                  border: `1.5px solid ${brand.burgundy}`,
-                  background: brand.white,
-                  color: brand.burgundy,
-                  fontWeight: 500,
+                  borderRadius: T.radiusBtn,
+                  border: `1px solid ${T.hairlineStrong}`,
+                  background: T.creamTint,
+                  color: T.ink,
+                  fontWeight: 600,
                   fontSize: "clamp(0.8rem, 1.2vw, 0.9rem)",
                   cursor: "pointer",
-                  boxShadow: "0 4px 12px rgba(101,11,24,0.1)",
+                  boxShadow: "0 2px 8px rgba(23,23,23,0.06)",
                   transition: "all 0.25s ease",
                   fontFamily: FONT_UI,
                 }}
@@ -226,7 +294,7 @@ export default function ReligionHomePage({ theme }: Props) {
                 fontSize: "clamp(0.65rem, 1vw, 0.72rem)",
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
-                color: brand.burgundy,
+                color: T.burgundy,
                 fontWeight: 700,
                 opacity: 0.8,
                 fontFamily: FONT_UI,
@@ -239,7 +307,7 @@ export default function ReligionHomePage({ theme }: Props) {
               style={{
                 fontSize: "clamp(1.4rem, 3vw, 2.4rem)",
                 fontWeight: 700,
-                color: brand.burgundy,
+                color: T.burgundy,
                 lineHeight: 1.25,
                 margin: "0.75rem 0 1.5rem",
                 fontFamily: FONT_DISPLAY,
@@ -248,13 +316,12 @@ export default function ReligionHomePage({ theme }: Props) {
               Simplifying Marriage Registration for Every Indian Family
             </h2>
 
-            <p style={{ color: brand.burgundy, lineHeight: 1.9, fontSize: "clamp(0.85rem, 1vw, 0.98rem)", marginBottom: "1.25rem", opacity: 0.85, fontFamily: FONT_UI }}>
+            <p style={{ color: T.burgundy, lineHeight: 1.9, fontSize: "clamp(0.85rem, 1vw, 0.98rem)", marginBottom: "1.25rem", opacity: 0.85, fontFamily: FONT_UI }}>
               {theme.description}
             </p>
 
-            <p style={{ color: brand.burgundy, lineHeight: 1.9, fontSize: "clamp(0.85rem, 1vw, 0.98rem)", opacity: 0.85, fontFamily: FONT_UI }}>
-              We help couples complete registration smoothly with proper
-              documentation, timely filings, and complete legal support.
+            <p style={{ color: T.burgundy, lineHeight: 1.9, fontSize: "clamp(0.85rem, 1vw, 0.98rem)", opacity: 0.85, fontFamily: FONT_UI }}>
+              We help couples complete registration smoothly with proper documentation, timely filings, and complete legal support.
             </p>
           </motion.div>
 
@@ -263,64 +330,65 @@ export default function ReligionHomePage({ theme }: Props) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}
+            style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
           >
-            {theme.howWeHelp.map((item, i) => (
-              <div
-                key={i}
-                style={{
-                  padding: "clamp(1rem, 1.5vw, 1.5rem) 1.5rem",
-                  borderRadius: 12,
-                  border: `1px solid ${brand.burgundy}`,
-                  background: brand.creamTint,
-                  display: "flex",
-                  gap: "1rem",
-                  alignItems: "flex-start",
-                }}
-              >
+            {theme.howWeHelp.map((item, i) => {
+              const HelpIcon = helpIcons[i % helpIcons.length];
+              return (
                 <div
+                  key={i}
                   style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: "50%",
-                    background: brand.burgundy,
+                    padding: "1.1rem 1.3rem",
+                    borderRadius: T.radiusCard,
+                    border: `1px solid ${T.hairline}`,
+                    background: T.cardBg,
                     display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                    color: "#fff",
-                    fontSize: "0.75rem",
-                    fontWeight: 700,
-                    fontFamily: FONT_UI,
+                    gap: "1rem",
+                    alignItems: "flex-start",
+                    boxShadow: "0 2px 8px rgba(101,11,24,0.04)",
                   }}
                 >
-                  {i + 1}
-                </div>
-
-                <div>
-                  <div style={{ fontWeight: 700, color: brand.burgundy, marginBottom: "0.3rem", fontSize: "clamp(0.85rem, 1vw, 0.92rem)", fontFamily: FONT_DISPLAY }}>
-                    {item.title}
+                  {/* Line icon, rounded joins */}
+                  <div
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: T.radiusCard,
+                      background: T.creamTint,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                      color: T.burgundy,
+                    }}
+                  >
+                    <HelpIcon size={18} />
                   </div>
 
-                  <div style={{ color: brand.burgundy, fontSize: "clamp(0.78rem, 0.9vw, 0.85rem)", lineHeight: 1.7, opacity: 0.8, fontFamily: FONT_UI }}>
-                    {item.body}
+                  <div>
+                    <div style={{ fontWeight: 700, color: T.burgundy, marginBottom: "0.3rem", fontSize: "clamp(0.85rem, 1vw, 0.92rem)", fontFamily: FONT_DISPLAY }}>
+                      {item.title}
+                    </div>
+                    <div style={{ color: T.burgundy, fontSize: "clamp(0.78rem, 0.9vw, 0.85rem)", lineHeight: 1.7, opacity: 0.8, fontFamily: FONT_UI }}>
+                      {item.body}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </motion.div>
         </div>
       </section>
 
-      {/* Why Marriage Registration is Important */}
-      <section style={{ background: brand.cream, padding: "clamp(2rem, 4vw, 4rem) 1.5rem" }}>
+      {/* ── BENEFITS ── */}
+      <section style={{ background: T.cream, padding: "clamp(2rem, 4vw, 4rem) 1.5rem" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "clamp(2rem, 3vw, 3.5rem)" }}>
             <h2
               style={{
                 fontSize: "clamp(1.5rem, 4vw, 2.6rem)",
                 fontWeight: 700,
-                color: brand.burgundy,
+                color: T.burgundy,
                 fontFamily: FONT_DISPLAY,
                 marginBottom: "1rem",
               }}
@@ -333,28 +401,29 @@ export default function ReligionHomePage({ theme }: Props) {
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-              gap: "1.5rem",
+              gap: "1.25rem",
             }}
           >
             {benefits.map((item, index) => (
               <div
                 key={index}
                 style={{
-                  padding: "clamp(1.2rem, 1.5vw, 2rem) 1.5rem",
-                  borderRadius: 14,
-                  background: brand.cardBg,
-                  border: `1px solid ${brand.burgundy}`,
+                  padding: "1.5rem 1.4rem",
+                  borderRadius: T.radiusCard,
+                  background: T.cardBg,
+                  border: `1px solid ${T.hairline}`,
                   transition: "all 0.3s ease",
                   minHeight: "clamp(150px, 20vw, 184px)",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
+                  boxShadow: "0 2px 8px rgba(101,11,24,0.04)",
                 }}
               >
-                <h3 style={{ fontSize: "clamp(0.95rem, 1.2vw, 1.1rem)", fontWeight: 700, color: brand.burgundy, marginBottom: "0.6rem", fontFamily: FONT_DISPLAY }}>
+                <h3 style={{ fontSize: "clamp(0.95rem, 1.2vw, 1.1rem)", fontWeight: 700, color: T.burgundy, marginBottom: "0.6rem", fontFamily: FONT_DISPLAY }}>
                   {item.title}
                 </h3>
-                <p style={{ color: brand.burgundy, fontSize: "clamp(0.8rem, 1vw, 0.92rem)", lineHeight: 1.7, opacity: 0.8, fontFamily: FONT_UI }}>
+                <p style={{ color: T.burgundy, fontSize: "clamp(0.8rem, 1vw, 0.92rem)", lineHeight: 1.7, opacity: 0.8, fontFamily: FONT_UI }}>
                   {item.text}
                 </p>
               </div>
@@ -364,13 +433,13 @@ export default function ReligionHomePage({ theme }: Props) {
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section style={{ background: brand.cream, padding: "clamp(2rem, 4vw, 4rem) 1.5rem" }}>
+      <section style={{ background: T.cream, padding: "clamp(2rem, 4vw, 4rem) 1.5rem" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative" }}>
           <div style={{ textAlign: "center", marginBottom: "clamp(2rem, 3vw, 4rem)" }}>
-            <span style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.72rem)", letterSpacing: "0.18em", textTransform: "uppercase", color: brand.burgundy, fontWeight: 700, opacity: 0.8, fontFamily: FONT_UI }}>
+            <span style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.72rem)", letterSpacing: "0.18em", textTransform: "uppercase", color: T.burgundy, fontWeight: 700, opacity: 0.8, fontFamily: FONT_UI }}>
               The Process
             </span>
-            <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2.4rem)", fontWeight: 700, color: brand.burgundy, marginTop: "0.75rem", fontFamily: FONT_DISPLAY }}>
+            <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2.4rem)", fontWeight: 700, color: T.burgundy, marginTop: "0.75rem", fontFamily: FONT_DISPLAY }}>
               {displayedSteps.length} Steps To Your Union
             </h2>
           </div>
@@ -381,8 +450,8 @@ export default function ReligionHomePage({ theme }: Props) {
               left: "50%",
               top: "100px",
               bottom: 0,
-              width: "3px",
-              background: brand.burgundy,
+              width: "1px",
+              background: T.hairlineStrong,
               transform: "translateX(-50%)",
               display: "none",
             }}
@@ -402,19 +471,19 @@ export default function ReligionHomePage({ theme }: Props) {
             >
               <div
                 style={{
-                  width: index % 2 === 0 ? "45%" : "45%",
+                  width: "45%",
                   padding: index % 2 === 0 ? "0 2rem 0 0" : "0 0 0 2rem",
                   textAlign: index % 2 === 0 ? "right" : "left",
                 }}
                 className="step-content"
               >
-                <div style={{ fontSize: "clamp(1.2rem, 1.5vw, 1.4rem)", fontWeight: 800, color: brand.burgundy, marginBottom: "0.4rem", fontFamily: FONT_DISPLAY, opacity: 0.5 }}>
+                <div style={{ fontSize: "clamp(1.2rem, 1.5vw, 1.4rem)", fontWeight: 800, color: T.burgundy, marginBottom: "0.4rem", fontFamily: FONT_DISPLAY, opacity: 0.4 }}>
                   {step.num}
                 </div>
-                <div style={{ fontWeight: 700, color: brand.burgundy, marginBottom: "0.5rem", fontSize: "clamp(0.9rem, 1.1vw, 1rem)", fontFamily: FONT_DISPLAY }}>
+                <div style={{ fontWeight: 700, color: T.burgundy, marginBottom: "0.5rem", fontSize: "clamp(0.9rem, 1.1vw, 1rem)", fontFamily: FONT_DISPLAY }}>
                   {step.title}
                 </div>
-                <div style={{ color: brand.burgundy, fontSize: "clamp(0.8rem, 0.95vw, 0.9rem)", lineHeight: 1.7, opacity: 0.8, fontFamily: FONT_UI }}>
+                <div style={{ color: T.burgundy, fontSize: "clamp(0.8rem, 0.95vw, 0.9rem)", lineHeight: 1.7, opacity: 0.8, fontFamily: FONT_UI }}>
                   {step.body}
                 </div>
               </div>
@@ -424,11 +493,11 @@ export default function ReligionHomePage({ theme }: Props) {
                   position: "absolute",
                   left: "50%",
                   transform: "translateX(-50%)",
-                  width: "16px",
-                  height: "16px",
-                  background: brand.burgundy,
+                  width: "14px",
+                  height: "14px",
+                  background: T.cream,
+                  border: `2px solid ${T.burgundy}`,
                   borderRadius: "50%",
-                  border: `4px solid ${brand.cream}`,
                 }}
                 className="step-marker"
               />
@@ -438,7 +507,7 @@ export default function ReligionHomePage({ theme }: Props) {
       </section>
 
       {/* ── WHY TRUST US ── */}
-      <section style={{ background: brand.cream, padding: "clamp(2rem, 4vw, 4rem) 1.5rem" }}>
+      <section style={{ background: T.cream, padding: "clamp(2rem, 4vw, 4rem) 1.5rem" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -446,16 +515,14 @@ export default function ReligionHomePage({ theme }: Props) {
             viewport={{ once: true }}
             style={{ textAlign: "center", marginBottom: "clamp(2rem, 3vw, 3.5rem)" }}
           >
-            <span style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.72rem)", letterSpacing: "0.18em", textTransform: "uppercase", color: brand.burgundy, fontWeight: 700, opacity: 0.8, fontFamily: FONT_UI }}>
+            <span style={{ fontSize: "clamp(0.65rem, 0.8vw, 0.72rem)", letterSpacing: "0.18em", textTransform: "uppercase", color: T.burgundy, fontWeight: 700, opacity: 0.8, fontFamily: FONT_UI }}>
               Why Register my marriage
             </span>
-            <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2.4rem)", fontWeight: 700, color: brand.burgundy, marginTop: "0.75rem", fontFamily: FONT_DISPLAY }}>
+            <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2.4rem)", fontWeight: 700, color: T.burgundy, marginTop: "0.75rem", fontFamily: FONT_DISPLAY }}>
               Built Around Your Trust
             </h2>
-            <p style={{ color: brand.burgundy, maxWidth: 560, margin: "1rem auto 0", lineHeight: 1.8, fontSize: "clamp(0.85rem, 1vw, 0.97rem)", opacity: 0.8, fontFamily: FONT_UI }}>
-              Thousands of couples have trusted us to handle one of the most
-              important documents of their lives. Here is why they choose us
-              over the traditional route.
+            <p style={{ color: T.burgundy, maxWidth: 560, margin: "1rem auto 0", lineHeight: 1.8, fontSize: "clamp(0.85rem, 1vw, 0.97rem)", opacity: 0.8, fontFamily: FONT_UI }}>
+              Thousands of couples have trusted us to handle one of the most important documents of their lives. Here is why they choose us over the traditional route.
             </p>
           </motion.div>
 
@@ -463,73 +530,91 @@ export default function ReligionHomePage({ theme }: Props) {
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: "clamp(1rem, 1.5vw, 2rem)",
+              gap: "clamp(1rem, 1.5vw, 1.5rem)",
             }}
           >
-            {trustReasons.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                whileHover={{ y: -4, boxShadow: `0 12px 32px ${brand.burgundy}1A` }}
-                style={{
-                  padding: "clamp(1.2rem, 1.5vw, 1.75rem)",
-                  borderRadius: 14,
-                  border: `1px solid ${brand.burgundy}`,
-                  background: brand.white,
-                  display: "flex",
-                  gap: "1rem",
-                  alignItems: "flex-start",
-                  transition: "all 0.25s ease",
-                }}
-              >
-                <div style={{ width: 36, height: 36, borderRadius: "50%", background: brand.burgundy, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: brand.white, fontSize: "0.85rem", fontWeight: 700, fontFamily: FONT_UI }}>
-                  {i + 1}
-                </div>
-                <div>
-                  <div style={{ fontWeight: 700, color: brand.burgundy, marginBottom: "0.4rem", fontSize: "clamp(0.9rem, 1vw, 1rem)", fontFamily: FONT_DISPLAY }}>
-                    {item.title}
+            {trustReasons.map((item, i) => {
+              const TrustIcon = trustIcons[i % trustIcons.length];
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  whileHover={{ y: -3 }}
+                  style={{
+                    padding: "1.4rem 1.3rem",
+                    borderRadius: T.radiusCard,
+                    border: `1px solid ${T.hairline}`,
+                    background: T.cardBg,
+                    display: "flex",
+                    gap: "1rem",
+                    alignItems: "flex-start",
+                    transition: "all 0.25s ease",
+                    boxShadow: "0 2px 8px rgba(101,11,24,0.04)",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: T.radiusCard,
+                      background: T.creamTint,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                      color: T.burgundy,
+                    }}
+                  >
+                    <TrustIcon size={18} />
                   </div>
-                  <div style={{ color: brand.burgundy, fontSize: "clamp(0.8rem, 0.9vw, 0.87rem)", lineHeight: 1.7, opacity: 0.8, fontFamily: FONT_UI }}>
-                    {item.body}
+                  <div>
+                    <div style={{ fontWeight: 700, color: T.burgundy, marginBottom: "0.4rem", fontSize: "clamp(0.9rem, 1vw, 1rem)", fontFamily: FONT_DISPLAY }}>
+                      {item.title}
+                    </div>
+                    <div style={{ color: T.burgundy, fontSize: "clamp(0.8rem, 0.9vw, 0.87rem)", lineHeight: 1.7, opacity: 0.8, fontFamily: FONT_UI }}>
+                      {item.body}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* ── CTA ── */}
-      <section style={{ background: brand.darkBg, padding: "clamp(2rem, 4vw, 4rem) 1.5rem" }}>
+      <section style={{ background: T.burgundyDeep, padding: "clamp(2rem, 4vw, 4rem) 1.5rem" }}>
         <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2.4rem)", fontWeight: 700, color: brand.cream, marginBottom: "1.5rem", fontFamily: FONT_DISPLAY }}>
+            <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2.4rem)", fontWeight: 700, color: T.cream, marginBottom: "1.5rem", fontFamily: FONT_DISPLAY }}>
               {ctaHeading}
             </h2>
-            <p style={{ color: `${brand.cream}B8`, lineHeight: 1.9, fontSize: "clamp(1.1rem, 1.8vw, 1.5rem)", marginBottom: "1.5rem", fontFamily: FONT_UI }}>
+            <p style={{ color: `${T.cream}B8`, lineHeight: 1.9, fontSize: "clamp(1.1rem, 1.8vw, 1.5rem)", marginBottom: "1.5rem", fontFamily: FONT_UI }}>
               {ctaSubtext}
             </p>
             <Link href={`/${theme.key}/register`} style={{ textDecoration: "none" }}>
+              {/* On dark background, cream acts as the high-contrast primary */}
               <motion.div
-                whileHover={{ scale: 1.03, y: -2 }}
+                whileHover={{ y: -2 }}
                 style={{
                   display: "inline-block",
                   padding: "clamp(12px, 1.5vw, 14px) clamp(24px, 3vw, 36px)",
-                  borderRadius: 10,
-                  background: brand.cream,
-                  color: brand.burgundy,
+                  borderRadius: T.radiusBtn,
+                  background: T.cream,
+                  color: T.burgundy,
                   fontWeight: 700,
                   fontSize: "clamp(0.85rem, 1vw, 0.95rem)",
                   cursor: "pointer",
                   letterSpacing: "0.03em",
                   fontFamily: FONT_UI,
+                  boxShadow: "0 4px 18px rgba(0,0,0,0.25)",
                 }}
               >
                 Register Your Marriage Today →
@@ -542,12 +627,13 @@ export default function ReligionHomePage({ theme }: Props) {
       {/* ── FOOTER ── */}
       <footer
         style={{
-          background: brand.darkBg,
+          background: T.burgundyDeep,
           padding: "clamp(1.5rem, 2vw, 3rem) 1.5rem",
           color: "rgba(255,255,255,0.5)",
           fontSize: "clamp(0.7rem, 0.8vw, 0.78rem)",
           letterSpacing: "0.04em",
           fontFamily: FONT_UI,
+          borderTop: "1px solid rgba(255,255,255,0.06)",
         }}
       >
         <div
@@ -571,9 +657,9 @@ export default function ReligionHomePage({ theme }: Props) {
           </div>
 
           <div style={{ display: "flex", gap: "clamp(0.5rem, 1vw, 2rem)", flexWrap: "wrap" }}>
-            <Link href={`/blog`} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: "clamp(0.6rem, 0.7vw, 0.7rem)", fontFamily: FONT_UI }}>Blogs</Link>
-            <Link href={`/contact`} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: "clamp(0.6rem, 0.7vw, 0.7rem)", fontFamily: FONT_UI }}>Contact</Link>
-            <Link href={`/register`} style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: "clamp(0.6rem, 0.7vw, 0.7rem)", fontFamily: FONT_UI }}>Register</Link>
+            <Link href="/blog" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: "clamp(0.6rem, 0.7vw, 0.7rem)", fontFamily: FONT_UI }}>Blogs</Link>
+            <Link href="/contact" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: "clamp(0.6rem, 0.7vw, 0.7rem)", fontFamily: FONT_UI }}>Contact</Link>
+            <Link href="/register" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: "clamp(0.6rem, 0.7vw, 0.7rem)", fontFamily: FONT_UI }}>Register</Link>
             <Link href="/" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none", fontSize: "clamp(0.6rem, 0.7vw, 0.7rem)", fontFamily: FONT_UI }}>Change Religion</Link>
           </div>
 
@@ -592,7 +678,7 @@ export default function ReligionHomePage({ theme }: Props) {
             padding: 0 1.5rem !important;
             max-width: 100% !important;
             width: 100% !important;
-            transform: translateY(-12vh) !important;
+            transform: translateY(-6vh) !important;
           }
           .hero-buttons { justify-content: center !important; }
           .about-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
@@ -604,7 +690,7 @@ export default function ReligionHomePage({ theme }: Props) {
         }
 
         @media (min-width: 769px) and (max-width: 1024px) {
-          .hero-content { margin-left: 40% !important; transform: translateY(-5vh) !important; }
+          .hero-content { margin-left: 40% !important; transform: translateY(-3vh) !important; }
           .about-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
         }
 
