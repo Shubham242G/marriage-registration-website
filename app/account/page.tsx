@@ -22,14 +22,14 @@ type ImageField = string;
 
 /* ── BRAND GUIDELINE COLORS ── */
 const colors = {
-  bg: "#F7F0E7",              // Warm Cream — brand default
-  darkText: "#650B18",        // Brand Burgundy — primary
-  lightBg: "#FBF6F0",         // Cream tint
-  cardBg: "#FFFCF9",          // Card background
+  bg: "#F7F0E7",
+  darkText: "#650B18",
+  lightBg: "#FBF6F0",
+  cardBg: "#FFFCF9",
   white: "#FFFFFF",
-  darkBg: "#4A0812",          // Deeper burgundy (derived)
-  muted: "#7A5A60",           // Muted burgundy-grey
-  border: "#D9C8C5",          // Soft border
+  darkBg: "#4A0812",
+  muted: "#7A5A60",
+  border: "#D9C8C5",
   softBorder: "#E7DCD8",
   inputBg: "#FCFAF6",
   successBg: "#F0FDF4",
@@ -48,26 +48,21 @@ const FONT_UI =
 
 const EMPTY_FORM: FormState = {
   // Groom Documents
-  groomAadharFront: "",
-  groomAadharBack: "",
-  groomVoterIdFront: "",
-  groomVoterIdBack: "",
-  groomPassportFront: "",
-  groomPassportBack: "",
-  groomBirthCertificateImage: "",
+  groomId: "",
+  groomPassport: "",
+  groomBirthCertificateOrMarksheet: "",
 
   // Bride Documents
-  brideAadharFront: "",
-  brideAadharBack: "",
-  brideOtherProofImage: "",
-  brideBirthProofImage: "",
+  brideId: "",
+  bridePassport: "",
+  brideBirthCertificateOrMarksheet: "",
 
   // Marriage Proof
   marriageProofPhoto: "",
   marriageProofCoupleImage: "",
   marriageProofInvitation: "",
 
-  // Religious Certificate (Only for Sikh, Muslim, Christian)
+  // Religious Certificate
   religiousCertificateImage: "",
 
   // Witness 1
@@ -136,7 +131,77 @@ function normalizeDocumentResponse(response: any): DocumentData | null {
    REUSABLE UI COMPONENTS
 ========================================================= */
 
-function Label({ children }: { children: ReactNode }) {
+function InfoIcon({ text }: { text: string }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <span
+      style={{
+        position: "relative",
+        display: "inline-flex",
+        marginLeft: 6,
+        verticalAlign: "middle",
+      }}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      onClick={(e) => {
+        e.preventDefault();
+        setOpen((o) => !o);
+      }}
+    >
+      <span
+        style={{
+          width: 15,
+          height: 15,
+          borderRadius: "50%",
+          border: `1.2px solid ${colors.darkText}`,
+          color: colors.darkText,
+          fontSize: 10,
+          fontWeight: 700,
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "help",
+          fontFamily: FONT_UI,
+          lineHeight: 1,
+        }}
+      >
+        i
+      </span>
+      {open && (
+        <span
+          style={{
+            position: "absolute",
+            bottom: "calc(100% + 6px)",
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: colors.darkBg,
+            color: colors.white,
+            padding: "6px 10px",
+            borderRadius: 6,
+            fontSize: 11,
+            fontWeight: 500,
+            whiteSpace: "nowrap",
+            boxShadow: "0 4px 14px rgba(74,8,18,0.2)",
+            zIndex: 20,
+            fontFamily: FONT_UI,
+            pointerEvents: "none",
+          }}
+        >
+          {text}
+        </span>
+      )}
+    </span>
+  );
+}
+
+function Label({
+  children,
+  info,
+}: {
+  children: ReactNode;
+  info?: string;
+}) {
   return (
     <label
       style={{
@@ -150,6 +215,7 @@ function Label({ children }: { children: ReactNode }) {
       }}
     >
       {children}
+      {info && <InfoIcon text={info} />}
     </label>
   );
 }
@@ -214,14 +280,17 @@ function Grid({ children, columns = 2 }: { children: ReactNode; columns?: number
   );
 }
 
+/* ── SINGLE-FILE INPUT ── */
 function FileInput({
   label,
   value,
   onChange,
+  info,
 }: {
   label: string;
   value: ImageField;
   onChange: (value: string) => void;
+  info?: string;
 }) {
   const [uploading, setUploading] = useState(false);
 
@@ -244,7 +313,7 @@ function FileInput({
 
   return (
     <div>
-      <Label>{label}</Label>
+      <Label info={info}>{label}</Label>
       <div
         style={{
           border: `1px dashed ${colors.border}`,
@@ -289,6 +358,143 @@ function FileInput({
           >
             ✓ File selected
           </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ── MULTI-FILE INPUT ── */
+function MultiFileInput({
+  label,
+  info,
+  value,
+  onChange,
+}: {
+  label: string;
+  info?: string;
+  value: ImageField;
+  onChange: (value: string) => void;
+}) {
+  const [uploading, setUploading] = useState(false);
+
+  const files: string[] = (() => {
+    if (!value) return [];
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed : [value];
+    } catch {
+      return [value];
+    }
+  })();
+
+  const handleFiles = async (event: ChangeEvent<HTMLInputElement>) => {
+    const picked = Array.from(event.target.files || []);
+    event.target.value = "";
+    if (picked.length === 0) return;
+
+    try {
+      setUploading(true);
+      const base64s = await Promise.all(picked.map((f) => fileToBase64(f)));
+      const next = [...files, ...base64s];
+      onChange(JSON.stringify(next));
+    } catch (err) {
+      console.error("File upload error:", err);
+      alert("Unable to process one of the files.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const removeAt = (idx: number) => {
+    const next = files.filter((_, i) => i !== idx);
+    onChange(next.length ? JSON.stringify(next) : "");
+  };
+
+  return (
+    <div>
+      <Label info={info}>{label}</Label>
+      <div
+        style={{
+          border: `1px dashed ${colors.border}`,
+          borderRadius: 12,
+          padding: "clamp(10px, 1vw, 14px)",
+          background: colors.lightBg,
+        }}
+      >
+        <input
+          type="file"
+          accept="image/*,.pdf"
+          multiple
+          onChange={handleFiles}
+          disabled={uploading}
+          style={{
+            width: "100%",
+            fontSize: "clamp(11px, 1vw, 13px)",
+            color: colors.darkText,
+            fontFamily: FONT_UI,
+          }}
+        />
+        {uploading && (
+          <p
+            style={{
+              margin: "8px 0 0",
+              fontSize: "clamp(10px, 1vw, 12px)",
+              color: colors.muted,
+              fontFamily: FONT_UI,
+            }}
+          >
+            Processing files...
+          </p>
+        )}
+        {files.length > 0 && !uploading && (
+          <ul
+            style={{
+              margin: "10px 0 0",
+              padding: 0,
+              listStyle: "none",
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+            }}
+          >
+            {files.map((_, idx) => (
+              <li
+                key={idx}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 8,
+                  fontSize: "clamp(10px, 1vw, 12px)",
+                  color: colors.successText,
+                  fontWeight: 600,
+                  fontFamily: FONT_UI,
+                  background: colors.white,
+                  border: `1px solid ${colors.successBorder}`,
+                  borderRadius: 8,
+                  padding: "6px 10px",
+                }}
+              >
+                <span>✓ File {idx + 1}</span>
+                <button
+                  type="button"
+                  onClick={() => removeAt(idx)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: colors.errorText,
+                    cursor: "pointer",
+                    fontSize: 12,
+                    fontWeight: 700,
+                    fontFamily: FONT_UI,
+                  }}
+                >
+                  ✕
+                </button>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
     </div>
@@ -348,7 +554,9 @@ export default function AccountPage() {
         if (existingDocument) {
           setDocument(existingDocument);
           setForm(documentToForm(existingDocument));
-          setIsSubmitted(true);
+          // Returning user sees the editable form directly — not the success screen.
+          // The success screen only shows right after a fresh submit.
+          setIsSubmitted(false);
         } else {
           setDocument(null);
           setForm({ ...EMPTY_FORM });
@@ -373,7 +581,6 @@ export default function AccountPage() {
       if (existingDocument) {
         setDocument(existingDocument);
         setForm(documentToForm(existingDocument));
-        setIsSubmitted(true);
       }
     } catch (err) {
       console.error("Error refreshing document:", err);
@@ -396,12 +603,13 @@ export default function AccountPage() {
     setSaving(true);
 
     try {
-      let response;
       if (document?._id) {
-        response = await updateDocument(document._id, payload as any, token);
+        await updateDocument(document._id, payload as any, token);
         setSuccess("Your documents have been updated successfully.");
       } else {
-        response = await createDocument(payload as any, token);
+        // Backend addDocument is now upsert-safe: creates on first submit,
+        // silently updates if a document already exists.
+        await createDocument(payload as any, token);
         setSuccess("Your documents have been submitted successfully.");
       }
 
@@ -889,7 +1097,12 @@ export default function AccountPage() {
                 }}
               >
                 <button
-                  onClick={handleReset}
+                  onClick={() => {
+                    setIsSubmitted(false);
+                    setSuccess("");
+                    setError("");
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
                   style={{
                     padding:
                       "clamp(10px, 1vw, 12px) clamp(20px, 2vw, 28px)",
@@ -910,7 +1123,7 @@ export default function AccountPage() {
                     e.currentTarget.style.opacity = "1";
                   }}
                 >
-                  Upload New Documents
+                  ✏️ Edit My Documents
                 </button>
                 <Link
                   href="/"
@@ -942,207 +1155,164 @@ export default function AccountPage() {
             </motion.div>
           )}
 
-          {/* ── FORM (Hidden after successful submission) ── */}
+          {/* ── FORM ── */}
           {!isSubmitted && !loading && (
             <form onSubmit={handleSubmit}>
-              {/* Groom Documents */}
+              {/* GROOM DOCUMENTS */}
               <Section title="Groom Documents">
-                <Grid>
-                  <FileInput
-                    label="Groom Aadhar Front"
-                    value={form.groomAadharFront}
-                    onChange={(value) => updateField("groomAadharFront", value)}
+                <Grid columns={1}>
+                  <MultiFileInput
+                    label="Groom ID"
+                    info="You can upload Aadhaar Card or Voter ID"
+                    value={form.groomId}
+                    onChange={(v) => updateField("groomId", v)}
                   />
-                  <FileInput
-                    label="Groom Aadhar Back"
-                    value={form.groomAadharBack}
-                    onChange={(value) => updateField("groomAadharBack", value)}
+                  <MultiFileInput
+                    label="Groom Passport"
+                    value={form.groomPassport}
+                    onChange={(v) => updateField("groomPassport", v)}
                   />
-                  <FileInput
-                    label="Groom Voter ID Front"
-                    value={form.groomVoterIdFront}
-                    onChange={(value) => updateField("groomVoterIdFront", value)}
-                  />
-                  <FileInput
-                    label="Groom Voter ID Back"
-                    value={form.groomVoterIdBack}
-                    onChange={(value) => updateField("groomVoterIdBack", value)}
-                  />
-                  <FileInput
-                    label="Groom Passport Front"
-                    value={form.groomPassportFront}
-                    onChange={(value) =>
-                      updateField("groomPassportFront", value)
-                    }
-                  />
-                  <FileInput
-                    label="Groom Passport Back"
-                    value={form.groomPassportBack}
-                    onChange={(value) =>
-                      updateField("groomPassportBack", value)
-                    }
-                  />
-                  <FileInput
-                    label="Groom Birth Certificate"
-                    value={form.groomBirthCertificateImage}
-                    onChange={(value) =>
-                      updateField("groomBirthCertificateImage", value)
+                  <MultiFileInput
+                    label="Groom Birth Certificate / 10th Marksheet"
+                    info="Upload whichever you have — Birth Certificate, 10th Marksheet, or both"
+                    value={form.groomBirthCertificateOrMarksheet}
+                    onChange={(v) =>
+                      updateField("groomBirthCertificateOrMarksheet", v)
                     }
                   />
                 </Grid>
               </Section>
 
-              {/* Bride Documents */}
+              {/* BRIDE DOCUMENTS */}
               <Section title="Bride Documents">
-                <Grid>
-                  <FileInput
-                    label="Bride Aadhar Front"
-                    value={form.brideAadharFront}
-                    onChange={(value) => updateField("brideAadharFront", value)}
+                <Grid columns={1}>
+                  <MultiFileInput
+                    label="Bride ID"
+                    info="You can upload Aadhaar Card or Voter ID"
+                    value={form.brideId}
+                    onChange={(v) => updateField("brideId", v)}
                   />
-                  <FileInput
-                    label="Bride Aadhar Back"
-                    value={form.brideAadharBack}
-                    onChange={(value) => updateField("brideAadharBack", value)}
+                  <MultiFileInput
+                    label="Bride Passport"
+                    value={form.bridePassport}
+                    onChange={(v) => updateField("bridePassport", v)}
                   />
-                  <FileInput
-                    label="Bride Other Proof"
-                    value={form.brideOtherProofImage}
-                    onChange={(value) =>
-                      updateField("brideOtherProofImage", value)
-                    }
-                  />
-                  <FileInput
-                    label="Bride Birth Proof"
-                    value={form.brideBirthProofImage}
-                    onChange={(value) =>
-                      updateField("brideBirthProofImage", value)
+                  <MultiFileInput
+                    label="Bride Birth Certificate / 10th Marksheet"
+                    info="Upload whichever you have — Birth Certificate, 10th Marksheet, or both"
+                    value={form.brideBirthCertificateOrMarksheet}
+                    onChange={(v) =>
+                      updateField("brideBirthCertificateOrMarksheet", v)
                     }
                   />
                 </Grid>
               </Section>
 
-              {/* Marriage Proof */}
+              {/* MARRIAGE PROOF */}
               <Section title="Marriage Proof">
                 <Grid>
                   <FileInput
                     label="Marriage Proof Photo"
                     value={form.marriageProofPhoto}
-                    onChange={(value) => updateField("marriageProofPhoto", value)}
+                    onChange={(v) => updateField("marriageProofPhoto", v)}
                   />
                   <FileInput
-                    label="Couple Photograph"
+                    label="Couple Photo"
                     value={form.marriageProofCoupleImage}
-                    onChange={(value) =>
-                      updateField("marriageProofCoupleImage", value)
+                    onChange={(v) =>
+                      updateField("marriageProofCoupleImage", v)
                     }
                   />
                   <FileInput
-                    label="Marriage Invitation"
+                    label="Marriage Invitation Card"
                     value={form.marriageProofInvitation}
-                    onChange={(value) =>
-                      updateField("marriageProofInvitation", value)
+                    onChange={(v) =>
+                      updateField("marriageProofInvitation", v)
                     }
                   />
                 </Grid>
               </Section>
 
-              {/* Religious Certificate */}
+              {/* RELIGIOUS CERTIFICATE */}
               <Section title="Religious Certificate (Sikh, Muslim, Christian)">
-                <Grid>
+                <Grid columns={1}>
                   <FileInput
                     label="Religious Certificate"
                     value={form.religiousCertificateImage}
-                    onChange={(value) =>
-                      updateField("religiousCertificateImage", value)
+                    onChange={(v) =>
+                      updateField("religiousCertificateImage", v)
                     }
                   />
                 </Grid>
               </Section>
 
-              {/* Witness 1 */}
+              {/* WITNESS 1 */}
               <Section title="Witness 1 Documents">
                 <Grid>
                   <FileInput
                     label="Witness 1 Aadhar Front"
                     value={form.witness1AadharFront}
-                    onChange={(value) =>
-                      updateField("witness1AadharFront", value)
-                    }
+                    onChange={(v) => updateField("witness1AadharFront", v)}
                   />
                   <FileInput
                     label="Witness 1 Aadhar Back"
                     value={form.witness1AadharBack}
-                    onChange={(value) =>
-                      updateField("witness1AadharBack", value)
-                    }
+                    onChange={(v) => updateField("witness1AadharBack", v)}
                   />
                   <FileInput
                     label="Witness 1 PAN Card"
                     value={form.witness1PanCardPhoto}
-                    onChange={(value) =>
-                      updateField("witness1PanCardPhoto", value)
-                    }
+                    onChange={(v) => updateField("witness1PanCardPhoto", v)}
                   />
                 </Grid>
               </Section>
 
-              {/* Witness 2 */}
+              {/* WITNESS 2 */}
               <Section title="Witness 2 Documents">
                 <Grid>
                   <FileInput
                     label="Witness 2 Aadhar Front"
                     value={form.witness2AadharFront}
-                    onChange={(value) =>
-                      updateField("witness2AadharFront", value)
-                    }
+                    onChange={(v) => updateField("witness2AadharFront", v)}
                   />
                   <FileInput
                     label="Witness 2 Aadhar Back"
                     value={form.witness2AadharBack}
-                    onChange={(value) =>
-                      updateField("witness2AadharBack", value)
-                    }
+                    onChange={(v) => updateField("witness2AadharBack", v)}
                   />
                   <FileInput
                     label="Witness 2 PAN Card"
                     value={form.witness2PanCardPhoto}
-                    onChange={(value) =>
-                      updateField("witness2PanCardPhoto", value)
-                    }
+                    onChange={(v) => updateField("witness2PanCardPhoto", v)}
                   />
                 </Grid>
               </Section>
 
-              {/* Signatures */}
+              {/* SIGNATURES */}
               <Section title="Signatures">
                 <Grid>
                   <FileInput
                     label="Groom Signature"
                     value={form.signatureImageGroom}
-                    onChange={(value) =>
-                      updateField("signatureImageGroom", value)
-                    }
+                    onChange={(v) => updateField("signatureImageGroom", v)}
                   />
                   <FileInput
                     label="Bride Signature"
                     value={form.signatureImageBride}
-                    onChange={(value) =>
-                      updateField("signatureImageBride", value)
-                    }
+                    onChange={(v) => updateField("signatureImageBride", v)}
                   />
                   <FileInput
                     label="Witness 1 Signature"
                     value={form.signatureImageWitness1}
-                    onChange={(value) =>
-                      updateField("signatureImageWitness1", value)
+                    onChange={(v) =>
+                      updateField("signatureImageWitness1", v)
                     }
                   />
                   <FileInput
                     label="Witness 2 Signature"
                     value={form.signatureImageWitness2}
-                    onChange={(value) =>
-                      updateField("signatureImageWitness2", value)
+                    onChange={(v) =>
+                      updateField("signatureImageWitness2", v)
                     }
                   />
                 </Grid>

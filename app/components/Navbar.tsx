@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {Lottie} from "lottie-react";
+import logoAnimation from "../media/logo.json";
 import { ReligionKey } from "../types/Religion";
 import { useAuth } from "../context/AuthContext";
 
@@ -106,7 +107,7 @@ export default function Navbar({ religionKey }: NavbarProps) {
           ))}
         </div>
 
-        {/* CENTER: Logo */}
+        {/* CENTER: Logo (Lottie animation) */}
         <Link
           href={base || "/"}
           style={{
@@ -123,22 +124,24 @@ export default function Navbar({ religionKey }: NavbarProps) {
           }}
         >
           <div
-            style={{
-              position: "relative",
-              width: 500,
-              height: 300,
-              flexShrink: 0,
-            }}
-          >
-            <Image
-              src="/media/logo.png"
-              alt="Register My Marriage"
-              fill
-              priority
-              loading="eager"
-              style={{ objectFit: "contain" }}
-            />
-          </div>
+  className="logo-anim"
+  style={{
+    position: "relative",
+    width: "clamp(260px, 36vw, 500px)",
+    height: "clamp(150px, 22vw, 300px)",
+    flexShrink: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  }}
+>
+  <Lottie
+    src={logoAnimation}
+    loop
+    autoplay
+    style={{ width: "100%", height: "45%" }}
+  />
+</div>
         </Link>
 
         {/* RIGHT: Register + Login/Account */}
@@ -520,12 +523,30 @@ export default function Navbar({ religionKey }: NavbarProps) {
       </AnimatePresence>
 
       <style>{`
-        @media (max-width: 768px) {
-          .desktop-left { display: none !important; }
-          .desktop-right { display: none !important; }
-          .mobile-menu-btn { display: block !important; }
-        }
-      `}</style>
+  @media (max-width: 1024px) {
+    .logo-anim {
+      width: clamp(240px, 40vw, 380px) !important;
+      height: clamp(140px, 24vw, 220px) !important;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .desktop-left { display: none !important; }
+    .desktop-right { display: none !important; }
+    .mobile-menu-btn { display: block !important; }
+    .logo-anim {
+      width: clamp(200px, 55vw, 320px) !important;
+      height: clamp(120px, 33vw, 190px) !important;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .logo-anim {
+      width: clamp(170px, 60vw, 240px) !important;
+      height: clamp(100px, 36vw, 145px) !important;
+    }
+  }
+`}</style>
     </nav>
   );
 }

@@ -4,22 +4,26 @@ const prefix = "/document";
 export interface IDocument {
   _id?: string;
   userId?: string;
+
   // Basic info
   mobileNumber: string;
   emailId: string;
   selectedState: string;
   dateOfMarriage: string;
   venueOfMarriage: string;
-  // Groom
+
+  // Groom info
   groomEmail: string;
   groomMobile: string;
   groomOtherInfoOccupation: string;
   groomOtherInfoReligion: string;
   groomOtherInfoMaritalStatus: string;
-  // Bride
+
+  // Bride info
   brideOtherInfoOccupation: string;
   brideOtherInfoReligion: string;
   brideOtherInfoMaritalStatus: string;
+
   // Witnesses
   witness1PhoneNumber: string;
   witness2PhoneNumber: string;
@@ -27,13 +31,42 @@ export interface IDocument {
   additionalDocumentWitness1Name: string;
   additionalDocumentWitness2Name: string;
   additionalDocumentWitness3Name: string;
-  // Document images (base64 → filename after save)
-  groomAadharFront: string;
-  groomAadharBack: string;
-  brideAadharFront: string;
-  brideAadharBack: string;
+
+  // Groom Documents (base64 → filename after save)
+  groomId: string;
+  groomPassport: string;
+  groomBirthCertificateOrMarksheet: string;
+
+
+  // Bride Documents
+  brideId: string;
+  bridePassport: string;
+  brideBirthCertificateOrMarksheet: string;
+
+  // Marriage Proof
   marriageProofPhoto: string;
   marriageProofCoupleImage: string;
+  marriageProofInvitation: string;
+
+  // Religious Certificate
+  religiousCertificateImage: string;
+
+  // Witness 1 Documents
+  witness1AadharFront: string;
+  witness1AadharBack: string;
+  witness1PanCardPhoto: string;
+
+  // Witness 2 Documents
+  witness2AadharFront: string;
+  witness2AadharBack: string;
+  witness2PanCardPhoto: string;
+
+  // Signatures
+  signatureImageGroom: string;
+  signatureImageBride: string;
+  signatureImageWitness1: string;
+  signatureImageWitness2: string;
+
   // Status
   isDocumentVerified?: boolean;
   remark?: string;
@@ -51,7 +84,9 @@ export const fileToBase64 = (file: File): Promise<string> =>
   });
 
 // GET document for logged-in user
-export const getMyDocument = async (token: string): Promise<IDocument | null> => {
+export const getMyDocument = async (
+  token: string
+): Promise<IDocument | null> => {
   const res = await fetch(`${BASE_URL}${prefix}/getByUser`, {
     headers: { Authorization: `Bearer ${token}` },
   });
