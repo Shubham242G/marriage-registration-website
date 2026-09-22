@@ -187,25 +187,7 @@ export default function ReligionHomePage({ theme }: Props) {
               maxWidth: "620px",
             }}
           >
-            {theme.heroHeading.split(" ").map((word, wordIndex) => (
-              <React.Fragment key={wordIndex}>
-                {wordIndex > 0 && " "}
-                <span style={{ whiteSpace: "nowrap" }}>
-                  {word.split("").map((char, charIndex) => {
-                    // First letter of the first word → gold
-                    const isGold = wordIndex === 1 && charIndex === 0;
-                    return (
-                      <span
-                        key={charIndex}
-                        style={{ color: isGold ? "#D6AD62" : undefined }}
-                      >
-                        {char}
-                      </span>
-                    );
-                  })}
-                </span>
-              </React.Fragment>
-            ))}
+            {theme.heroHeading}
           </motion.h1>
 
           <div

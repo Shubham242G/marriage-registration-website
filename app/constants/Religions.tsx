@@ -384,7 +384,7 @@ export const RELIGION_THEMES: Record<ReligionKey, ReligionTheme> = {
     heroHeading: "Your Love. Legally Yours.",
     heroSubtext:
       "India's most straightforward path to a legally recognised marriage — secular, simple, and valid everywhere. No religion required. No ceremony required.",
-    bannerImage: "/media/courtMarriageBanner.png",
+    bannerImage: "/media/courtBanner.png",
     accentTeal: figmaColors.darkText,
     lightTeal: figmaColors.lightBg,
     darkTeal: figmaColors.darkBg,

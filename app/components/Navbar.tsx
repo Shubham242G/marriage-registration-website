@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {Lottie} from "lottie-react";
+import { Lottie } from "lottie-react";
 import logoAnimation from "../media/logo.json";
 import { ReligionKey } from "../types/Religion";
 import { useAuth } from "../context/AuthContext";
@@ -15,6 +15,8 @@ const FONT_DISPLAY =
 const FONT_UI =
   "'Inter', 'Helvetica Neue', Arial, system-ui, -apple-system, sans-serif";
 
+const STORAGE_KEY = "lastSelectedReligion";
+
 interface NavbarProps {
   religionKey?: ReligionKey;
 }
@@ -22,6 +24,7 @@ interface NavbarProps {
 export default function Navbar({ religionKey }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [lastReligion, setLastReligion] = useState<string | null>(null);
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout, isLoggedIn } = useAuth();
@@ -29,19 +32,62 @@ export default function Navbar({ religionKey }: NavbarProps) {
   const base = religionKey ? `/${religionKey}` : "";
   const isActive = (href: string) => pathname === href;
 
+  /* ── Persist / read last selected religion ── */
+  useEffect(() => {
+    // If a religionKey prop is passed (i.e. user is on a religion page),
+    // save it as the "last selected religion".
+    if (religionKey) {
+      try {
+        localStorage.setItem(STORAGE_KEY, religionKey);
+      } catch {
+        /* ignore storage errors */
+      }
+      setLastReligion(religionKey);
+    } else {
+      // Otherwise, read whatever was last stored.
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) setLastReligion(stored);
+      } catch {
+        /* ignore */
+      }
+    }
+  }, [religionKey]);
+
   const handleLogout = () => {
     logout();
     setDropdownOpen(false);
     router.push("/");
   };
 
+  /* ── Compute logo href ──
+     - If user is currently on a religion page, go to the OTHER last-selected religion
+       (i.e. the one stored before this navigation). Since we update storage on mount,
+       we fall back to the current religionKey only if nothing else exists.
+     - Otherwise, go to the last selected religion, or "/" if none. */
+  const logoHref = (() => {
+    // If we're on a religion page, prefer the previously stored one (before this page).
+    if (religionKey) {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored && stored !== religionKey) return `/${stored}`;
+      } catch {
+        /* ignore */
+      }
+      // fallback: current religion page
+      return `/${religionKey}`;
+    }
+    // Not on a religion page → use last stored or home
+    return lastReligion ? `/${lastReligion}` : "/";
+  })();
+
   /* ── BRAND GUIDELINE COLORS ── */
   const colors = {
-    bg: "#F7F0E7",            // Warm Cream
-    darkText: "#650B18",      // Brand Burgundy
-    lightBg: "#FBF6F0",       // Cream tint
+    bg: "#F7F0E7",
+    darkText: "#650B18",
+    lightBg: "#FBF6F0",
     white: "#FFFFFF",
-    darkBg: "#4A0812",        // Deeper burgundy
+    darkBg: "#4A0812",
     accent: "#650B18",
   };
 
@@ -109,7 +155,7 @@ export default function Navbar({ religionKey }: NavbarProps) {
 
         {/* CENTER: Logo (Lottie animation) */}
         <Link
-          href={base || "/"}
+          href={logoHref}
           style={{
             textDecoration: "none",
             display: "flex",
@@ -121,27 +167,31 @@ export default function Navbar({ religionKey }: NavbarProps) {
           }}
           onClick={(e) => {
             e.stopPropagation();
+            // If already on the target page, scroll to top.
+            if (pathname === logoHref) {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
           }}
         >
           <div
-  className="logo-anim"
-  style={{
-    position: "relative",
-    width: "clamp(260px, 36vw, 500px)",
-    height: "clamp(150px, 22vw, 300px)",
-    flexShrink: 0,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }}
->
-  <Lottie
-    src={logoAnimation}
-    loop
-    autoplay
-    style={{ width: "100%", height: "45%" }}
-  />
-</div>
+            className="logo-anim"
+            style={{
+              position: "relative",
+              width: "clamp(260px, 36vw, 500px)",
+              height: "clamp(150px, 22vw, 300px)",
+              flexShrink: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Lottie
+              src={logoAnimation}
+              loop
+              autoplay
+              style={{ width: "100%", height: "45%" }}
+            />
+          </div>
         </Link>
 
         {/* RIGHT: Register + Login/Account */}
