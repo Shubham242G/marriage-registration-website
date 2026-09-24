@@ -161,7 +161,6 @@ export default function ReligionHomePage({ theme }: Props) {
   const heroTrustItems = [
     "10,000+ couples",
     "Verified lawyers",
-    "Done in 7 days",
   ];
 
   return (
@@ -674,6 +673,7 @@ export default function ReligionHomePage({ theme }: Props) {
           padding: 0 6% 0 0;
           max-width: 560px;
           transform: translateY(-3%);
+          transform: translateX(18%);
         }
 
         .hero-eyebrow {
@@ -827,6 +827,7 @@ export default function ReligionHomePage({ theme }: Props) {
           white-space: nowrap;
           font-size: clamp(1.8rem, 3.4vw, 3rem);
           margin-bottom: 0;
+          margin-right:200px;
           font-family: 'Playfair Display', 'Times New Roman', serif;
           font-weight: 700;
         }
