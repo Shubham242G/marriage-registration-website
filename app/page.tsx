@@ -12,9 +12,9 @@ import { useAuth } from "./context/AuthContext";
 
 /* ── BRAND FONT STACKS ── */
 const FONT_DISPLAY =
-  "'Coolvetica', 'Helvetica Neue', 'Arial Narrow', Arial, sans-serif";
+  "'Playfair Display', 'Times New Roman', serif"; /* ← heading font */
 const FONT_UI =
-  "'Inter', 'Helvetica Neue', Arial, system-ui, -apple-system, sans-serif";
+  "'Inter', 'Helvetica Neue', Arial, system-ui, -apple-system, sans-serif"; /* ← body font */
 
 export default function HomePage() {
   const router = useRouter();
@@ -35,6 +35,11 @@ export default function HomePage() {
 
   return (
     <>
+      {/* Playfair Display import — same as religion pages */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+      `}</style>
+
       <main
         style={{
           minHeight: "100vh",
@@ -140,6 +145,7 @@ export default function HomePage() {
                   letterSpacing: "-0.01em",
                   marginBottom: "0.5rem",
                   fontFamily: FONT_DISPLAY,
+                  fontWeight: 700,
                 }}
               >
                 Select Your Religion
@@ -237,6 +243,7 @@ export default function HomePage() {
                             : colors.darkText,
                         marginBottom: 2,
                         fontFamily: FONT_DISPLAY,
+                        fontWeight: 700,
                         transition: "color 0.25s",
                       }}
                     >

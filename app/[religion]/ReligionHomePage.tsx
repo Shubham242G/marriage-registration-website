@@ -18,20 +18,20 @@ const FONT_UI =
 
 /* ── DESIGN TOKENS ── */
 const T = {
-  burgundy: "#650B18",       // Primary
+  burgundy: "#650B18",
   burgundyDeep: "#4A0812",
-  cream: "#F7F0E7",          // Warm Cream
-  creamTint: "#FBF6F0",      // Cream tint (secondary button bg)
-  cardBg: "#FFFCF9",         // Warm neutral card
-  ink: "#171717",            // Secondary button text/border
+  cream: "#F7F0E7",
+  creamTint: "#FBF6F0",
+  cardBg: "#FFFCF9",
+  ink: "#171717",
   white: "#FFFFFF",
   hairline: "rgba(101,11,24,0.08)",
   hairlineStrong: "rgba(101,11,24,0.15)",
-  radiusCard: 10,            // 8–12 px band
+  radiusCard: 10,
   radiusBtn: 10,
 };
 
-/* ── LINE ICONS (rounded joins, no stock imagery) ── */
+/* ── LINE ICONS ── */
 const strokeProps = {
   fill: "none",
   stroke: "currentColor",
@@ -103,6 +103,7 @@ const Icon = {
 
 export default function ReligionHomePage({ theme }: Props) {
   const isCourtMarriage = theme.key === "court-marriage";
+  const isOther = theme.key === "other";
 
   const benefits = theme.benefits || [
     { title: "Valid Proof", text: "Gives official legal status to your marriage." },
@@ -135,14 +136,25 @@ export default function ReligionHomePage({ theme }: Props) {
   const footerBrand = theme.footerBrand || "Register my marriage";
   const footerTagline = theme.footerTagline || "India's trusted marriage registration platform";
 
-  /* Hero-specific copy — split so "Legally Yours." renders in italic serif */
-  const heroEyebrow = isCourtMarriage
-    ? "Court Marriage & Registration"
-    : "Marriage Registration";
-  const heroLine1 = isCourtMarriage ? "Your Love." : "Your Marriage.";
-  const heroLine2 = isCourtMarriage ? "Legally Yours." : "Legally Registered.";
+  /* Hero-specific copy */
+  const heroEyebrow = isOther
+    ? ""
+    : isCourtMarriage
+      ? "Court Marriage & Registration"
+      : "Marriage Registration";
 
-  /* Hero subtext — fixed tagline, not pulled from theme.description */
+  const heroLine1 = isOther
+    ? theme.heroHeading
+    : isCourtMarriage
+      ? "Your Love."
+      : "Your Marriage.";
+
+  const heroLine2 = isOther
+    ? ""
+    : isCourtMarriage
+      ? "Legally Yours."
+      : "Legally Registered.";
+
   const heroSub =
     "Hassle-free marriage registration — documents, appointments and legal support handled end to end.";
 
@@ -158,46 +170,43 @@ export default function ReligionHomePage({ theme }: Props) {
 
       {/* ───────────────── HERO ───────────────── */}
       <section className="hero">
-        {/* Background layer — banner image tinted under cream overlay */}
-        <div className="hero-bg" aria-hidden="true" />
-        {/* Soft cream-to-burgundy curve at bottom-right */}
-        <div className="hero-curve" aria-hidden="true" />
+        <div className={`hero-content${isOther ? " hero-content--minimal" : ""}`}>
+          {/* Eyebrow — hidden on `other` */}
+          {!isOther && (
+            <motion.p
+              className="hero-eyebrow"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              {heroEyebrow}
+            </motion.p>
+          )}
 
-        <div className="hero-content">
-          <motion.p
-            className="hero-eyebrow"
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            {heroEyebrow}
-          </motion.p>
-
+          {/* Heading — single line for `other` (italic), two lines otherwise */}
           <motion.h1
             key={heroLine1 + heroLine2}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
           >
-            {heroLine1}
-            <br />
-            <em>{heroLine2}</em>
+            {isOther ? (
+              <em>{heroLine1}</em>
+            ) : (
+              <>
+                {heroLine1}
+                <br />
+                <em>{heroLine2}</em>
+              </>
+            )}
           </motion.h1>
 
-          <motion.p
-            className="sub"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.25 }}
-          >
-            {heroSub}
-          </motion.p>
-
+          {/* CTA buttons — shown on every page */}
           <motion.div
             className="hero-buttons"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
+            transition={{ duration: 0.7, delay: isOther ? 0.25 : 0.4 }}
           >
             <Link href="/register" className="btn-primary">
               Start Registration →
@@ -207,21 +216,35 @@ export default function ReligionHomePage({ theme }: Props) {
             </Link>
           </motion.div>
 
-          <motion.ul
-            className="trust"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.55 }}
-          >
-            {heroTrustItems.map((item) => (
-              <li key={item}>
-                <span className="trust-tick" aria-hidden="true">
-                  <Icon.Tick size={12} />
-                </span>
-                {item}
-              </li>
-            ))}
-          </motion.ul>
+          {/* Subtext + trust — hidden on `other` */}
+          {!isOther && (
+            <>
+              <motion.p
+                className="sub"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.25 }}
+              >
+                {heroSub}
+              </motion.p>
+
+              <motion.ul
+                className="trust"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.7, delay: 0.55 }}
+              >
+                {heroTrustItems.map((item) => (
+                  <li key={item}>
+                    <span className="trust-tick" aria-hidden="true">
+                      <Icon.Tick size={12} />
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </motion.ul>
+            </>
+          )}
         </div>
       </section>
 
@@ -630,61 +653,26 @@ export default function ReligionHomePage({ theme }: Props) {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 
-        /* ── HERO SHELL ── */
+        /* ── HERO — just background image + text ── */
         .hero {
           position: relative;
-          display: grid;
-          grid-template-columns: 45% 55%;
-          align-items: center;
           min-height: 88vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-image: var(--hero-banner);
+          background-size: cover;
+          background-position: center bottom;
+          background-repeat: no-repeat;
           overflow: hidden;
-          background: #f4ece3;
           margin-top: -1px;
         }
 
-        /* Left column reserved for the visual / banner art on desktop.
-           The .hero-bg sits behind everything and shows the theme banner
-           on the left, blending into a cream field on the right. */
-        .hero-bg {
-          position: absolute;
-          inset: 0;
-          background-image:
-            linear-gradient(
-              to right,
-              rgba(244, 236, 227, 0) 0%,
-              rgba(244, 236, 227, 0.05) 30%,
-              rgba(244, 236, 227, 0.55) 52%,
-              rgba(244, 236, 227, 0.95) 65%,
-              #f4ece3 78%
-            ),
-            var(--hero-banner);
-          background-size: cover, cover;
-          background-position: center bottom, left bottom;
-          background-repeat: no-repeat, no-repeat;
-          z-index: 0;
-        }
-
-        /* Soft bottom-right burgundy curve like the reference */
-        .hero-curve {
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          width: 46%;
-          height: 32%;
-          background: linear-gradient(135deg, #7c2b3a 0%, #5c1a2a 100%);
-          border-top-left-radius: 100% 100%;
-          z-index: 1;
-          pointer-events: none;
-          opacity: 0.95;
-        }
-
-        /* ── HERO CONTENT (right column) — scaled down ── */
         .hero-content {
-          grid-column: 2;
           position: relative;
-          z-index: 3;
-          padding: 0 10% 0 0;
-          max-width: 500px;
+          z-index: 2;
+          padding: 0 6% 0 0;
+          max-width: 560px;
           transform: translateY(-3%);
         }
 
@@ -717,11 +705,10 @@ export default function ReligionHomePage({ theme }: Props) {
           font-size: clamp(0.76rem, 0.88vw, 0.86rem);
           line-height: 1.55;
           color: #5b4038;
-          max-width: 380px;
+          max-width: 420px;
           margin: 0 0 1.3rem 0;
         }
 
-        /* ── BUTTONS ── */
         .hero-buttons {
           display: flex;
           gap: 0.7rem;
@@ -768,7 +755,6 @@ export default function ReligionHomePage({ theme }: Props) {
           box-shadow: 0 8px 20px rgba(107, 15, 26, 0.12);
         }
 
-        /* ── TRUST LINE WITH TICKS ── */
         .trust {
           list-style: none;
           display: flex;
@@ -795,28 +781,13 @@ export default function ReligionHomePage({ theme }: Props) {
         /* ── RESPONSIVE ── */
         @media (max-width: 900px) {
           .hero {
-            grid-template-columns: 1fr;
             min-height: 92vh;
+            justify-content: center;
             text-align: center;
-          }
-          .hero-bg {
-            background-image:
-              linear-gradient(
-                to bottom,
-                rgba(244, 236, 227, 0.55) 0%,
-                rgba(244, 236, 227, 0.92) 45%,
-                #f4ece3 70%
-              ),
-              var(--hero-banner);
-            background-position: center top, center top;
-          }
-          .hero-curve {
-            width: 70%;
-            height: 22%;
+            background-position: center top;
           }
           .hero-content {
-            grid-column: 1;
-            padding: 5rem 1.5rem 3rem;
+            padding: 3rem 1.5rem 2rem;
             max-width: 100%;
             transform: none;
           }
@@ -830,6 +801,9 @@ export default function ReligionHomePage({ theme }: Props) {
           }
           .trust {
             justify-content: center;
+          }
+          .hero-content--minimal h1 {
+            white-space: normal;
           }
           .about-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
           .step-item { justify-content: center !important; }
@@ -847,9 +821,29 @@ export default function ReligionHomePage({ theme }: Props) {
           .step-marker { display: block !important; }
           .desktop-vertical-line { display: block !important; }
         }
+
+        /* ── other page only — CTA positioning ── */
+        .hero-content--minimal h1 {
+          white-space: nowrap;
+          font-size: clamp(1.8rem, 3.4vw, 3rem);
+          margin-bottom: 0;
+          font-family: 'Playfair Display', 'Times New Roman', serif;
+          font-weight: 700;
+        }
+
+        .hero-content--minimal .hero-buttons {
+          justify-content: center;
+          margin-top: 1.5rem;
+          margin-left: 180px;
+        }
+
+        .hero-content--minimal {
+          margin-bottom: 300px;
+          margin-left: -100px;
+        }
       `}</style>
 
-      {/* Bind the theme banner image into a CSS variable so .hero-bg can use it */}
+      {/* Bind the theme banner image into a CSS variable so .hero can use it */}
       <style>{`
         .hero { --hero-banner: url(${theme.bannerImage}); }
       `}</style>
