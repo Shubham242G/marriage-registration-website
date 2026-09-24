@@ -94,6 +94,11 @@ const Icon = {
       <path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z" />
     </svg>
   ),
+  Tick: ({ size = 14 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" {...strokeProps} strokeWidth={2.4}>
+      <path d="M4 12l5 5L20 6" />
+    </svg>
+  ),
 };
 
 export default function ReligionHomePage({ theme }: Props) {
@@ -130,121 +135,93 @@ export default function ReligionHomePage({ theme }: Props) {
   const footerBrand = theme.footerBrand || "Register my marriage";
   const footerTagline = theme.footerTagline || "India's trusted marriage registration platform";
 
+  /* Hero-specific copy — split so "Legally Yours." renders in italic serif */
+  const heroEyebrow = isCourtMarriage
+    ? "Court Marriage & Registration"
+    : "Marriage Registration";
+  const heroLine1 = isCourtMarriage ? "Your Love." : "Your Marriage.";
+  const heroLine2 = isCourtMarriage ? "Legally Yours." : "Legally Registered.";
+
+  /* Hero subtext — fixed tagline, not pulled from theme.description */
+  const heroSub =
+    "Hassle-free marriage registration — documents, appointments and legal support handled end to end.";
+
+  const heroTrustItems = [
+    "10,000+ couples",
+    "Verified lawyers",
+    "Done in 7 days",
+  ];
+
   return (
     <div style={{ background: T.cream, minHeight: "100vh", fontFamily: FONT_UI }}>
       <Navbar religionKey={theme.key} />
 
-      
-       {/* ───────────────── HERO ───────────────── */}
-      <section
-        style={{
-          position: "relative",
-          minHeight: "95vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          overflow: "hidden",
-          marginTop: "-1px",
-        }}
-      >
-        {/* Banner image — restored */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: `url(${theme.bannerImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center bottom",
-          }}
-        />
+      {/* ───────────────── HERO ───────────────── */}
+      <section className="hero">
+        {/* Background layer — banner image tinted under cream overlay */}
+        <div className="hero-bg" aria-hidden="true" />
+        {/* Soft cream-to-burgundy curve at bottom-right */}
+        <div className="hero-curve" aria-hidden="true" />
 
-        <div
-          style={{
-            position: "relative",
-            zIndex: 2,
-            maxWidth: 650,
-            padding: "0 2rem",
-            marginLeft: "58%",
-            transform: "translateY(-12svh)",
-            textAlign: "left",
-          }}
-          className="hero-content"
-        >
+        <div className="hero-content">
+          <motion.p
+            className="hero-eyebrow"
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            {heroEyebrow}
+          </motion.p>
+
           <motion.h1
-            key={theme.heroHeading}
+            key={heroLine1 + heroLine2}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            style={{
-              fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)",
-              fontWeight: 700,
-              color: T.burgundy,
-              lineHeight: 1.2,
-              marginBottom: "1.3rem",
-              fontFamily: FONT_DISPLAY,
-              letterSpacing: "0.01em",
-              textShadow: "0 2px 8px rgba(255,255,255,0.3)",
-              maxWidth: "620px",
-            }}
+            transition={{ duration: 0.8, delay: 0.1 }}
           >
-            {theme.heroHeading}
+            {heroLine1}
+            <br />
+            <em>{heroLine2}</em>
           </motion.h1>
 
-          <div
-            style={{
-              display: "flex",
-              gap: "1rem",
-              flexWrap: "wrap",
-              justifyContent: "flex-start",
-            }}
-            className="hero-buttons"
+          <motion.p
+            className="sub"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.25 }}
           >
-            {/* PRIMARY — burgundy */}
-            <Link href="/register" style={{ textDecoration: "none" }}>
-              <motion.div
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                style={{
-                  padding: "12px 28px",
-                  borderRadius: T.radiusBtn,
-                  background: T.burgundy,
-                  color: T.white,
-                  fontWeight: 700,
-                  fontSize: "clamp(0.8rem, 1.2vw, 0.9rem)",
-                  cursor: "pointer",
-                  boxShadow: "0 4px 16px rgba(101,11,24,0.22)",
-                  border: `1px solid ${T.burgundy}`,
-                  transition: "all 0.25s ease",
-                  fontFamily: FONT_UI,
-                }}
-              >
-                Start Registration →
-              </motion.div>
-            </Link>
+            {heroSub}
+          </motion.p>
 
-            {/* SECONDARY — cream/ink */}
-            <Link href="/contact" style={{ textDecoration: "none" }}>
-              <motion.div
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                style={{
-                  padding: "12px 28px",
-                  borderRadius: T.radiusBtn,
-                  border: `1px solid ${T.hairlineStrong}`,
-                  background: T.creamTint,
-                  color: T.ink,
-                  fontWeight: 600,
-                  fontSize: "clamp(0.8rem, 1.2vw, 0.9rem)",
-                  cursor: "pointer",
-                  boxShadow: "0 2px 8px rgba(23,23,23,0.06)",
-                  transition: "all 0.25s ease",
-                  fontFamily: FONT_UI,
-                }}
-              >
-                Talk to an Expert
-              </motion.div>
+          <motion.div
+            className="hero-buttons"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+          >
+            <Link href="/register" className="btn-primary">
+              Start Registration →
             </Link>
-          </div>
+            <Link href="/contact" className="btn-secondary">
+              Talk to an Expert
+            </Link>
+          </motion.div>
+
+          <motion.ul
+            className="trust"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.55 }}
+          >
+            {heroTrustItems.map((item) => (
+              <li key={item}>
+                <span className="trust-tick" aria-hidden="true">
+                  <Icon.Tick size={12} />
+                </span>
+                {item}
+              </li>
+            ))}
+          </motion.ul>
         </div>
       </section>
 
@@ -330,7 +307,6 @@ export default function ReligionHomePage({ theme }: Props) {
                     boxShadow: "0 2px 8px rgba(101,11,24,0.04)",
                   }}
                 >
-                  {/* Line icon, rounded joins */}
                   <div
                     style={{
                       width: 36,
@@ -582,7 +558,6 @@ export default function ReligionHomePage({ theme }: Props) {
               {ctaSubtext}
             </p>
             <Link href={`/${theme.key}/register`} style={{ textDecoration: "none" }}>
-              {/* On dark background, cream acts as the high-contrast primary */}
               <motion.div
                 whileHover={{ y: -2 }}
                 style={{
@@ -653,16 +628,209 @@ export default function ReligionHomePage({ theme }: Props) {
 
       {/* ── RESPONSIVE STYLES ── */}
       <style>{`
-        @media (max-width: 768px) {
-          .hero-content {
-            margin-left: 0 !important;
-            text-align: center !important;
-            padding: 0 1.5rem !important;
-            max-width: 100% !important;
-            width: 100% !important;
-            transform: translateY(-6vh) !important;
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+
+        /* ── HERO SHELL ── */
+        .hero {
+          position: relative;
+          display: grid;
+          grid-template-columns: 45% 55%;
+          align-items: center;
+          min-height: 88vh;
+          overflow: hidden;
+          background: #f4ece3;
+          margin-top: -1px;
+        }
+
+        /* Left column reserved for the visual / banner art on desktop.
+           The .hero-bg sits behind everything and shows the theme banner
+           on the left, blending into a cream field on the right. */
+        .hero-bg {
+          position: absolute;
+          inset: 0;
+          background-image:
+            linear-gradient(
+              to right,
+              rgba(244, 236, 227, 0) 0%,
+              rgba(244, 236, 227, 0.05) 30%,
+              rgba(244, 236, 227, 0.55) 52%,
+              rgba(244, 236, 227, 0.95) 65%,
+              #f4ece3 78%
+            ),
+            var(--hero-banner);
+          background-size: cover, cover;
+          background-position: center bottom, left bottom;
+          background-repeat: no-repeat, no-repeat;
+          z-index: 0;
+        }
+
+        /* Soft bottom-right burgundy curve like the reference */
+        .hero-curve {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 46%;
+          height: 32%;
+          background: linear-gradient(135deg, #7c2b3a 0%, #5c1a2a 100%);
+          border-top-left-radius: 100% 100%;
+          z-index: 1;
+          pointer-events: none;
+          opacity: 0.95;
+        }
+
+        /* ── HERO CONTENT (right column) — scaled down ── */
+        .hero-content {
+          grid-column: 2;
+          position: relative;
+          z-index: 3;
+          padding: 0 10% 0 0;
+          max-width: 500px;
+          transform: translateY(-3%);
+        }
+
+        .hero-eyebrow {
+          font-family: 'Inter', sans-serif;
+          font-size: clamp(0.6rem, 0.72vw, 0.68rem);
+          font-weight: 600;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: #7a2b38;
+          margin: 0 0 0.85rem 0;
+        }
+
+        .hero h1 {
+          font-family: 'Playfair Display', 'Times New Roman', serif;
+          font-weight: 700;
+          font-size: clamp(1.9rem, 3.6vw, 3.2rem);
+          line-height: 1.08;
+          color: #6b0f1a;
+          margin: 0 0 1rem 0;
+          letter-spacing: -0.005em;
+        }
+        .hero h1 em {
+          font-style: italic;
+          font-weight: 500;
+        }
+
+        .hero p.sub {
+          font-family: 'Inter', sans-serif;
+          font-size: clamp(0.76rem, 0.88vw, 0.86rem);
+          line-height: 1.55;
+          color: #5b4038;
+          max-width: 380px;
+          margin: 0 0 1.3rem 0;
+        }
+
+        /* ── BUTTONS ── */
+        .hero-buttons {
+          display: flex;
+          gap: 0.7rem;
+          flex-wrap: wrap;
+          margin-bottom: 1.1rem;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.4rem;
+          padding: 0.7rem 1.2rem;
+          border-radius: 10px;
+          font-family: 'Inter', sans-serif;
+          font-size: clamp(0.72rem, 0.85vw, 0.82rem);
+          font-weight: 600;
+          text-decoration: none;
+          cursor: pointer;
+          transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+          white-space: nowrap;
+        }
+        .btn-primary {
+          background: #6b0f1a;
+          color: #ffffff;
+          border: 1.5px solid #6b0f1a;
+          box-shadow: 0 6px 18px rgba(107, 15, 26, 0.22);
+        }
+        .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 24px rgba(107, 15, 26, 0.3);
+          background: #5a0c15;
+          border-color: #5a0c15;
+        }
+        .btn-secondary {
+          background: #ffffff;
+          color: #6b0f1a;
+          border: 1.5px solid #6b0f1a;
+        }
+        .btn-secondary:hover {
+          transform: translateY(-2px);
+          background: #fbf6f0;
+          box-shadow: 0 8px 20px rgba(107, 15, 26, 0.12);
+        }
+
+        /* ── TRUST LINE WITH TICKS ── */
+        .trust {
+          list-style: none;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+          margin: 0;
+          padding: 0;
+          font-family: 'Inter', sans-serif;
+          font-size: clamp(0.68rem, 0.78vw, 0.75rem);
+          color: #6b4a44;
+        }
+        .trust li {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+        }
+        .trust-tick {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          color: #6b0f1a;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+          .hero {
+            grid-template-columns: 1fr;
+            min-height: 92vh;
+            text-align: center;
           }
-          .hero-buttons { justify-content: center !important; }
+          .hero-bg {
+            background-image:
+              linear-gradient(
+                to bottom,
+                rgba(244, 236, 227, 0.55) 0%,
+                rgba(244, 236, 227, 0.92) 45%,
+                #f4ece3 70%
+              ),
+              var(--hero-banner);
+            background-position: center top, center top;
+          }
+          .hero-curve {
+            width: 70%;
+            height: 22%;
+          }
+          .hero-content {
+            grid-column: 1;
+            padding: 5rem 1.5rem 3rem;
+            max-width: 100%;
+            transform: none;
+          }
+          .hero p.sub {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 440px;
+          }
+          .hero-buttons {
+            justify-content: center;
+          }
+          .trust {
+            justify-content: center;
+          }
           .about-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
           .step-item { justify-content: center !important; }
           .step-content { width: 100% !important; padding: 0 !important; text-align: center !important; }
@@ -671,8 +839,7 @@ export default function ReligionHomePage({ theme }: Props) {
           .step-item { margin-bottom: 2rem !important; }
         }
 
-        @media (min-width: 769px) and (max-width: 1024px) {
-          .hero-content { margin-left: 40% !important; transform: translateY(-3vh) !important; }
+        @media (min-width: 901px) and (max-width: 1024px) {
           .about-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
         }
 
@@ -680,6 +847,11 @@ export default function ReligionHomePage({ theme }: Props) {
           .step-marker { display: block !important; }
           .desktop-vertical-line { display: block !important; }
         }
+      `}</style>
+
+      {/* Bind the theme banner image into a CSS variable so .hero-bg can use it */}
+      <style>{`
+        .hero { --hero-banner: url(${theme.bannerImage}); }
       `}</style>
     </div>
   );
